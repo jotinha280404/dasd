@@ -29,9 +29,13 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT_IMAGES = ROOT / "output" / "images"
 PINS_DB = ROOT / "output" / "pins.jsonl"
 
-MODEL = os.getenv("IMAGE_MODEL", "gemini-2.5-flash-image")
 API_URL = ("https://generativelanguage.googleapis.com/v1beta/models/"
            "{model}:generateContent")
+
+
+def image_model() -> str:
+    # read at call time so load_dotenv() in main() is respected
+    return os.getenv("IMAGE_MODEL", "gemini-2.5-flash-image")
 
 
 def generate_image(prompt: str, api_key: str, retries: int = 3) -> bytes:
@@ -42,7 +46,7 @@ def generate_image(prompt: str, api_key: str, retries: int = 3) -> bytes:
             "imageConfig": {"aspectRatio": "2:3"},
         },
     }
-    url = API_URL.format(model=MODEL)
+    url = API_URL.format(model=image_model())
     for attempt in range(1, retries + 1):
         resp = requests.post(url, json=body, timeout=180,
                              headers={"x-goog-api-key": api_key})
@@ -108,7 +112,7 @@ def main() -> int:
               "Use --force to regenerate.")
         return 0
 
-    print(f"Generating {len(queue)} pin(s) with {MODEL}...")
+    print(f"Generating {len(queue)} pin(s) with {image_model()}...")
     generated = 0
     for topic, lang in queue:
         name = f"{topic['id']}_{lang}.png"

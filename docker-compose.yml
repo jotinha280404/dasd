@@ -1,0 +1,40 @@
+# Homelab deployment: dashboard + EONET poller
+#
+#   docker compose up -d
+#   → dashboard on http://<host>:8080  (pins / eonet / wiki tabs)
+#   → poller accumulates eonet-tracker/data/observations.jsonl 24/7,
+#     which is exactly what the latency study needs
+#
+# Optional: generate pins from inside the container (needs pin-factory/.env):
+#   docker compose run --rm pins python -m src.generate --count 10
+
+services:
+  dashboard:
+    image: nginx:alpine
+    container_name: dasd-dashboard
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/srv/repo:ro
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped
+
+  eonet-poller:
+    image: python:3.12-slim
+    container_name: dasd-eonet-poller
+    working_dir: /app/eonet-tracker
+    volumes:
+      - ./:/app
+    command: >
+      sh -c "pip install -q -r requirements.txt &&
+             python -m src.fetch --watch 15"
+    restart: unless-stopped
+
+  # on-demand pin generation; not started by default
+  pins:
+    image: python:3.12-slim
+    working_dir: /app/pin-factory
+    volumes:
+      - ./:/app
+    profiles: ["tools"]
+    entrypoint: ["sh", "-c", "pip install -q -r requirements.txt && exec \"$@\"", "--"]

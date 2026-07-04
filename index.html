@@ -3,115 +3,225 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Workspaces — Pin Factory & EONET Tracker</title>
+<title>Workspaces</title>
 <style>
+/* ---------- tokens: dark-first, light via prefers-color-scheme ---------- */
 :root {
-  --surface-1: #fcfcfb; --page: #f9f9f7;
-  --ink-1: #0b0b0b; --ink-2: #52514e; --ink-muted: #898781;
-  --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
-  --s1: #2a78d6; --s2: #1baf7a; --s3: #eda100; --s4: #008300;
-  --s5: #4a3aa7; --s6: #e34948; --s7: #e87ba4; --s8: #eb6834;
-  --good: #0ca30c; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232322;
+  --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+  --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+  --primary: #3987e5; --primary-ink: #ffffff; --accent: #c98500;
+  --s1: #3987e5; --s2: #199e70; --s3: #c98500; --s4: #008300;
+  --s5: #9085e9; --s6: #e66767; --s7: #d55181; --s8: #d95926;
+  --good: #0ca30c; --critical: #d03b3b;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.25);
+  --r: 12px; --r-sm: 8px;
+  color-scheme: dark;
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --surface-1: #1a1a19; --page: #0d0d0d;
-    --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-muted: #898781;
-    --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
-    --s1: #3987e5; --s2: #199e70; --s3: #c98500; --s4: #008300;
-    --s5: #9085e9; --s6: #e66767; --s7: #d55181; --s8: #d95926;
+    --page: #f9f9f7; --surface: #fcfcfb; --surface-2: #f2f1ed;
+    --ink-1: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+    --primary: #2a78d6; --accent: #eda100;
+    --s1: #2a78d6; --s2: #1baf7a; --s3: #eda100; --s4: #008300;
+    --s5: #4a3aa7; --s6: #e34948; --s7: #e87ba4; --s8: #eb6834;
+    --shadow: 0 1px 2px rgba(11,11,11,.06), 0 4px 14px rgba(11,11,11,.05);
+    color-scheme: light;
   }
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0; background: var(--page); color: var(--ink-1);
-  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
+.num, td.num, .tile-v { font-variant-numeric: tabular-nums; }
+a { color: var(--primary); }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- navbar ---------- */
 nav {
-  display: flex; align-items: center; gap: 4px; padding: 10px 20px;
-  background: var(--surface-1); border-bottom: 1px solid var(--border);
-  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 2px; padding: 0 16px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100; height: 54px;
 }
-nav .brand { font-weight: 700; margin-right: 20px; }
-nav a {
-  color: var(--ink-2); text-decoration: none; padding: 7px 14px;
-  border-radius: 8px; font-weight: 500;
+.brand { display: flex; align-items: center; gap: 9px; font-weight: 700;
+         font-size: 15px; margin-right: 18px; color: var(--ink-1); }
+.brand svg { color: var(--primary); }
+nav .tab {
+  display: flex; align-items: center; gap: 7px; height: 54px; padding: 0 14px;
+  color: var(--ink-2); text-decoration: none; font-weight: 500; font-size: 14px;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color .18s, border-color .18s; cursor: pointer;
 }
-nav a:hover { background: var(--grid); }
-nav a.active { background: var(--grid); color: var(--ink-1); font-weight: 600; }
-main { max-width: 1080px; margin: 0 auto; padding: 24px 20px 60px; }
-h1 { font-size: 22px; margin: 8px 0 4px; }
-h2 { font-size: 16px; margin: 32px 0 12px; }
-.sub { color: var(--ink-2); margin: 0 0 20px; }
+nav .tab:hover { color: var(--ink-1); }
+nav .tab.active { color: var(--ink-1); border-bottom-color: var(--primary); font-weight: 600; }
+nav .tab svg { opacity: .85; }
+.nav-status { margin-left: auto; font-size: 12.5px; color: var(--ink-3); }
+@media (max-width: 640px) {
+  .brand span { display: none; }
+  nav .tab span { display: none; }   /* icons remain, labelled via aria-label */
+  nav .tab { padding: 0 12px; }
+}
+
+/* ---------- layout ---------- */
+main { max-width: 1100px; margin: 0 auto; padding: 28px 20px 72px; }
+header.ws { margin: 4px 0 22px; }
+h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: -0.01em; }
+.sub { color: var(--ink-2); margin: 0; font-size: 14.5px; }
+h2 { font-size: 15.5px; margin: 34px 0 12px; letter-spacing: -0.005em; }
+h2 .hint { font-weight: 400; }
+.hint { color: var(--ink-3); font-size: 13px; }
+
+/* ---------- tiles ---------- */
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; }
 .tile {
-  background: var(--surface-1); border: 1px solid var(--border);
-  border-radius: 12px; padding: 14px 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 14px 16px; box-shadow: var(--shadow);
 }
-.tile .v { font-size: 26px; font-weight: 700; }
-.tile .l { color: var(--ink-muted); font-size: 12.5px; }
-table { width: 100%; border-collapse: collapse; background: var(--surface-1);
-        border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-th { text-align: left; font-size: 12px; color: var(--ink-muted); font-weight: 600;
-     padding: 9px 12px; border-bottom: 1px solid var(--grid); }
-td { padding: 8px 12px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+.tile-v { font-size: 26px; font-weight: 700; line-height: 1.2; }
+.tile-l { color: var(--ink-3); font-size: 12.5px; margin-top: 2px; }
+
+/* ---------- cards / tables ---------- */
+.card { background: var(--surface); border: 1px solid var(--border);
+        border-radius: var(--r); box-shadow: var(--shadow); }
+.table-wrap { overflow-x: auto; border-radius: var(--r); }
+table { width: 100%; border-collapse: collapse; background: var(--surface);
+        border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+th { text-align: left; font-size: 11.5px; text-transform: uppercase;
+     letter-spacing: .05em; color: var(--ink-3); font-weight: 600;
+     padding: 10px 14px; border-bottom: 1px solid var(--grid);
+     background: var(--surface-2); }
+td { padding: 9px 14px; border-bottom: 1px solid var(--grid); vertical-align: top; }
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: color-mix(in srgb, var(--grid) 40%, transparent); }
-td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%;
-       margin-right: 7px; vertical-align: baseline; }
-.badge { font-size: 12px; padding: 2px 8px; border-radius: 20px;
-         border: 1px solid var(--border); color: var(--ink-2); }
-.badge.on { color: var(--good); border-color: var(--good); }
+tbody tr { transition: background .15s; }
+tbody tr:hover td { background: color-mix(in srgb, var(--grid) 45%, transparent); }
+td.num, th.num { text-align: right; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+       margin-right: 8px; flex: none; }
+.badge { display: inline-block; font-size: 12px; padding: 2px 9px;
+         border-radius: 20px; border: 1px solid var(--border); color: var(--ink-3); }
+.badge.on { color: var(--good); border-color: color-mix(in srgb, var(--good) 55%, transparent); }
+
+/* ---------- empty states ---------- */
 .empty {
-  background: var(--surface-1); border: 1px dashed var(--baseline);
-  border-radius: 12px; padding: 22px; color: var(--ink-2);
+  background: var(--surface); border: 1px dashed var(--baseline);
+  border-radius: var(--r); padding: 26px; color: var(--ink-2);
+  display: flex; gap: 16px; align-items: flex-start;
 }
-.empty code, .hint code {
+.empty svg { color: var(--ink-3); flex: none; margin-top: 2px; }
+.empty code, .cmd {
   display: block; background: var(--page); border: 1px solid var(--grid);
-  padding: 8px 12px; border-radius: 8px; margin-top: 8px;
-  font: 13px ui-monospace, monospace; color: var(--ink-1);
-  white-space: pre; overflow-x: auto;
+  padding: 9px 13px; border-radius: var(--r-sm); margin-top: 10px;
+  font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--ink-1); white-space: pre; overflow-x: auto;
 }
-.pin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 14px; }
-.pin-card { background: var(--surface-1); border: 1px solid var(--border);
-            border-radius: 12px; overflow: hidden; }
+
+/* ---------- pins ---------- */
+.pin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px,1fr)); gap: 14px; }
+.pin-card { background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow);
+            transition: transform .18s, box-shadow .18s; }
+.pin-card:hover { transform: translateY(-2px); }
 .pin-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block;
-                background: var(--grid); }
-.pin-card .meta { padding: 9px 11px; font-size: 13px; }
-.pin-card .meta .b { color: var(--ink-muted); font-size: 12px; }
-/* latency bar rows: single measure → single hue (slot 1), direct labels */
-.bar-row { display: grid; grid-template-columns: 130px 1fr 90px; gap: 10px;
-           align-items: center; padding: 6px 0; }
-.bar-row .name { font-size: 13px; color: var(--ink-2); }
-.bar-track { display: block; height: 14px; position: relative; }
-.bar-fill { display: block; height: 100%; background: var(--s1);
-            border-radius: 0 4px 4px 0; min-width: 2px; }
-.bar-row .val { font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink-1); }
-.controls { display: flex; gap: 10px; margin: 0 0 14px; flex-wrap: wrap; }
+                background: var(--surface-2); }
+.pin-meta { padding: 10px 12px; font-size: 13px; }
+.pin-meta .b { color: var(--ink-3); font-size: 12px; margin-top: 2px; }
+
+/* ---------- controls ---------- */
+.controls { display: flex; gap: 10px; margin: 0 0 16px; flex-wrap: wrap; align-items: center; }
 select, button {
-  background: var(--surface-1); color: var(--ink-1); border: 1px solid var(--baseline);
-  border-radius: 8px; padding: 7px 12px; font: inherit; font-size: 14px;
+  background: var(--surface); color: var(--ink-1); border: 1px solid var(--baseline);
+  border-radius: var(--r-sm); padding: 8px 13px; font: inherit; font-size: 14px;
+  cursor: pointer; transition: background .15s, border-color .15s;
+  min-height: 38px;
 }
-button { cursor: pointer; } button:hover { background: var(--grid); }
+select:hover, button:hover { background: var(--surface-2); }
+button.primary { background: var(--primary); border-color: var(--primary);
+                 color: var(--primary-ink); font-weight: 600; }
+button.primary:hover { filter: brightness(1.08); }
 .err { color: var(--critical); }
-.section-card { background: var(--surface-1); border: 1px solid var(--border);
-                border-radius: 12px; padding: 16px 18px; }
-.hint { color: var(--ink-muted); font-size: 13px; }
+
+/* ---------- latency bars ---------- */
+.bar-row { display: grid; grid-template-columns: 132px 1fr 108px; gap: 10px;
+           align-items: center; padding: 7px 0; }
+.bar-name { font-size: 13px; color: var(--ink-2); overflow: hidden;
+            text-overflow: ellipsis; white-space: nowrap; }
+.bar-track { display: block; height: 13px; }
+.bar-fill { display: block; height: 100%; background: var(--s1);
+            border-radius: 0 4px 4px 0; min-width: 2px;
+            transition: width .3s ease-out; }
+.bar-val { font-size: 13px; color: var(--ink-1); text-align: right; }
+.section-pad { padding: 16px 18px; }
+
+/* ---------- wiki ---------- */
+.wiki-layout { display: grid; grid-template-columns: 210px 1fr; gap: 22px; }
+@media (max-width: 760px) { .wiki-layout { grid-template-columns: 1fr; } }
+.wiki-nav { position: sticky; top: 74px; align-self: start; }
+.wiki-nav a {
+  display: block; padding: 8px 12px; border-radius: var(--r-sm);
+  color: var(--ink-2); text-decoration: none; font-size: 14px;
+  transition: background .15s, color .15s; margin-bottom: 2px;
+}
+.wiki-nav a:hover { background: var(--surface-2); color: var(--ink-1); }
+.wiki-nav a.active { background: var(--surface-2); color: var(--ink-1);
+                     font-weight: 600; box-shadow: inset 2px 0 0 var(--primary); }
+.wiki-body { min-width: 0; }
+.md { background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r); box-shadow: var(--shadow);
+      padding: 26px 30px; max-width: 74ch; }
+.md h1 { font-size: 24px; margin: 0 0 14px; }
+.md h2 { font-size: 17px; margin: 26px 0 10px; padding-bottom: 6px;
+         border-bottom: 1px solid var(--grid); }
+.md h3 { font-size: 15px; margin: 20px 0 8px; }
+.md p, .md li { color: var(--ink-2); font-size: 14.5px; }
+.md li { margin: 3px 0; }
+.md strong { color: var(--ink-1); }
+.md code { background: var(--surface-2); border: 1px solid var(--grid);
+           padding: 1px 6px; border-radius: 5px;
+           font: 13px ui-monospace, Menlo, Consolas, monospace; color: var(--ink-1); }
+.md pre { background: var(--page); border: 1px solid var(--grid);
+          border-radius: var(--r-sm); padding: 12px 15px; overflow-x: auto; }
+.md pre code { background: none; border: none; padding: 0; }
+.md a.wikilink { font-weight: 500; text-decoration: none;
+                 border-bottom: 1px dashed var(--primary); }
+.md a.wikilink:hover { border-bottom-style: solid; }
+.md table { box-shadow: none; font-size: 13.5px; margin: 12px 0; }
+.md blockquote { border-left: 3px solid var(--primary); margin: 12px 0;
+                 padding: 2px 16px; color: var(--ink-2); }
 </style>
 </head>
 <body>
-<nav>
-  <span class="brand">🗂️ Workspaces</span>
-  <a href="#pins" id="tab-pins">📌 Pin Factory</a>
-  <a href="#eonet" id="tab-eonet">🛰️ EONET Tracker</a>
+<nav aria-label="Workspaces">
+  <span class="brand">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    <span>Workspaces</span>
+  </span>
+  <a class="tab" id="tab-pins" href="#pins" aria-label="Pin Factory">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.8l-2.5 5.2h11L15 10.8V5l1.5-2h-9L9 5z"/></svg>
+    <span>Pin Factory</span></a>
+  <a class="tab" id="tab-eonet" href="#eonet" aria-label="EONET Tracker">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg>
+    <span>EONET Tracker</span></a>
+  <a class="tab" id="tab-wiki" href="#wiki" aria-label="Wiki">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    <span>Wiki</span></a>
+  <span class="nav-status" id="nav-status"></span>
 </nav>
 
 <main>
   <!-- ============ PIN FACTORY ============ -->
   <section id="view-pins" hidden>
-    <h1>Pin Factory</h1>
-    <p class="sub">Pinterest home-decor pins — AI images + affiliate links + bulk CSV.</p>
+    <header class="ws">
+      <h1>Pin Factory</h1>
+      <p class="sub">Pinterest home-decor pins — AI images, affiliate links, bulk-upload CSV.</p>
+    </header>
     <div class="tiles" id="pin-tiles"></div>
     <h2>Generated pins</h2>
     <div id="pin-grid"></div>
@@ -121,161 +231,173 @@ button { cursor: pointer; } button:hover { background: var(--grid); }
 
   <!-- ============ EONET ============ -->
   <section id="view-eonet" hidden>
-    <h1>EONET Tracker</h1>
-    <p class="sub">Live natural events from NASA EONET v3 + your latency study.</p>
+    <header class="ws">
+      <h1>EONET Tracker</h1>
+      <p class="sub">Live natural events from NASA EONET v3 and the ingestion-latency study.</p>
+    </header>
     <div class="controls">
-      <select id="cat-filter"><option value="">All categories</option></select>
-      <button id="refresh">Refresh</button>
-      <span class="hint" id="eonet-status" style="align-self:center"></span>
+      <select id="cat-filter" aria-label="Filter by category"><option value="">All categories</option></select>
+      <button class="primary" id="refresh">Refresh</button>
+      <span class="hint" id="eonet-status" role="status"></span>
     </div>
     <div class="tiles" id="eonet-tiles"></div>
     <h2>Open events</h2>
     <div id="events-table"></div>
-    <h2>Latency study <span class="hint">(median hours from event → visible in API, live observations only)</span></h2>
+    <h2>Latency study <span class="hint">median hours from event → visible in API · live observations only</span></h2>
     <div id="latency-report"></div>
+  </section>
+
+  <!-- ============ WIKI ============ -->
+  <section id="view-wiki" hidden>
+    <header class="ws">
+      <h1>Wiki</h1>
+      <p class="sub">Claude-maintained knowledge base — also browsable as an Obsidian vault (<code>wiki/</code>).</p>
+    </header>
+    <div class="wiki-layout">
+      <div class="wiki-nav" id="wiki-nav" role="navigation" aria-label="Wiki pages"></div>
+      <div class="wiki-body"><article class="md" id="wiki-content"></article></div>
+    </div>
   </section>
 </main>
 
 <script>
 "use strict";
-/* Fixed category→slot map: color follows the entity, never cycled. */
-const CAT_COLORS = {
-  severeStorms: "--s1", seaLakeIce: "--s2", earthquakes: "--s3",
-  drought: "--s4", floods: "--s5", volcanoes: "--s6",
-  landslides: "--s7", wildfires: "--s8",
-};
+/* ---------- shared helpers ---------- */
+const CAT_COLORS = { severeStorms:"--s1", seaLakeIce:"--s2", earthquakes:"--s3",
+  drought:"--s4", floods:"--s5", volcanoes:"--s6", landslides:"--s7", wildfires:"--s8" };
 const catColor = id => `var(${CAT_COLORS[id] || "--baseline"})`;
 const esc = s => String(s ?? "").replace(/[&<>"]/g,
   c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const hoursAgo = iso => (Date.now() - new Date(iso)) / 36e5;
-const fmtAgo = h => h < 1 ? `${Math.round(h*60)}min ago`
-  : h < 48 ? `${h.toFixed(1)}h ago` : `${(h/24).toFixed(1)}d ago`;
-const median = a => { const s=[...a].sort((x,y)=>x-y);
+const fmtAgo = h => h < 1 ? `${Math.round(h*60)}min` : h < 48 ? `${h.toFixed(1)}h` : `${(h/24).toFixed(1)}d`;
+const median = a => { const s = [...a].sort((x,y) => x-y);
   return s.length ? (s[(s.length-1)>>1] + s[s.length>>1]) / 2 : 0; };
+const tile = (v, l) => `<div class="tile"><div class="tile-v">${v}</div><div class="tile-l">${esc(l)}</div></div>`;
+const ICON_INFO = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>`;
 
 async function tryFetch(url, parse) {
-  try { const r = await fetch(url); if (!r.ok) return null;
-        return parse === "jsonl"
-          ? (await r.text()).split("\n").filter(Boolean).map(JSON.parse)
-          : await r.json(); }
-  catch { return null; }
+  try {
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    if (parse === "jsonl") return (await r.text()).split("\n").filter(Boolean).map(JSON.parse);
+    if (parse === "text") return await r.text();
+    return await r.json();
+  } catch { return null; }
 }
-const tile = (v, l) => `<div class="tile"><div class="v">${v}</div><div class="l">${esc(l)}</div></div>`;
+const emptyState = (msg, cmd) =>
+  `<div class="empty">${ICON_INFO}<div>${msg}${cmd ? `<code>${esc(cmd)}</code>` : ""}</div></div>`;
 
-/* ---------------- Pin Factory ---------------- */
+/* ================= PIN FACTORY ================= */
 async function loadPins() {
   const topics = await tryFetch("pin-factory/topics.json");
   const pins = await tryFetch("pin-factory/output/pins.jsonl", "jsonl") || [];
-  const tiles = document.getElementById("pin-tiles");
-  const grid = document.getElementById("pin-grid");
-  const ttable = document.getElementById("topic-table");
+  const $t = document.getElementById("pin-tiles");
+  const $g = document.getElementById("pin-grid");
+  const $b = document.getElementById("topic-table");
 
   if (!topics) {
-    tiles.innerHTML = "";
-    grid.innerHTML = `<div class="empty">Couldn't load <b>pin-factory/topics.json</b>.
-      Serve the dashboard from the repo root:<code>python -m http.server 8000</code></div>`;
+    $t.innerHTML = "";
+    $g.innerHTML = emptyState("Couldn't load <b>pin-factory/topics.json</b>. Serve the dashboard from the repo root:", "python -m http.server 8000   # or: docker compose up -d");
+    $b.innerHTML = "";
     return;
   }
-  const done = new Set(pins.map(p => p.topic_id + "_" + p.lang));
-  tiles.innerHTML =
+  const done = new Set(pins.map(p => `${p.topic_id}_${p.lang}`));
+  $t.innerHTML =
     tile(topics.length, "topics in the bank") +
-    tile(pins.length, `pins generated of ${topics.length * 2}`) +
+    tile(`${pins.length}<span class="hint"> / ${topics.length * 2}</span>`, "pins generated") +
     tile(pins.filter(p => p.lang === "pt").length, "PT-BR pins") +
     tile(pins.filter(p => p.lang === "en").length, "EN pins");
 
-  grid.innerHTML = pins.length
+  $g.innerHTML = pins.length
     ? `<div class="pin-grid">` + pins.map(p => `
-        <div class="pin-card">
-          <a href="${esc(p.file ? "pin-factory/" + p.file : "#")}" target="_blank">
-            <img loading="lazy" src="pin-factory/${esc(p.file)}" alt="${esc(p.title)}"></a>
-          <div class="meta"><div>${esc(p.title)}</div>
-            <div class="b">${esc(p.board)} · ${p.lang.toUpperCase()}</div></div>
-        </div>`).join("") + `</div>`
-    : `<div class="empty">No pins generated yet.
-       <code>cd pin-factory
-python -m src.generate --count 10
-python -m src.export_csv</code></div>`;
+        <a class="pin-card" href="pin-factory/${esc(p.file)}" target="_blank" rel="noopener">
+          <img loading="lazy" src="pin-factory/${esc(p.file)}" alt="${esc(p.title)}" width="400" height="600">
+          <div class="pin-meta"><div>${esc(p.title)}</div>
+          <div class="b">${esc(p.board)} · ${esc(p.lang.toUpperCase())}</div></div>
+        </a>`).join("") + `</div>`
+    : emptyState("No pins generated yet. From your machine:",
+        "cd pin-factory\npython -m src.validate\npython -m src.generate --count 10\npython -m src.export_csv");
 
-  ttable.innerHTML = `<table><tr><th>Topic</th><th>Room</th><th>Format</th>
-      <th>EN</th><th>PT</th></tr>` +
-    topics.map(t => `<tr>
-      <td>${esc(t.id)}</td><td>${esc(t.room)}</td><td>${esc(t.format)}</td>
-      <td><span class="badge ${done.has(t.id+"_en") ? "on" : ""}">${done.has(t.id+"_en") ? "✓ done" : "pending"}</span></td>
-      <td><span class="badge ${done.has(t.id+"_pt") ? "on" : ""}">${done.has(t.id+"_pt") ? "✓ done" : "pending"}</span></td>
-    </tr>`).join("") + `</table>`;
+  const badge = ok => `<span class="badge ${ok ? "on" : ""}">${ok ? "✓ done" : "pending"}</span>`;
+  $b.innerHTML = `<div class="table-wrap"><table>
+    <thead><tr><th>Topic</th><th>Room</th><th>Format</th><th>EN</th><th>PT</th></tr></thead><tbody>` +
+    topics.map(t => `<tr><td>${esc(t.id)}</td><td>${esc(t.room)}</td><td>${esc(t.format)}</td>
+      <td>${badge(done.has(t.id + "_en"))}</td><td>${badge(done.has(t.id + "_pt"))}</td></tr>`).join("") +
+    `</tbody></table></div>`;
 }
 
-/* ---------------- EONET ---------------- */
+/* ================= EONET ================= */
 const EONET = "https://eonet.gsfc.nasa.gov/api/v3";
 let allEvents = null;
 
-async function loadEonet(force) {
-  const status = document.getElementById("eonet-status");
-  const tiles = document.getElementById("eonet-tiles");
-  const table = document.getElementById("events-table");
-  if (!allEvents || force) {
-    status.textContent = "loading…";
-    try {
-      const r = await fetch(`${EONET}/events?status=open`);
-      allEvents = (await r.json()).events;
-      status.textContent = `live · ${new Date().toLocaleTimeString()}`;
-    } catch (e) {
-      status.innerHTML = `<span class="err">EONET unreachable (${esc(e.message)}) — check your connection.</span>`;
-      allEvents = allEvents || [];
-    }
+async function fetchEvents() {
+  const $s = document.getElementById("eonet-status");
+  $s.textContent = "loading…";
+  try {
+    const r = await fetch(`${EONET}/events?status=open`);
+    allEvents = (await r.json()).events;
+    $s.textContent = `live · ${new Date().toLocaleTimeString()}`;
+  } catch (e) {
+    $s.innerHTML = `<span class="err">EONET unreachable — ${esc(e.message)}</span>`;
+    allEvents = allEvents || [];
   }
+}
+
+function eventRows() {
+  const sel = document.getElementById("cat-filter");
+  return allEvents
+    .filter(e => !sel.value || e.categories.some(c => c.id === sel.value))
+    .map(e => {
+      const g = e.geometry[e.geometry.length - 1] || {};
+      return { title: e.title, cat: e.categories[0]?.id || "?", mag: g.magnitudeValue,
+               unit: g.magnitudeUnit || "", date: g.date,
+               sources: (e.sources || []).map(s => s.id).join(", ") };
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+function renderEonet() {
   const cats = [...new Set(allEvents.flatMap(e => e.categories.map(c => c.id)))].sort();
   const sel = document.getElementById("cat-filter");
   const keep = sel.value;
   sel.innerHTML = `<option value="">All categories (${allEvents.length})</option>` +
-    cats.map(c => `<option value="${c}" ${c===keep?"selected":""}>${c}</option>`).join("");
+    cats.map(c => `<option value="${c}" ${c === keep ? "selected" : ""}>${c}</option>`).join("");
 
-  const rows = allEvents
-    .filter(e => !sel.value || e.categories.some(c => c.id === sel.value))
-    .map(e => {
-      const g = e.geometry[e.geometry.length - 1] || {};
-      return { id: e.id, title: e.title, cat: e.categories[0]?.id || "?",
-               mag: g.magnitudeValue, unit: g.magnitudeUnit || "",
-               date: g.date, coords: g.coordinates,
-               sources: (e.sources || []).map(s => s.id).join(", ") };
-    })
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
-
+  const rows = eventRows();
   const ages = rows.map(r => hoursAgo(r.date));
-  tiles.innerHTML =
+  document.getElementById("eonet-tiles").innerHTML =
     tile(rows.length, sel.value ? `open ${sel.value}` : "open events") +
     tile(cats.length, "active categories") +
-    tile(ages.length ? fmtAgo(Math.min(...ages)).replace(" ago","") : "—", "freshest update age") +
-    tile(ages.length ? fmtAgo(median(ages)).replace(" ago","") : "—", "median update age");
+    tile(ages.length ? fmtAgo(Math.min(...ages)) : "—", "freshest update age") +
+    tile(ages.length ? fmtAgo(median(ages)) : "—", "median update age");
 
-  table.innerHTML = `<table><tr><th>Category</th><th>Event</th>
-      <th class="num">Magnitude</th><th class="num">Last update</th><th>Sources</th></tr>` +
-    rows.slice(0, 100).map(r => `<tr>
-      <td><span class="dot" style="background:${catColor(r.cat)}"></span>${esc(r.cat)}</td>
-      <td>${esc(r.title)}</td>
-      <td class="num">${r.mag ? esc(r.mag + " " + r.unit) : "—"}</td>
-      <td class="num" title="${esc(r.date)}">${fmtAgo(hoursAgo(r.date))}</td>
-      <td>${esc(r.sources)}</td></tr>`).join("") + `</table>` +
-    (rows.length > 100 ? `<p class="hint">Showing 100 of ${rows.length}.</p>` : "");
-
-  loadLatency();
+  document.getElementById("events-table").innerHTML = rows.length
+    ? `<div class="table-wrap"><table>
+       <thead><tr><th>Category</th><th>Event</th><th class="num">Magnitude</th>
+       <th class="num">Last update</th><th>Sources</th></tr></thead><tbody>` +
+      rows.slice(0, 100).map(r => `<tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:${catColor(r.cat)}"></span>${esc(r.cat)}</td>
+        <td>${esc(r.title)}</td>
+        <td class="num">${r.mag ? esc(r.mag + " " + r.unit) : "—"}</td>
+        <td class="num" title="${esc(r.date)}">${fmtAgo(hoursAgo(r.date))} ago</td>
+        <td>${esc(r.sources)}</td></tr>`).join("") +
+      `</tbody></table></div>` +
+      (rows.length > 100 ? `<p class="hint">Showing 100 of ${rows.length}.</p>` : "")
+    : emptyState("No events match this filter.");
 }
 
-async function loadLatency() {
+async function renderLatency() {
   const el = document.getElementById("latency-report");
   const obs = await tryFetch("eonet-tracker/data/observations.jsonl", "jsonl");
   if (!obs || !obs.length) {
-    el.innerHTML = `<div class="empty">No observations yet — leave the poller
-      running for a day or two, then reload:
-      <code>cd eonet-tracker
-python -m src.fetch --watch 15</code></div>`;
+    el.innerHTML = emptyState("No observations yet — the homelab poller (or a local <b>--watch</b> run) fills this in over a day or two:",
+      "docker compose up -d eonet-poller\n# or: cd eonet-tracker && python -m src.fetch --watch 15");
     return;
   }
   const live = obs.filter(o => !o.backlog);
   if (!live.length) {
-    el.innerHTML = `<div class="empty">Only the first-poll backlog so far
-      (${obs.length} observations — their lag numbers aren't meaningful).
-      Keep <b>--watch</b> running so new events are caught appearing live.</div>`;
+    el.innerHTML = emptyState(`Only the first-poll backlog so far (${obs.length} observations —
+      their lag numbers aren't meaningful). Keep the poller running to catch events appearing live.`);
     return;
   }
   const byCat = {};
@@ -284,30 +406,122 @@ python -m src.fetch --watch 15</code></div>`;
     .map(([c, lags]) => ({ c, n: lags.length, med: median(lags) }))
     .sort((a, b) => b.med - a.med);
   const max = Math.max(...meds.map(m => m.med), 1);
-  el.innerHTML = `<div class="section-card">` + meds.map(m => `
-    <div class="bar-row" title="${m.n} live observation(s)">
-      <span class="name">${esc(m.c)}</span>
-      <span class="bar-track"><span class="bar-fill" style="width:${(m.med/max*100).toFixed(1)}%"></span></span>
-      <span class="val">${m.med.toFixed(1)}h · n=${m.n}</span>
-    </div>`).join("") +
-    `<p class="hint" style="margin:10px 0 0">Overall median:
-      <b>${median(live.map(o => o.lag_hours)).toFixed(1)}h</b> across
-      ${live.length} live observations. Under ~6h starts being interesting;
-      over that, look at primary sources (USGS, FIRMS, GDACS).</p></div>`;
+  el.innerHTML = `<div class="card section-pad">` +
+    meds.map(m => `
+      <div class="bar-row" title="${m.n} live observation(s)">
+        <span class="bar-name">${esc(m.c)}</span>
+        <span class="bar-track"><span class="bar-fill" style="width:${(m.med / max * 100).toFixed(1)}%"></span></span>
+        <span class="bar-val num">${m.med.toFixed(1)}h <span class="hint">n=${m.n}</span></span>
+      </div>`).join("") +
+    `<p class="hint" style="margin:12px 0 0">Overall median
+      <b>${median(live.map(o => o.lag_hours)).toFixed(1)}h</b> across ${live.length} live
+      observations. Under ~6h is interesting; above it, the primary sources
+      (USGS, FIRMS, GDACS) are the faster lane.</p></div>`;
 }
 
-/* ---------------- routing ---------------- */
-function route() {
-  const view = location.hash === "#eonet" ? "eonet" : "pins";
-  for (const v of ["pins", "eonet"]) {
-    document.getElementById("view-" + v).hidden = v !== view;
-    document.getElementById("tab-" + v).classList.toggle("active", v === view);
+async function loadEonet(force) {
+  if (!allEvents || force) await fetchEvents();
+  renderEonet();
+  renderLatency();
+}
+
+/* ================= WIKI ================= */
+let wikiPages = null;
+
+/* minimal markdown renderer: headings, lists, tables, code, links, wikilinks */
+function mdRender(src) {
+  const inline = s => esc(s)
+    .replace(/`([^`]+)`/g, (_, c) => `<code>${c}</code>`)
+    .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, (_, page, label) =>
+      `<a class="wikilink" href="#wiki/${encodeURIComponent(page.trim())}">${label}</a>`)
+    .replace(/\[\[([^\]]+)\]\]/g, (_, page) =>
+      `<a class="wikilink" href="#wiki/${encodeURIComponent(page.trim())}">${page}</a>`)
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,
+      `<a href="$2" target="_blank" rel="noopener">$1</a>`)
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+
+  const lines = src.split("\n");
+  const out = [];
+  let list = null, code = false, table = null, para = [];
+  const flushPara = () => { if (para.length) { out.push(`<p>${inline(para.join(" "))}</p>`); para = []; } };
+  const flushList = () => { if (list) { out.push(`</${list}>`); list = null; } };
+  const flushTable = () => { if (table) { out.push("</tbody></table></div>"); table = null; } };
+
+  for (const raw of lines) {
+    const line = raw.replace(/\s+$/, "");
+    if (line.startsWith("```")) {
+      flushPara(); flushList(); flushTable();
+      out.push(code ? "</code></pre>" : "<pre><code>");
+      code = !code; continue;
+    }
+    if (code) { out.push(esc(raw)); continue; }
+
+    const h = line.match(/^(#{1,3})\s+(.*)/);
+    if (h) { flushPara(); flushList(); flushTable();
+      out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`); continue; }
+
+    if (/^\s*[-*]\s+/.test(line)) {
+      flushPara(); flushTable();
+      if (list !== "ul") { flushList(); out.push("<ul>"); list = "ul"; }
+      out.push(`<li>${inline(line.replace(/^\s*[-*]\s+/, ""))}</li>`); continue;
+    }
+    if (/^\s*\d+\.\s+/.test(line)) {
+      flushPara(); flushTable();
+      if (list !== "ol") { flushList(); out.push("<ol>"); list = "ol"; }
+      out.push(`<li>${inline(line.replace(/^\s*\d+\.\s+/, ""))}</li>`); continue;
+    }
+    if (/^\|/.test(line)) {
+      flushPara(); flushList();
+      const cells = line.split("|").slice(1, -1).map(c => c.trim());
+      if (cells.every(c => /^:?-{2,}:?$/.test(c))) continue;   // separator row
+      if (!table) {
+        table = true;
+        out.push(`<div class="table-wrap"><table><thead><tr>` +
+          cells.map(c => `<th>${inline(c)}</th>`).join("") + `</tr></thead><tbody>`);
+      } else {
+        out.push("<tr>" + cells.map(c => `<td>${inline(c)}</td>`).join("") + "</tr>");
+      }
+      continue;
+    }
+    if (/^>\s?/.test(line)) { flushPara(); flushList(); flushTable();
+      out.push(`<blockquote><p>${inline(line.replace(/^>\s?/, ""))}</p></blockquote>`); continue; }
+    if (line === "") { flushPara(); flushList(); flushTable(); continue; }
+    para.push(line);
   }
-  if (view === "pins") loadPins(); else loadEonet(false);
+  flushPara(); flushList(); flushTable();
+  if (code) out.push("</code></pre>");
+  return out.join("\n");
+}
+
+async function loadWiki(page) {
+  if (!wikiPages) wikiPages = await tryFetch("wiki/index.json") || ["Home"];
+  const current = page && wikiPages.includes(page) ? page : wikiPages[0];
+  document.getElementById("wiki-nav").innerHTML = wikiPages.map(p =>
+    `<a href="#wiki/${encodeURIComponent(p)}" class="${p === current ? "active" : ""}">${esc(p.replace(/-/g, " "))}</a>`).join("");
+  const md = await tryFetch(`wiki/${current}.md`, "text");
+  document.getElementById("wiki-content").innerHTML = md
+    ? mdRender(md)
+    : emptyState(`Couldn't load <b>wiki/${esc(current)}.md</b> — is it listed in wiki/index.json and pushed?`);
+  window.scrollTo({ top: 0 });
+}
+
+/* ================= routing ================= */
+function route() {
+  const hash = decodeURIComponent(location.hash.slice(1));
+  const [view, arg] = hash.split("/");
+  const v = ["pins", "eonet", "wiki"].includes(view) ? view : "pins";
+  for (const name of ["pins", "eonet", "wiki"]) {
+    document.getElementById("view-" + name).hidden = name !== v;
+    document.getElementById("tab-" + name).classList.toggle("active", name === v);
+  }
+  if (v === "pins") loadPins();
+  else if (v === "eonet") loadEonet(false);
+  else loadWiki(arg);
 }
 window.addEventListener("hashchange", route);
 document.getElementById("refresh").addEventListener("click", () => loadEonet(true));
-document.getElementById("cat-filter").addEventListener("change", () => loadEonet(false));
+document.getElementById("cat-filter").addEventListener("change", () => { renderEonet(); });
 route();
 </script>
 </body>

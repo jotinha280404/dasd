@@ -44,6 +44,10 @@ def main() -> int:
     if not PINS_DB.exists():
         print("ERROR: no pins yet — run python -m src.generate first")
         return 1
+    if args.per_day > len(SLOTS):
+        print(f"NOTE: capping at {len(SLOTS)} pins/day (distinct time slots; "
+              f"Pinterest also favors ≤10 fresh pins/day)")
+        args.per_day = len(SLOTS)
 
     base_url = os.getenv(
         "MEDIA_BASE_URL",
@@ -64,7 +68,7 @@ def main() -> int:
         writer.writerow(HEADERS)
         for i, pin in enumerate(pins):
             day = start + timedelta(days=i // args.per_day)
-            slot = SLOTS[i % args.per_day % len(SLOTS)]
+            slot = SLOTS[i % args.per_day]
             writer.writerow([
                 pin["title"],
                 f"{base_url}/{pin['file']}",

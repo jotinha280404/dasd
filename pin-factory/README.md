@@ -32,6 +32,9 @@ topics.json ──► src/generate.py ──► output/images/*.png  (Gemini ima
 ## Daily workflow
 
 ```bash
+# 0. Lint the content bank first (free, catches problems before API spend)
+python -m src.validate
+
 # 1. Generate pins (all pending topics, EN + PT — ~40 images first run)
 python -m src.generate                # or --count 10 to start small
 

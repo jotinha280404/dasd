@@ -1,35 +1,63 @@
-# Projects
+# Workspaces
 
-Monorepo with two independent projects — `cd` into one and follow its README.
+Monorepo with two products, a dashboard over both, and a Claude-maintained
+wiki. `CLAUDE.md` is the schema — read it first.
 
-| Project | What it is |
+| What | Where |
 |---|---|
-| [`pin-factory/`](pin-factory/) | 📌 Pinterest home-decor pin generator: AI images (Gemini) + affiliate links (Mercado Livre / Amazon) + bulk-upload CSV |
-| [`eonet-tracker/`](eonet-tracker/) | 🛰️ NASA EONET natural-event poller + API latency study (wildfires, storms, volcanoes…) |
+| 📌 Pinterest pin generator (AI images + affiliate links + bulk CSV) | [`pin-factory/`](pin-factory/) |
+| 🛰️ NASA EONET event poller + latency study | [`eonet-tracker/`](eonet-tracker/) |
+| 🖥️ Dashboard (Pin Factory · EONET · Wiki tabs) | [`index.html`](index.html) |
+| 📖 Wiki — decisions, ideas, project pages | [`wiki/`](wiki/) |
 
-## Dashboard
+## Run the dashboard
 
-One dashboard, both workspaces, with a navbar to switch between them:
+**Homelab (recommended):**
 
 ```bash
-python -m http.server 8000     # from the repo root
-# open http://localhost:8000
+docker compose up -d
+# dashboard → http://<host>:8080
+# eonet-poller runs `fetch --watch 15` 24/7 (feeds the latency study)
 ```
 
-- **📌 Pin Factory** — topic bank status, generated-pin gallery, PT/EN counters
-- **🛰️ EONET Tracker** — live open events straight from NASA's API (fetched by
-  your browser), category filter, and the latency-study report once the
-  poller has data
+nginx serves the repo read-only and blocks dotfiles/`.env`/`.git`. Still
+LAN-only by default — put a reverse proxy + auth in front to go further.
 
-## Knowledge graph (Graphify)
+**Quick local:**
 
-The repo has a [Graphify](https://github.com/safishamsi/graphify) knowledge
-graph in `graphify-out/` (open `graph.html` in a browser) and a skill at
-`.claude/skills/graphify` (`/graphify` in Claude Code). To (re)build the
-graph and the Obsidian vault locally:
+```bash
+python -m http.server 8000    # from the repo root → http://localhost:8000
+```
+
+## Wiki / Obsidian
+
+- `wiki/` is the curated knowledge base (Karpathy LLM-wiki pattern; Claude
+  keeps it updated — workflows in `CLAUDE.md`). Browse it on the dashboard's
+  **Wiki** tab or open the repo root as an **Obsidian vault**.
+- `graphify-out/` is the automatic code knowledge graph
+  ([Graphify](https://github.com/safishamsi/graphify)):
+  `graph.html` is interactive; rebuild + Obsidian-export with:
 
 ```bash
 pip install graphifyy          # PyPI package is graphifyy, CLI is graphify
 graphify update .              # rebuild graph (code-only, no API key needed)
 graphify export obsidian       # writes graphify-out/obsidian/ — open as a vault
+```
+
+## Everyday commands
+
+```bash
+# pins
+cd pin-factory
+python -m src.validate                 # lint all topics/prompts first
+python -m src.generate --count 10     # needs GEMINI_API_KEY in .env
+python -m src.export_csv               # → output/pins.csv for Pinterest bulk upload
+
+# eonet (if not using docker)
+cd eonet-tracker
+python -m src.fetch --watch 15         # poller
+python -m src.latency                  # report
+
+# pins inside docker instead
+docker compose run --rm pins python -m src.generate --count 10
 ```
