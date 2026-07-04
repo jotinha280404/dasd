@@ -1,0 +1,517 @@
+[
+  {
+    "id": "bathroom-ventilation",
+    "room": "bathroom",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "BATHROOM VENTILATION",
+      "right": "Air enters low, exits high",
+      "right_scene": "cutaway bathroom, ceiling exhaust fan pulling air up, door grille at the bottom letting fresh air in, smooth curved airflow arrow from door grille up to the fan",
+      "wrong": "Closed window traps humid air",
+      "wrong_scene": "same bathroom but window closed, wavy steam lines lingering over the toilet, weak blocked airflow arrow"
+    },
+    "pt": {
+      "title": "VENTILAÇÃO DO BANHEIRO",
+      "right": "Ar entra por baixo, sai por cima",
+      "right_scene": "banheiro em corte, exaustor no teto puxando o ar para cima, grade na parte de baixo da porta deixando ar fresco entrar, seta de fluxo de ar curva subindo da porta até o exaustor",
+      "wrong": "Janela fechada prende o ar úmido",
+      "wrong_scene": "mesmo banheiro com a janela fechada, linhas onduladas de vapor pairando sobre o vaso, seta de fluxo fraca e bloqueada"
+    },
+    "products": { "amazon_en": "bathroom exhaust fan", "amazon_pt": "exaustor para banheiro", "ml_pt": "exaustor-banheiro" },
+    "keywords_en": "bathroom ideas, bathroom ventilation, home improvement, small bathroom",
+    "keywords_pt": "banheiro pequeno, reforma banheiro, dicas de casa, ventilação"
+  },
+  {
+    "id": "kitchen-workflow",
+    "room": "kitchen",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "KITCHEN WORKFLOW",
+      "right": "Sink → 90cm counter → stove",
+      "right_scene": "top view of a kitchen counter with sink on the left, generous empty counter in the middle labeled 90cm, stove on the right, arrow flowing washing to prepping to cooking",
+      "wrong": "No prep space between sink and stove",
+      "wrong_scene": "top view of the same counter but sink and stove squeezed together, water splashes on the stove, cutting board falling off the edge"
+    },
+    "pt": {
+      "title": "FLUXO DA COZINHA",
+      "right": "Pia → bancada 90cm → fogão",
+      "right_scene": "vista de cima de uma bancada de cozinha com pia à esquerda, bancada livre generosa no meio com a medida 90cm, fogão à direita, seta fluindo de lavar para preparar para cozinhar",
+      "wrong": "Sem espaço de preparo entre pia e fogão",
+      "wrong_scene": "vista de cima da mesma bancada mas pia e fogão espremidos juntos, respingos de água no fogão, tábua de corte caindo da beirada"
+    },
+    "products": { "amazon_en": "over sink cutting board", "amazon_pt": "organizador de bancada cozinha", "ml_pt": "organizador-bancada-cozinha" },
+    "keywords_en": "kitchen layout, kitchen design, kitchen workflow, home design",
+    "keywords_pt": "cozinha planejada, cozinha pequena, layout cozinha, decoração cozinha"
+  },
+  {
+    "id": "bed-placement",
+    "room": "bedroom",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "BED PLACEMENT",
+      "right": "Headboard on a solid wall, clear view of the door",
+      "right_scene": "cutaway bedroom, bed with headboard against a solid wall, door visible diagonally from the pillows, window to the side, calm and balanced",
+      "wrong": "Bed under the window, door swings into the bed",
+      "wrong_scene": "same bedroom but bed pushed under the window with cold draft lines, door arc colliding with the bed corner"
+    },
+    "pt": {
+      "title": "POSIÇÃO DA CAMA",
+      "right": "Cabeceira em parede cega, porta visível da cama",
+      "right_scene": "quarto em corte, cama com cabeceira encostada em parede sem janela, porta visível na diagonal a partir dos travesseiros, janela na lateral, composição calma e equilibrada",
+      "wrong": "Cama sob a janela, porta bate na cama",
+      "wrong_scene": "mesmo quarto mas cama empurrada para baixo da janela com linhas de vento frio, arco da porta colidindo com o canto da cama"
+    },
+    "products": { "amazon_en": "upholstered headboard", "amazon_pt": "cabeceira cama box casal", "ml_pt": "cabeceira-cama-box" },
+    "keywords_en": "bedroom layout, bedroom ideas, bed placement, feng shui bedroom",
+    "keywords_pt": "quarto de casal, layout quarto, decoração quarto, quarto pequeno"
+  },
+  {
+    "id": "bedroom-3x3-layouts",
+    "room": "bedroom",
+    "format": "floor_plan",
+    "style": "clean",
+    "en": {
+      "title": "4 LAYOUTS FOR A 10x10 BEDROOM",
+      "plans": [
+        { "name": "1. CORNER COMFORT", "desc": "bed in the corner, dresser by the window, rug at the center" },
+        { "name": "2. SYMMETRICAL", "desc": "double bed centered with two nightstands, wardrobe on the opposite wall" },
+        { "name": "3. WORK + SLEEP", "desc": "bed on one side, small desk and chair near the window" },
+        { "name": "4. STORAGE WALL", "desc": "full wardrobe wall, bed opposite, chest at the foot" }
+      ]
+    },
+    "pt": {
+      "title": "4 LAYOUTS PARA QUARTO 3x3",
+      "plans": [
+        { "name": "1. CANTO ACONCHEGO", "desc": "cama no canto, cômoda perto da janela, tapete no centro" },
+        { "name": "2. SIMÉTRICO", "desc": "cama de casal centralizada com dois criados-mudos, guarda-roupa na parede oposta" },
+        { "name": "3. TRABALHO + SONO", "desc": "cama de um lado, escrivaninha pequena com cadeira perto da janela" },
+        { "name": "4. PAREDE DE ARMÁRIOS", "desc": "parede inteira de guarda-roupa, cama em frente, baú aos pés" }
+      ]
+    },
+    "products": { "amazon_en": "nightstand set of 2", "amazon_pt": "criado mudo", "ml_pt": "criado-mudo" },
+    "keywords_en": "10x10 bedroom layout, small bedroom ideas, bedroom floor plan, bedroom furniture",
+    "keywords_pt": "quarto 3x3, quarto pequeno, planta quarto, móveis quarto"
+  },
+  {
+    "id": "rug-size-bedroom",
+    "room": "bedroom",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "RUG SIZE UNDER THE BED",
+      "right": "Rug extends 60cm past the bed",
+      "right_scene": "top view of a bedroom, large rug under the bed extending generously on both sides and the foot, nightstands off the rug, dimension line showing 60cm",
+      "wrong": "Tiny rug floating disconnected",
+      "wrong_scene": "same top view but a small rug floating next to the bed touching nothing, awkward empty floor"
+    },
+    "pt": {
+      "title": "TAMANHO DO TAPETE NO QUARTO",
+      "right": "Tapete avança 60cm além da cama",
+      "right_scene": "vista de cima de um quarto, tapete grande sob a cama avançando generosamente nas laterais e aos pés, criados-mudos fora do tapete, linha de cota mostrando 60cm",
+      "wrong": "Tapete pequeno perdido no chão",
+      "wrong_scene": "mesma vista de cima mas um tapete pequeno solto ao lado da cama sem tocar em nada, chão vazio estranho"
+    },
+    "products": { "amazon_en": "large area rug bedroom", "amazon_pt": "tapete quarto grande", "ml_pt": "tapete-quarto" },
+    "keywords_en": "rug size guide, bedroom rug, area rug placement, bedroom decor",
+    "keywords_pt": "tapete quarto, tamanho tapete, decoração quarto, tapete cama"
+  },
+  {
+    "id": "sofa-tv-distance",
+    "room": "living",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "SOFA TO TV DISTANCE",
+      "right": "Distance = 2x the screen size",
+      "right_scene": "side view cutaway of a living room, sofa and wall-mounted TV with a comfortable gap, dimension arrow labeled 2x screen, relaxed viewer",
+      "wrong": "Too close strains your eyes",
+      "wrong_scene": "same room but sofa pushed almost against the TV, viewer leaning back with strained squiggle lines from the eyes"
+    },
+    "pt": {
+      "title": "DISTÂNCIA SOFÁ E TV",
+      "right": "Distância = 2x o tamanho da tela",
+      "right_scene": "sala em corte lateral, sofá e TV na parede com espaço confortável, seta de cota escrita 2x a tela, pessoa relaxada assistindo",
+      "wrong": "Perto demais cansa a vista",
+      "wrong_scene": "mesma sala mas sofá quase encostado na TV, pessoa inclinada para trás com linhas de cansaço saindo dos olhos"
+    },
+    "products": { "amazon_en": "tv stand entertainment center", "amazon_pt": "rack para tv", "ml_pt": "rack-tv" },
+    "keywords_en": "living room layout, tv distance, living room design, home theater",
+    "keywords_pt": "sala de estar, rack tv, sala pequena, decoração sala"
+  },
+  {
+    "id": "small-kitchen-storage",
+    "room": "kitchen",
+    "format": "tip_list",
+    "style": "clean",
+    "en": {
+      "title": "SMALL KITCHEN STORAGE",
+      "tips": [
+        { "label": "WALL RAILS", "desc": "hang utensils on a rail above the counter" },
+        { "label": "SHELF RISERS", "desc": "double every cabinet shelf" },
+        { "label": "DOOR RACKS", "desc": "racks inside cabinet doors" },
+        { "label": "MAGNETIC STRIP", "desc": "knives on the wall, drawer freed" },
+        { "label": "STACKABLE JARS", "desc": "square jars waste zero space" }
+      ]
+    },
+    "pt": {
+      "title": "COZINHA PEQUENA ORGANIZADA",
+      "tips": [
+        { "label": "BARRAS NA PAREDE", "desc": "utensílios pendurados sobre a bancada" },
+        { "label": "PRATELEIRA EXTRA", "desc": "dobre o espaço de cada armário" },
+        { "label": "PORTA COM SUPORTE", "desc": "suportes por dentro das portas" },
+        { "label": "BARRA MAGNÉTICA", "desc": "facas na parede, gaveta livre" },
+        { "label": "POTES EMPILHÁVEIS", "desc": "potes quadrados não perdem espaço" }
+      ]
+    },
+    "products": { "amazon_en": "kitchen organizer set", "amazon_pt": "organizador cozinha", "ml_pt": "organizador-cozinha" },
+    "keywords_en": "small kitchen storage, kitchen organization, kitchen hacks, apartment kitchen",
+    "keywords_pt": "cozinha pequena, organização cozinha, potes herméticos, apartamento pequeno"
+  },
+  {
+    "id": "lighting-layers",
+    "room": "living",
+    "format": "tip_list",
+    "style": "clean",
+    "en": {
+      "title": "THE 3 LAYERS OF LIGHTING",
+      "tips": [
+        { "label": "AMBIENT", "desc": "ceiling light fills the whole room" },
+        { "label": "TASK", "desc": "reading lamp, counter strip, desk light" },
+        { "label": "ACCENT", "desc": "wall washer or shelf strip for mood" }
+      ]
+    },
+    "pt": {
+      "title": "AS 3 CAMADAS DE ILUMINAÇÃO",
+      "tips": [
+        { "label": "GERAL", "desc": "luz do teto preenche o ambiente" },
+        { "label": "TAREFA", "desc": "luminária de leitura, fita na bancada" },
+        { "label": "DESTAQUE", "desc": "arandela ou fita de LED na estante" }
+      ]
+    },
+    "products": { "amazon_en": "led floor lamp", "amazon_pt": "luminária pendente", "ml_pt": "luminaria-pendente" },
+    "keywords_en": "lighting design, home lighting ideas, cozy lighting, interior design tips",
+    "keywords_pt": "iluminação casa, luminária sala, decoração iluminada, fita led"
+  },
+  {
+    "id": "shower-niche",
+    "room": "bathroom",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "SHOWER NICHE HEIGHT",
+      "right": "Niche at 1.0–1.2m, out of the spray",
+      "right_scene": "cutaway shower, recessed wall niche at chest height on the side wall away from the shower head, bottles neatly inside, dimension line 1.0-1.2m",
+      "wrong": "Niche right behind the spray",
+      "wrong_scene": "same shower but niche directly under the shower head, water hitting the bottles, soap melting drips"
+    },
+    "pt": {
+      "title": "ALTURA DO NICHO NO BOX",
+      "right": "Nicho a 1,0–1,2m, fora do jato",
+      "right_scene": "box em corte, nicho embutido na altura do peito na parede lateral longe do chuveiro, frascos organizados dentro, linha de cota 1,0-1,2m",
+      "wrong": "Nicho na parede do chuveiro",
+      "wrong_scene": "mesmo box mas nicho logo abaixo do chuveiro, água batendo nos frascos, sabonete derretendo"
+    },
+    "products": { "amazon_en": "shower shelf corner", "amazon_pt": "nicho para banheiro", "ml_pt": "nicho-banheiro" },
+    "keywords_en": "shower niche, bathroom remodel, shower design, bathroom storage",
+    "keywords_pt": "nicho banheiro, box banheiro, reforma banheiro, banheiro pequeno"
+  },
+  {
+    "id": "kitchen-work-triangle",
+    "room": "kitchen",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "THE KITCHEN WORK TRIANGLE",
+      "right": "Sink, stove, fridge 1.2–2.7m apart",
+      "right_scene": "top view kitchen, dashed triangle connecting sink stove and fridge with balanced short sides, cook standing comfortably in the center",
+      "wrong": "Fridge exiled across the room",
+      "wrong_scene": "top view of the same kitchen but fridge far away in a corner, long stretched dashed line, tired footprints walking back and forth"
+    },
+    "pt": {
+      "title": "TRIÂNGULO DA COZINHA",
+      "right": "Pia, fogão e geladeira a 1,2–2,7m",
+      "right_scene": "cozinha vista de cima, triângulo tracejado ligando pia fogão e geladeira com lados curtos equilibrados, cozinheiro confortável no centro",
+      "wrong": "Geladeira exilada longe de tudo",
+      "wrong_scene": "mesma cozinha vista de cima mas geladeira longe num canto, linha tracejada esticada, pegadas cansadas indo e voltando"
+    },
+    "products": { "amazon_en": "kitchen cart island", "amazon_pt": "fruteira de chão cozinha", "ml_pt": "carrinho-cozinha" },
+    "keywords_en": "kitchen work triangle, kitchen layout, kitchen renovation, functional kitchen",
+    "keywords_pt": "triângulo cozinha, cozinha funcional, layout cozinha, reforma cozinha"
+  },
+  {
+    "id": "mirror-small-space",
+    "room": "living",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "MIRRORS IN SMALL ROOMS",
+      "right": "Mirror facing the window doubles light",
+      "right_scene": "small living room cutaway, large mirror on the wall opposite a bright window, light rays bouncing off the mirror filling the room",
+      "wrong": "Mirror reflecting clutter doubles it",
+      "wrong_scene": "same room but mirror facing a messy shelf pile, the reflection doubling the visual mess"
+    },
+    "pt": {
+      "title": "ESPELHOS EM ESPAÇOS PEQUENOS",
+      "right": "Espelho de frente pra janela dobra a luz",
+      "right_scene": "sala pequena em corte, espelho grande na parede oposta a uma janela clara, raios de luz refletindo do espelho e preenchendo a sala",
+      "wrong": "Espelho refletindo bagunça dobra a bagunça",
+      "wrong_scene": "mesma sala mas espelho de frente para uma estante bagunçada, o reflexo dobrando a bagunça visual"
+    },
+    "products": { "amazon_en": "large wall mirror", "amazon_pt": "espelho decorativo grande", "ml_pt": "espelho-decorativo" },
+    "keywords_en": "small space ideas, mirror decor, make room look bigger, small apartment",
+    "keywords_pt": "espelho sala, sala pequena, apartamento pequeno, truques decoração"
+  },
+  {
+    "id": "curtain-height",
+    "room": "living",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "THE CURTAIN HEIGHT TRICK",
+      "right": "Rod near the ceiling, fabric to the floor",
+      "right_scene": "living room wall with curtain rod mounted just below the ceiling, curtains falling all the way to the floor, room looks tall, up arrow along the curtain",
+      "wrong": "Rod on the frame chops the wall",
+      "wrong_scene": "same wall but rod mounted right on the window frame, short curtains ending mid-wall, room visually cut in half"
+    },
+    "pt": {
+      "title": "O TRUQUE DA CORTINA ALTA",
+      "right": "Varão perto do teto, tecido até o chão",
+      "right_scene": "parede de sala com varão instalado logo abaixo do teto, cortinas caindo até o chão, ambiente parece alto, seta para cima ao longo da cortina",
+      "wrong": "Varão no caixilho corta a parede",
+      "wrong_scene": "mesma parede mas varão instalado em cima da janela, cortinas curtas terminando no meio da parede, ambiente visualmente cortado"
+    },
+    "products": { "amazon_en": "curtain rod set", "amazon_pt": "cortina para sala", "ml_pt": "cortina-sala" },
+    "keywords_en": "curtain ideas, high ceilings trick, living room decor, window treatment",
+    "keywords_pt": "cortina sala, pé direito alto, decoração sala, varão cortina"
+  },
+  {
+    "id": "studio-zoning",
+    "room": "studio",
+    "format": "floor_plan",
+    "style": "clean",
+    "en": {
+      "title": "3 WAYS TO ZONE A STUDIO",
+      "plans": [
+        { "name": "1. SHELF DIVIDER", "desc": "open bookshelf separates bed from sofa" },
+        { "name": "2. RUG ZONES", "desc": "one rug for living, one for sleeping" },
+        { "name": "3. CURTAIN WALL", "desc": "ceiling track curtain hides the bed" }
+      ]
+    },
+    "pt": {
+      "title": "3 JEITOS DE DIVIDIR A KITNET",
+      "plans": [
+        { "name": "1. ESTANTE DIVISÓRIA", "desc": "estante vazada separa cama do sofá" },
+        { "name": "2. ZONAS DE TAPETE", "desc": "um tapete pra sala, outro pro quarto" },
+        { "name": "3. CORTINA DIVISÓRIA", "desc": "trilho no teto esconde a cama" }
+      ]
+    },
+    "products": { "amazon_en": "bookshelf room divider", "amazon_pt": "estante divisória ambiente", "ml_pt": "estante-divisoria" },
+    "keywords_en": "studio apartment ideas, studio layout, small apartment, room divider",
+    "keywords_pt": "kitnet decoração, studio pequeno, divisória ambiente, apartamento pequeno"
+  },
+  {
+    "id": "small-entryway",
+    "room": "entryway",
+    "format": "tip_list",
+    "style": "clean",
+    "en": {
+      "title": "SMALL ENTRYWAY, BIG WELCOME",
+      "tips": [
+        { "label": "WALL HOOKS", "desc": "one hook per person, kids height too" },
+        { "label": "STORAGE BENCH", "desc": "sit to put shoes, hide them inside" },
+        { "label": "MIRROR", "desc": "last check + bounces light" },
+        { "label": "KEY TRAY", "desc": "keys land here, never lost again" }
+      ]
+    },
+    "pt": {
+      "title": "HALL PEQUENO, CHEGADA ORGANIZADA",
+      "tips": [
+        { "label": "GANCHOS", "desc": "um por pessoa, altura das crianças também" },
+        { "label": "BANCO COM BAÚ", "desc": "senta pra calçar, guarda os sapatos" },
+        { "label": "ESPELHO", "desc": "última olhada + reflete a luz" },
+        { "label": "PORTA-CHAVES", "desc": "chave tem lugar, nunca mais some" }
+      ]
+    },
+    "products": { "amazon_en": "entryway bench with storage", "amazon_pt": "sapateira banco", "ml_pt": "sapateira-banco" },
+    "keywords_en": "entryway ideas, small entryway, entryway organization, home organization",
+    "keywords_pt": "hall de entrada, sapateira, organização casa, entrada pequena"
+  },
+  {
+    "id": "toilet-clearance",
+    "room": "bathroom",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "TOILET CLEARANCES",
+      "right": "38cm each side, 60cm in front",
+      "right_scene": "top view bathroom plan, toilet with comfortable dimension lines to each side wall and in front, everything reachable",
+      "wrong": "Squeezed between wall and vanity",
+      "wrong_scene": "top view of the same bathroom but toilet jammed against the wall and vanity, knees drawn colliding, cramped red hatching"
+    },
+    "pt": {
+      "title": "ESPAÇOS DO VASO SANITÁRIO",
+      "right": "38cm de cada lado, 60cm à frente",
+      "right_scene": "planta do banheiro vista de cima, vaso com linhas de cota confortáveis até cada parede e à frente, tudo acessível",
+      "wrong": "Espremido entre parede e gabinete",
+      "wrong_scene": "mesma planta mas vaso prensado contra a parede e o gabinete, joelhos desenhados colidindo, hachura vermelha apertada"
+    },
+    "products": { "amazon_en": "bathroom organizer over toilet", "amazon_pt": "armário banheiro", "ml_pt": "gabinete-banheiro" },
+    "keywords_en": "bathroom layout, bathroom dimensions, bathroom remodel, small bathroom",
+    "keywords_pt": "banheiro pequeno, medidas banheiro, planta banheiro, reforma banheiro"
+  },
+  {
+    "id": "coffee-table-rules",
+    "room": "living",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "COFFEE TABLE RULES",
+      "right": "45cm from sofa, same height as the seat",
+      "right_scene": "side view living room, coffee table at a comfortable reach from the sofa, dimension line 45cm, table top aligned with the seat cushion height",
+      "wrong": "So far you have to stand up",
+      "wrong_scene": "same room but table far from the sofa, person stretching comically to reach a cup, dashed reach arc failing"
+    },
+    "pt": {
+      "title": "REGRAS DA MESA DE CENTRO",
+      "right": "45cm do sofá, altura do assento",
+      "right_scene": "sala em vista lateral, mesa de centro a um alcance confortável do sofá, linha de cota 45cm, tampo alinhado com a altura do assento",
+      "wrong": "Tão longe que precisa levantar",
+      "wrong_scene": "mesma sala mas mesa longe do sofá, pessoa se esticando comicamente para alcançar a xícara, arco de alcance tracejado falhando"
+    },
+    "products": { "amazon_en": "coffee table living room", "amazon_pt": "mesa de centro sala", "ml_pt": "mesa-de-centro" },
+    "keywords_en": "coffee table styling, living room layout, living room furniture, interior design rules",
+    "keywords_pt": "mesa de centro, sala de estar, móveis sala, decoração sala"
+  },
+  {
+    "id": "vertical-storage",
+    "room": "small-spaces",
+    "format": "tip_list",
+    "style": "clean",
+    "en": {
+      "title": "THINK VERTICAL",
+      "tips": [
+        { "label": "TALL SHELVES", "desc": "go to the ceiling, store rare-use up high" },
+        { "label": "OVER-DOOR RACK", "desc": "dead space behind every door" },
+        { "label": "WALL HOOKS", "desc": "bikes, ladders, bags off the floor" },
+        { "label": "HANGING PLANTS", "desc": "green without losing surfaces" }
+      ]
+    },
+    "pt": {
+      "title": "USE AS PAREDES",
+      "tips": [
+        { "label": "ESTANTE ATÉ O TETO", "desc": "o que usa pouco vai lá em cima" },
+        { "label": "SUPORTE NA PORTA", "desc": "espaço morto atrás de toda porta" },
+        { "label": "GANCHOS FORTES", "desc": "bike, escada e bolsas fora do chão" },
+        { "label": "PLANTAS SUSPENSAS", "desc": "verde sem perder superfície" }
+      ]
+    },
+    "products": { "amazon_en": "floating shelves set", "amazon_pt": "prateleira parede", "ml_pt": "prateleira-parede" },
+    "keywords_en": "vertical storage, small space storage, apartment organization, storage hacks",
+    "keywords_pt": "prateleiras parede, organização vertical, apartamento pequeno, aproveitar espaço"
+  },
+  {
+    "id": "plants-dark-corners",
+    "room": "living",
+    "format": "tip_list",
+    "style": "clean",
+    "en": {
+      "title": "PLANTS FOR DARK CORNERS",
+      "tips": [
+        { "label": "ZZ PLANT", "desc": "survives almost anything, glossy leaves" },
+        { "label": "POTHOS", "desc": "trails beautifully from a shelf" },
+        { "label": "SNAKE PLANT", "desc": "vertical, sculptural, low water" },
+        { "label": "PEACE LILY", "desc": "flowers even in low light" }
+      ]
+    },
+    "pt": {
+      "title": "PLANTAS PARA CANTOS ESCUROS",
+      "tips": [
+        { "label": "ZAMIOCULCA", "desc": "sobrevive a quase tudo, folhas brilhantes" },
+        { "label": "JIBOIA", "desc": "cai linda de uma prateleira" },
+        { "label": "ESPADA-DE-SÃO-JORGE", "desc": "vertical, escultórica, pouca água" },
+        { "label": "LÍRIO-DA-PAZ", "desc": "flor mesmo com pouca luz" }
+      ]
+    },
+    "products": { "amazon_en": "ceramic planter pot", "amazon_pt": "vaso para plantas", "ml_pt": "vaso-planta-decorativo" },
+    "keywords_en": "low light plants, indoor plants, plant decor, houseplants",
+    "keywords_pt": "plantas dentro de casa, plantas sombra, vaso decorativo, decoração com plantas"
+  },
+  {
+    "id": "renter-friendly",
+    "room": "small-spaces",
+    "format": "tip_list",
+    "style": "clean",
+    "en": {
+      "title": "RENTER-FRIENDLY UPGRADES",
+      "tips": [
+        { "label": "PEEL & STICK", "desc": "wallpaper and backsplash, zero damage" },
+        { "label": "TENSION RODS", "desc": "curtains and dividers with no drilling" },
+        { "label": "ADHESIVE HOOKS", "desc": "art walls that leave no holes" },
+        { "label": "SWAP FIXTURES", "desc": "new handles, keep the old ones to restore" }
+      ]
+    },
+    "pt": {
+      "title": "MELHORIAS SEM OBRA (ALUGUEL)",
+      "tips": [
+        { "label": "ADESIVO DE PAREDE", "desc": "papel e azulejo adesivo, zero estrago" },
+        { "label": "VARÃO DE PRESSÃO", "desc": "cortina e divisória sem furar" },
+        { "label": "GANCHO ADESIVO", "desc": "parede de quadros sem buracos" },
+        { "label": "TROQUE PUXADORES", "desc": "guarde os antigos pra devolver" }
+      ]
+    },
+    "products": { "amazon_en": "peel and stick wallpaper", "amazon_pt": "papel de parede adesivo", "ml_pt": "papel-de-parede-adesivo" },
+    "keywords_en": "renter friendly decor, apartment upgrades, no drill decor, rental decorating",
+    "keywords_pt": "decoração aluguel, papel de parede adesivo, sem furar parede, apartamento alugado"
+  },
+  {
+    "id": "kitchen-outlets",
+    "room": "kitchen",
+    "format": "do_dont",
+    "style": "sketch",
+    "en": {
+      "title": "KITCHEN OUTLET PLANNING",
+      "right": "Outlets every 1.2m above the counter",
+      "right_scene": "kitchen wall elevation, outlets evenly spaced above the backsplash, blender coffee maker and air fryer each plugged in comfortably",
+      "wrong": "One outlet, a dangling power strip",
+      "wrong_scene": "same wall but a single outlet with an overloaded power strip hanging off the counter edge, tangled cords crossing the sink"
+    },
+    "pt": {
+      "title": "TOMADAS DA COZINHA",
+      "right": "Tomadas a cada 1,2m sobre a bancada",
+      "right_scene": "elevação da parede da cozinha, tomadas bem distribuídas acima do revestimento, liquidificador cafeteira e air fryer ligados confortavelmente",
+      "wrong": "Uma tomada só e filtro de linha pendurado",
+      "wrong_scene": "mesma parede mas uma única tomada com filtro de linha sobrecarregado pendurado na beirada, fios embolados cruzando a pia"
+    },
+    "products": { "amazon_en": "under cabinet power strip", "amazon_pt": "air fryer", "ml_pt": "air-fryer" },
+    "keywords_en": "kitchen renovation, kitchen electrical, kitchen planning, kitchen appliances",
+    "keywords_pt": "tomadas cozinha, reforma cozinha, eletrodomésticos, cozinha planejada"
+  },
+  {
+    "id": "living-3x4-layouts",
+    "room": "living",
+    "format": "floor_plan",
+    "style": "clean",
+    "en": {
+      "title": "3 LAYOUTS FOR A SMALL LIVING ROOM",
+      "plans": [
+        { "name": "1. CLASSIC WALL", "desc": "sofa against the wall, TV opposite, rug centered" },
+        { "name": "2. FLOATING SOFA", "desc": "sofa off the wall with console behind, cozier zone" },
+        { "name": "3. CORNER L", "desc": "L-shaped sofa hugging the corner, open flow to dining" }
+      ]
+    },
+    "pt": {
+      "title": "3 LAYOUTS PARA SALA PEQUENA",
+      "plans": [
+        { "name": "1. CLÁSSICO", "desc": "sofá na parede, TV em frente, tapete central" },
+        { "name": "2. SOFÁ SOLTO", "desc": "sofá descolado da parede com aparador atrás" },
+        { "name": "3. CANTO EM L", "desc": "sofá em L abraçando o canto, fluxo livre pra copa" }
+      ]
+    },
+    "products": { "amazon_en": "loveseat small sofa", "amazon_pt": "sofá 2 lugares", "ml_pt": "sofa-2-lugares" },
+    "keywords_en": "small living room layout, living room floor plan, apartment living room, sofa placement",
+    "keywords_pt": "sala pequena, layout sala, sofá pequeno, planta sala"
+  }
+]
