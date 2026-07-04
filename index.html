@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workspaces — Pin Factory & EONET Tracker</title>
+<style>
+:root {
+  --surface-1: #fcfcfb; --page: #f9f9f7;
+  --ink-1: #0b0b0b; --ink-2: #52514e; --ink-muted: #898781;
+  --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
+  --s1: #2a78d6; --s2: #1baf7a; --s3: #eda100; --s4: #008300;
+  --s5: #4a3aa7; --s6: #e34948; --s7: #e87ba4; --s8: #eb6834;
+  --good: #0ca30c; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-1: #1a1a19; --page: #0d0d0d;
+    --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-muted: #898781;
+    --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #199e70; --s3: #c98500; --s4: #008300;
+    --s5: #9085e9; --s6: #e66767; --s7: #d55181; --s8: #d95926;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--page); color: var(--ink-1);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+nav {
+  display: flex; align-items: center; gap: 4px; padding: 10px 20px;
+  background: var(--surface-1); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 10;
+}
+nav .brand { font-weight: 700; margin-right: 20px; }
+nav a {
+  color: var(--ink-2); text-decoration: none; padding: 7px 14px;
+  border-radius: 8px; font-weight: 500;
+}
+nav a:hover { background: var(--grid); }
+nav a.active { background: var(--grid); color: var(--ink-1); font-weight: 600; }
+main { max-width: 1080px; margin: 0 auto; padding: 24px 20px 60px; }
+h1 { font-size: 22px; margin: 8px 0 4px; }
+h2 { font-size: 16px; margin: 32px 0 12px; }
+.sub { color: var(--ink-2); margin: 0 0 20px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; }
+.tile {
+  background: var(--surface-1); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px;
+}
+.tile .v { font-size: 26px; font-weight: 700; }
+.tile .l { color: var(--ink-muted); font-size: 12.5px; }
+table { width: 100%; border-collapse: collapse; background: var(--surface-1);
+        border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+th { text-align: left; font-size: 12px; color: var(--ink-muted); font-weight: 600;
+     padding: 9px 12px; border-bottom: 1px solid var(--grid); }
+td { padding: 8px 12px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: color-mix(in srgb, var(--grid) 40%, transparent); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+       margin-right: 7px; vertical-align: baseline; }
+.badge { font-size: 12px; padding: 2px 8px; border-radius: 20px;
+         border: 1px solid var(--border); color: var(--ink-2); }
+.badge.on { color: var(--good); border-color: var(--good); }
+.empty {
+  background: var(--surface-1); border: 1px dashed var(--baseline);
+  border-radius: 12px; padding: 22px; color: var(--ink-2);
+}
+.empty code, .hint code {
+  display: block; background: var(--page); border: 1px solid var(--grid);
+  padding: 8px 12px; border-radius: 8px; margin-top: 8px;
+  font: 13px ui-monospace, monospace; color: var(--ink-1);
+  white-space: pre; overflow-x: auto;
+}
+.pin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 14px; }
+.pin-card { background: var(--surface-1); border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden; }
+.pin-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block;
+                background: var(--grid); }
+.pin-card .meta { padding: 9px 11px; font-size: 13px; }
+.pin-card .meta .b { color: var(--ink-muted); font-size: 12px; }
+/* latency bar rows: single measure → single hue (slot 1), direct labels */
+.bar-row { display: grid; grid-template-columns: 130px 1fr 90px; gap: 10px;
+           align-items: center; padding: 6px 0; }
+.bar-row .name { font-size: 13px; color: var(--ink-2); }
+.bar-track { display: block; height: 14px; position: relative; }
+.bar-fill { display: block; height: 100%; background: var(--s1);
+            border-radius: 0 4px 4px 0; min-width: 2px; }
+.bar-row .val { font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink-1); }
+.controls { display: flex; gap: 10px; margin: 0 0 14px; flex-wrap: wrap; }
+select, button {
+  background: var(--surface-1); color: var(--ink-1); border: 1px solid var(--baseline);
+  border-radius: 8px; padding: 7px 12px; font: inherit; font-size: 14px;
+}
+button { cursor: pointer; } button:hover { background: var(--grid); }
+.err { color: var(--critical); }
+.section-card { background: var(--surface-1); border: 1px solid var(--border);
+                border-radius: 12px; padding: 16px 18px; }
+.hint { color: var(--ink-muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">🗂️ Workspaces</span>
+  <a href="#pins" id="tab-pins">📌 Pin Factory</a>
+  <a href="#eonet" id="tab-eonet">🛰️ EONET Tracker</a>
+</nav>
+
+<main>
+  <!-- ============ PIN FACTORY ============ -->
+  <section id="view-pins" hidden>
+    <h1>Pin Factory</h1>
+    <p class="sub">Pinterest home-decor pins — AI images + affiliate links + bulk CSV.</p>
+    <div class="tiles" id="pin-tiles"></div>
+    <h2>Generated pins</h2>
+    <div id="pin-grid"></div>
+    <h2>Topic bank</h2>
+    <div id="topic-table"></div>
+  </section>
+
+  <!-- ============ EONET ============ -->
+  <section id="view-eonet" hidden>
+    <h1>EONET Tracker</h1>
+    <p class="sub">Live natural events from NASA EONET v3 + your latency study.</p>
+    <div class="controls">
+      <select id="cat-filter"><option value="">All categories</option></select>
+      <button id="refresh">Refresh</button>
+      <span class="hint" id="eonet-status" style="align-self:center"></span>
+    </div>
+    <div class="tiles" id="eonet-tiles"></div>
+    <h2>Open events</h2>
+    <div id="events-table"></div>
+    <h2>Latency study <span class="hint">(median hours from event → visible in API, live observations only)</span></h2>
+    <div id="latency-report"></div>
+  </section>
+</main>
+
+<script>
+"use strict";
+/* Fixed category→slot map: color follows the entity, never cycled. */
+const CAT_COLORS = {
+  severeStorms: "--s1", seaLakeIce: "--s2", earthquakes: "--s3",
+  drought: "--s4", floods: "--s5", volcanoes: "--s6",
+  landslides: "--s7", wildfires: "--s8",
+};
+const catColor = id => `var(${CAT_COLORS[id] || "--baseline"})`;
+const esc = s => String(s ?? "").replace(/[&<>"]/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const hoursAgo = iso => (Date.now() - new Date(iso)) / 36e5;
+const fmtAgo = h => h < 1 ? `${Math.round(h*60)}min ago`
+  : h < 48 ? `${h.toFixed(1)}h ago` : `${(h/24).toFixed(1)}d ago`;
+const median = a => { const s=[...a].sort((x,y)=>x-y);
+  return s.length ? (s[(s.length-1)>>1] + s[s.length>>1]) / 2 : 0; };
+
+async function tryFetch(url, parse) {
+  try { const r = await fetch(url); if (!r.ok) return null;
+        return parse === "jsonl"
+          ? (await r.text()).split("\n").filter(Boolean).map(JSON.parse)
+          : await r.json(); }
+  catch { return null; }
+}
+const tile = (v, l) => `<div class="tile"><div class="v">${v}</div><div class="l">${esc(l)}</div></div>`;
+
+/* ---------------- Pin Factory ---------------- */
+async function loadPins() {
+  const topics = await tryFetch("pin-factory/topics.json");
+  const pins = await tryFetch("pin-factory/output/pins.jsonl", "jsonl") || [];
+  const tiles = document.getElementById("pin-tiles");
+  const grid = document.getElementById("pin-grid");
+  const ttable = document.getElementById("topic-table");
+
+  if (!topics) {
+    tiles.innerHTML = "";
+    grid.innerHTML = `<div class="empty">Couldn't load <b>pin-factory/topics.json</b>.
+      Serve the dashboard from the repo root:<code>python -m http.server 8000</code></div>`;
+    return;
+  }
+  const done = new Set(pins.map(p => p.topic_id + "_" + p.lang));
+  tiles.innerHTML =
+    tile(topics.length, "topics in the bank") +
+    tile(pins.length, `pins generated of ${topics.length * 2}`) +
+    tile(pins.filter(p => p.lang === "pt").length, "PT-BR pins") +
+    tile(pins.filter(p => p.lang === "en").length, "EN pins");
+
+  grid.innerHTML = pins.length
+    ? `<div class="pin-grid">` + pins.map(p => `
+        <div class="pin-card">
+          <a href="${esc(p.file ? "pin-factory/" + p.file : "#")}" target="_blank">
+            <img loading="lazy" src="pin-factory/${esc(p.file)}" alt="${esc(p.title)}"></a>
+          <div class="meta"><div>${esc(p.title)}</div>
+            <div class="b">${esc(p.board)} · ${p.lang.toUpperCase()}</div></div>
+        </div>`).join("") + `</div>`
+    : `<div class="empty">No pins generated yet.
+       <code>cd pin-factory
+python -m src.generate --count 10
+python -m src.export_csv</code></div>`;
+
+  ttable.innerHTML = `<table><tr><th>Topic</th><th>Room</th><th>Format</th>
+      <th>EN</th><th>PT</th></tr>` +
+    topics.map(t => `<tr>
+      <td>${esc(t.id)}</td><td>${esc(t.room)}</td><td>${esc(t.format)}</td>
+      <td><span class="badge ${done.has(t.id+"_en") ? "on" : ""}">${done.has(t.id+"_en") ? "✓ done" : "pending"}</span></td>
+      <td><span class="badge ${done.has(t.id+"_pt") ? "on" : ""}">${done.has(t.id+"_pt") ? "✓ done" : "pending"}</span></td>
+    </tr>`).join("") + `</table>`;
+}
+
+/* ---------------- EONET ---------------- */
+const EONET = "https://eonet.gsfc.nasa.gov/api/v3";
+let allEvents = null;
+
+async function loadEonet(force) {
+  const status = document.getElementById("eonet-status");
+  const tiles = document.getElementById("eonet-tiles");
+  const table = document.getElementById("events-table");
+  if (!allEvents || force) {
+    status.textContent = "loading…";
+    try {
+      const r = await fetch(`${EONET}/events?status=open`);
+      allEvents = (await r.json()).events;
+      status.textContent = `live · ${new Date().toLocaleTimeString()}`;
+    } catch (e) {
+      status.innerHTML = `<span class="err">EONET unreachable (${esc(e.message)}) — check your connection.</span>`;
+      allEvents = allEvents || [];
+    }
+  }
+  const cats = [...new Set(allEvents.flatMap(e => e.categories.map(c => c.id)))].sort();
+  const sel = document.getElementById("cat-filter");
+  const keep = sel.value;
+  sel.innerHTML = `<option value="">All categories (${allEvents.length})</option>` +
+    cats.map(c => `<option value="${c}" ${c===keep?"selected":""}>${c}</option>`).join("");
+
+  const rows = allEvents
+    .filter(e => !sel.value || e.categories.some(c => c.id === sel.value))
+    .map(e => {
+      const g = e.geometry[e.geometry.length - 1] || {};
+      return { id: e.id, title: e.title, cat: e.categories[0]?.id || "?",
+               mag: g.magnitudeValue, unit: g.magnitudeUnit || "",
+               date: g.date, coords: g.coordinates,
+               sources: (e.sources || []).map(s => s.id).join(", ") };
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const ages = rows.map(r => hoursAgo(r.date));
+  tiles.innerHTML =
+    tile(rows.length, sel.value ? `open ${sel.value}` : "open events") +
+    tile(cats.length, "active categories") +
+    tile(ages.length ? fmtAgo(Math.min(...ages)).replace(" ago","") : "—", "freshest update age") +
+    tile(ages.length ? fmtAgo(median(ages)).replace(" ago","") : "—", "median update age");
+
+  table.innerHTML = `<table><tr><th>Category</th><th>Event</th>
+      <th class="num">Magnitude</th><th class="num">Last update</th><th>Sources</th></tr>` +
+    rows.slice(0, 100).map(r => `<tr>
+      <td><span class="dot" style="background:${catColor(r.cat)}"></span>${esc(r.cat)}</td>
+      <td>${esc(r.title)}</td>
+      <td class="num">${r.mag ? esc(r.mag + " " + r.unit) : "—"}</td>
+      <td class="num" title="${esc(r.date)}">${fmtAgo(hoursAgo(r.date))}</td>
+      <td>${esc(r.sources)}</td></tr>`).join("") + `</table>` +
+    (rows.length > 100 ? `<p class="hint">Showing 100 of ${rows.length}.</p>` : "");
+
+  loadLatency();
+}
+
+async function loadLatency() {
+  const el = document.getElementById("latency-report");
+  const obs = await tryFetch("eonet-tracker/data/observations.jsonl", "jsonl");
+  if (!obs || !obs.length) {
+    el.innerHTML = `<div class="empty">No observations yet — leave the poller
+      running for a day or two, then reload:
+      <code>cd eonet-tracker
+python -m src.fetch --watch 15</code></div>`;
+    return;
+  }
+  const live = obs.filter(o => !o.backlog);
+  if (!live.length) {
+    el.innerHTML = `<div class="empty">Only the first-poll backlog so far
+      (${obs.length} observations — their lag numbers aren't meaningful).
+      Keep <b>--watch</b> running so new events are caught appearing live.</div>`;
+    return;
+  }
+  const byCat = {};
+  live.forEach(o => (byCat[o.category] = byCat[o.category] || []).push(o.lag_hours));
+  const meds = Object.entries(byCat)
+    .map(([c, lags]) => ({ c, n: lags.length, med: median(lags) }))
+    .sort((a, b) => b.med - a.med);
+  const max = Math.max(...meds.map(m => m.med), 1);
+  el.innerHTML = `<div class="section-card">` + meds.map(m => `
+    <div class="bar-row" title="${m.n} live observation(s)">
+      <span class="name">${esc(m.c)}</span>
+      <span class="bar-track"><span class="bar-fill" style="width:${(m.med/max*100).toFixed(1)}%"></span></span>
+      <span class="val">${m.med.toFixed(1)}h · n=${m.n}</span>
+    </div>`).join("") +
+    `<p class="hint" style="margin:10px 0 0">Overall median:
+      <b>${median(live.map(o => o.lag_hours)).toFixed(1)}h</b> across
+      ${live.length} live observations. Under ~6h starts being interesting;
+      over that, look at primary sources (USGS, FIRMS, GDACS).</p></div>`;
+}
+
+/* ---------------- routing ---------------- */
+function route() {
+  const view = location.hash === "#eonet" ? "eonet" : "pins";
+  for (const v of ["pins", "eonet"]) {
+    document.getElementById("view-" + v).hidden = v !== view;
+    document.getElementById("tab-" + v).classList.toggle("active", v === view);
+  }
+  if (view === "pins") loadPins(); else loadEonet(false);
+}
+window.addEventListener("hashchange", route);
+document.getElementById("refresh").addEventListener("click", () => loadEonet(true));
+document.getElementById("cat-filter").addEventListener("change", () => loadEonet(false));
+route();
+</script>
+</body>
+</html>
