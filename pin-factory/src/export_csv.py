@@ -48,7 +48,7 @@ def main() -> int:
     base_url = os.getenv(
         "MEDIA_BASE_URL",
         "https://raw.githubusercontent.com/jotinha280404/dasd/"
-        "claude/repo-overview-zohgz8",
+        "claude/repo-overview-zohgz8/pin-factory",
     ).rstrip("/")
 
     start = (datetime.strptime(args.start, "%Y-%m-%d").date()
