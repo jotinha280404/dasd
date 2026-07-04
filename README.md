@@ -20,3 +20,16 @@ python -m http.server 8000     # from the repo root
 - **🛰️ EONET Tracker** — live open events straight from NASA's API (fetched by
   your browser), category filter, and the latency-study report once the
   poller has data
+
+## Knowledge graph (Graphify)
+
+The repo has a [Graphify](https://github.com/safishamsi/graphify) knowledge
+graph in `graphify-out/` (open `graph.html` in a browser) and a skill at
+`.claude/skills/graphify` (`/graphify` in Claude Code). To (re)build the
+graph and the Obsidian vault locally:
+
+```bash
+pip install graphifyy          # PyPI package is graphifyy, CLI is graphify
+graphify update .              # rebuild graph (code-only, no API key needed)
+graphify export obsidian       # writes graphify-out/obsidian/ — open as a vault
+```
