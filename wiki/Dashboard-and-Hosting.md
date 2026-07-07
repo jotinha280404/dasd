@@ -27,6 +27,19 @@ Security notes: the nginx config denies dotfiles and `.env` patterns, and
 the repo is mounted read-only. Still treat it as LAN-only; put your reverse
 proxy + auth in front before exposing beyond the LAN (open item in [[Ideas]]).
 
+## Web apps (framework exception)
+
+Beyond the vanilla dashboard, `docker compose up -d` also builds and serves
+two TypeScript apps (full story in [[Web-Apps]]):
+
+| Service | Host port | What |
+|---|---|---|
+| `orchestrator-web` / `orchestrator-api` | 8081 / 8091 | agent-flow builder + live monitor |
+| `higgsfield-web` / `higgsfield-api` | 8082 / 8092 | generative-media studio |
+
+The `:8080` dashboard, the `eonet-poller`, and the Python projects are
+unaffected. App keys (Anthropic / Gemini / fal) come from the root `.env`.
+
 ## Obsidian access
 
 Open the repo root as a vault: `wiki/` is the curated layer (this wiki),

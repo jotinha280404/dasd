@@ -1,0 +1,76 @@
+/* Shared design tokens for both web apps. Tailwind v4, CSS-first.
+   Apps import this once: `@import "@dasd/ui/styles.css";`
+   Dark is the default surface for these studio apps; toggle with a `.light`
+   class on <html> if a light surface is ever wanted.
+   NB: the consuming app must `@import "tailwindcss";` before this file so the
+   `@theme` / `@custom-variant` directives below get processed. */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root,
+.dark {
+  --background: hsl(240 10% 5%);
+  --surface: hsl(240 8% 8%);
+  --surface-2: hsl(240 7% 11%);
+  --foreground: hsl(240 6% 96%);
+  --muted: hsl(240 5% 15%);
+  --muted-foreground: hsl(240 5% 60%);
+  --border: hsl(240 6% 18%);
+  --input: hsl(240 6% 16%);
+  --ring: hsl(258 90% 66%);
+  --primary: hsl(258 90% 66%);
+  --primary-foreground: hsl(0 0% 100%);
+  --accent: hsl(190 95% 55%);
+  --accent-foreground: hsl(240 10% 5%);
+  --success: hsl(142 71% 45%);
+  --warning: hsl(38 92% 55%);
+  --destructive: hsl(0 72% 55%);
+  --radius: 0.625rem;
+}
+
+.light {
+  --background: hsl(240 10% 99%);
+  --surface: hsl(0 0% 100%);
+  --surface-2: hsl(240 10% 97%);
+  --foreground: hsl(240 10% 8%);
+  --muted: hsl(240 6% 92%);
+  --muted-foreground: hsl(240 4% 40%);
+  --border: hsl(240 6% 88%);
+  --input: hsl(240 6% 90%);
+  --primary: hsl(258 80% 58%);
+  --accent: hsl(190 90% 42%);
+  --accent-foreground: hsl(0 0% 100%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

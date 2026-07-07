@@ -1,6 +1,19 @@
 .env
+.env.*
+!.env.example
 __pycache__/
 *.pyc
 .venv/
 graphify-out/cache/
 graphify-out/obsidian/
+
+# --- Web apps (npm workspace: orchestrator/ + higgsfield/ + packages/) ---
+node_modules/
+dist/
+build/
+.vite/
+*.tsbuildinfo
+# local JSON data stores + generated media (rebuildable / user data)
+orchestrator/server/store/data/
+higgsfield/server/store/data/
+higgsfield/server/media/

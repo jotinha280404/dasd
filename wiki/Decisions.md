@@ -3,6 +3,27 @@
 Dated log of meaningful choices. Newest first. Each entry: what was decided,
 why, and what would make us revisit it.
 
+## 2026-07-06 — Two web apps added; framework exception carved out
+
+`orchestrator/` + `higgsfield/` + `packages/` form an npm workspace of
+React/Vite + Hono TypeScript apps — the first code in the repo that isn't
+"Python stdlib + vanilla JS." Justified because both are genuinely app-shaped
+(a live node-canvas; a generative-media studio) where a real framework buys
+far more than it costs. Bounded so the stdlib projects and the `:8080`
+dashboard stay vanilla and untouched (see CLAUDE.md "Framework exception" and
+[[Web-Apps]]). Revisit if the workspace starts entangling the Python projects.
+
+## 2026-07-06 — Orchestrator uses @anthropic-ai/claude-agent-sdk, not the API SDK
+
+The orchestrator launches *real local Claude Code agents* (subprocesses with
+filesystem access, a live message stream, and interrupt/stop control), so it
+uses `@anthropic-ai/claude-agent-sdk`'s `query()`. The plain `@anthropic-ai/sdk`
+was rejected: its hosted `beta.agents` run in Anthropic's containers, can't be
+observed via Claude Code hooks, and don't share the Claude Code runtime the
+"ghost flow" observation half depends on. The $0 path runs agents on local
+Claude Code auth (`CLAUDE_CODE_OAUTH_TOKEN` or a prior `claude` login);
+`claude-opus-4-8` is the default model.
+
 ## 2026-07-04 — Karpathy LLM-wiki pattern for the knowledge layer
 
 Adopted the three-layer pattern (sources / Claude-maintained `wiki/` /

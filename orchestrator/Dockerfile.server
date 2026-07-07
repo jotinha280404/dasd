@@ -1,0 +1,8 @@
+# Orchestrator API — Hono + ws, run via tsx. Build context = repo ROOT.
+#   docker compose build orchestrator-api
+FROM node:24-alpine
+WORKDIR /app
+COPY . .
+RUN npm ci
+EXPOSE 8787
+CMD ["npm", "run", "start", "-w", "@dasd/orchestrator-server"]

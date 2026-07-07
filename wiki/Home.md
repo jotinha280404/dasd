@@ -10,6 +10,8 @@ Wiki tab.
   affiliate links (Mercado Livre / Amazon, BR + US audiences).
 - [[EONET-Tracker]] — NASA natural-event poller measuring how fresh the
   EONET API really is.
+- [[Web-Apps]] — two TypeScript apps (an agent-flow **Orchestrator** and a
+  **Higgsfield** generative-media studio); the repo's framework exception.
 
 ## Operating the repo
 

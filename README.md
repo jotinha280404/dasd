@@ -29,6 +29,28 @@ LAN-only by default — put a reverse proxy + auth in front to go further.
 python -m http.server 8000    # from the repo root → http://localhost:8000
 ```
 
+## Web apps (orchestrator + higgsfield)
+
+Two TypeScript apps live in an npm workspace at the repo root — the *framework
+exception*; everything else stays Python-stdlib + vanilla JS. Full story:
+[`wiki/Web-Apps.md`](wiki/Web-Apps.md).
+
+- 🕹️ **Orchestrator** ([`orchestrator/`](orchestrator/)) — visual node-based
+  agent-flow builder + live monitor for real Claude Code agents.
+- 🎬 **Higgsfield** ([`higgsfield/`](higgsfield/)) — generative-media studio
+  (Gemini image generation now, image→video later).
+
+```bash
+npm install                # once, from the repo root (Node >= 24)
+npm run dev:orchestrator   # web http://localhost:5173  · api :8787
+npm run dev:higgsfield     # web http://localhost:5174  · api :8788
+npm run typecheck          # every package
+npm run build              # build both web apps
+```
+
+In docker they join the homelab stack on `:8081`/`:8091` (orchestrator) and
+`:8082`/`:8092` (higgsfield); keys go in the root `.env`.
+
 ## Wiki / Obsidian
 
 - `wiki/` is the curated knowledge base (Karpathy LLM-wiki pattern; Claude

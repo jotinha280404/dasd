@@ -38,3 +38,57 @@ services:
       - ./:/app
     profiles: ["tools"]
     entrypoint: ["sh", "-c", "pip install -q -r requirements.txt && exec \"$@\"", "--"]
+
+  # ── Web apps (npm workspace) ────────────────────────────────────────
+  # These are the framework-exception projects (React/Vite + Hono); see
+  # CLAUDE.md and wiki/Web-Apps.md. Keys come from the root .env.
+
+  # Orchestrator — visual agent-flow builder + live monitor
+  orchestrator-api:
+    build:
+      context: .
+      dockerfile: orchestrator/Dockerfile.server
+    container_name: dasd-orchestrator-api
+    environment:
+      - PORT=8787
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN:-}
+    ports:
+      - "8091:8787"
+    restart: unless-stopped
+
+  orchestrator-web:
+    build:
+      context: .
+      dockerfile: orchestrator/Dockerfile.web
+    container_name: dasd-orchestrator-web
+    ports:
+      - "8081:80"
+    depends_on:
+      - orchestrator-api
+    restart: unless-stopped
+
+  # Higgsfield — generative-media studio
+  higgsfield-api:
+    build:
+      context: .
+      dockerfile: higgsfield/Dockerfile.server
+    container_name: dasd-higgsfield-api
+    environment:
+      - PORT=8788
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - FAL_KEY=${FAL_KEY:-}
+    ports:
+      - "8092:8788"
+    restart: unless-stopped
+
+  higgsfield-web:
+    build:
+      context: .
+      dockerfile: higgsfield/Dockerfile.web
+    container_name: dasd-higgsfield-web
+    ports:
+      - "8082:80"
+    depends_on:
+      - higgsfield-api
+    restart: unless-stopped
