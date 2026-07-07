@@ -15,11 +15,15 @@
     "orchestrator/web",
     "higgsfield/shared",
     "higgsfield/server",
-    "higgsfield/web"
+    "higgsfield/web",
+    "finance/shared",
+    "finance/server",
+    "finance/web"
   ],
   "scripts": {
     "dev:orchestrator": "concurrently -n orch-api,orch-web -c magenta,cyan \"npm run dev -w @dasd/orchestrator-server\" \"npm run dev -w @dasd/orchestrator-web\"",
     "dev:higgsfield": "concurrently -n higg-api,higg-web -c yellow,green \"npm run dev -w @dasd/higgsfield-server\" \"npm run dev -w @dasd/higgsfield-web\"",
+    "dev:finance": "concurrently -n fin-api,fin-web -c blue,green \"npm run dev -w @dasd/finance-server\" \"npm run dev -w @dasd/finance-web\"",
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "biome check .",

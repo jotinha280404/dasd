@@ -51,6 +51,7 @@ One npm workspace rooted at the repo (`package.json` → `workspaces`):
 |---|---|---|---|---|
 | Orchestrator | 5173 | 8787 | 8081 | 8091 |
 | Higgsfield | 5174 | 8788 | 8082 | 8092 |
+| Finance | 5175 | 8789 | 8084 | 8094 |
 
 The `:8080` dashboard is unchanged.
 
@@ -78,20 +79,32 @@ Nothing here requires paid API access to start:
 - **Higgsfield** generates images on the Gemini free tier. Video sits behind
   an adapter that stays hidden until a `FAL_KEY` (or Veo access) is present.
 
+## Finance — personal + business tracker
+
+A finance app (`finance/`) tracking **personal and business** ledgers side by
+side: accounts, categorized transactions (with CSV import), investments/holdings
+with gains, budgets, and goals. A charts dashboard (recharts, themed with the
+validated dataviz palette) shows net worth over time, cashflow, and allocation; a
+global ledger toggle (Personal / Business / All) drives every view. Works fully
+with manual entry — no external keys; a price provider and bank-sync are swappable
+adapters for later. Money is integer-cents throughout.
+
+Stack: React 19 + Vite + recharts (web) · Hono + a JSON-file store (server).
+
 ## Also planned
 
-Two more apps will join this workspace on the same pattern: a **Smart Calendar**
-(`calendar/`, ports 8083/8093 — connect a calendar and message Claude to create
-events) and a **Finance** app (`finance/`, ports 8084/8094 — personal + business
-accounts, investments, goals). Both reuse `@dasd/ui` and the docker/nginx setup.
+A **Smart Calendar** (`calendar/`, ports 8083/8093) will join next on the same
+pattern: connect a calendar and message Claude in natural language to create,
+move, and cancel events.
 
 ## Status
 
-Phase 0 (scaffolding) and **Phase 1 (orchestrator MVP)** are in. The orchestrator
-has the React Flow canvas, the seven node types, a schema-driven inspector, and a
-live WebSocket agent stream; a real `claude-opus-4-8` agent runs on local Claude
-Code auth (verified end-to-end — status ring, animated edge, streamed tokens,
-cost/usage), with a keyless mock agent for demos. Remaining: multi-agent flows +
+In so far: Phase 0 (scaffolding), the **orchestrator MVP** (React Flow canvas,
+seven node types, schema-driven inspector, live WebSocket agent stream — a real
+`claude-opus-4-8` agent runs on local Claude Code auth, verified end-to-end, with
+a keyless mock for demos), and the **finance app** (personal + business ledgers,
+accounts, transactions + CSV import, investments, budgets, goals, and a recharts
+dashboard — API verified end-to-end). Remaining: orchestrator multi-agent flows +
 selectable run strategies (DAG / Ralph / Caveman) + a project progress tracker,
-then the Higgsfield studio, then Calendar and Finance. The phases are tracked in
-the session task list; see [[Decisions]] for choices made along the way.
+the Higgsfield studio, and the Smart Calendar. Phases are tracked in the session
+task list; see [[Decisions]] for choices made along the way.

@@ -92,3 +92,26 @@ services:
     depends_on:
       - higgsfield-api
     restart: unless-stopped
+
+  # Finance — personal + business accounts, investments, goals
+  finance-api:
+    build:
+      context: .
+      dockerfile: finance/Dockerfile.server
+    container_name: dasd-finance-api
+    environment:
+      - PORT=8789
+    ports:
+      - "8094:8789"
+    restart: unless-stopped
+
+  finance-web:
+    build:
+      context: .
+      dockerfile: finance/Dockerfile.web
+    container_name: dasd-finance-web
+    ports:
+      - "8084:80"
+    depends_on:
+      - finance-api
+    restart: unless-stopped

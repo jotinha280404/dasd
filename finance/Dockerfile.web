@@ -1,0 +1,10 @@
+# Finance web — Vite build served by nginx. Build context = repo ROOT.
+FROM node:24-alpine AS build
+WORKDIR /app
+COPY . .
+RUN npm ci && npm run build -w @dasd/finance-web
+
+FROM nginx:alpine
+COPY finance/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/finance/web/dist /usr/share/nginx/html
+EXPOSE 80

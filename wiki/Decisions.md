@@ -3,6 +3,17 @@
 Dated log of meaningful choices. Newest first. Each entry: what was decided,
 why, and what would make us revisit it.
 
+## 2026-07-06 — Finance app: manual-first, integer-cents, dataviz palette
+
+The finance app ([[Web-Apps]]) stores money as integer minor units (cents)
+everywhere to avoid float drift, separates personal vs business by a `ledger`
+dimension, and works fully with manual entry + CSV import — no external keys. A
+price provider (for live holdings prices) and bank-sync (Plaid/Teller) are
+swappable adapters behind a seam, added only when wanted. Charts use the validated
+data-viz palette (categorical fixed-order, one-axis-only, status colors with
+labels) so the dashboard reads as one system. Revisit the store (JSON files) for
+SQLite if write contention or multi-user shows up.
+
 ## 2026-07-06 — Two web apps added; framework exception carved out
 
 `orchestrator/` + `higgsfield/` + `packages/` form an npm workspace of

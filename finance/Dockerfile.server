@@ -1,0 +1,7 @@
+# Finance API — Hono, run via tsx. Build context = repo ROOT.
+FROM node:24-alpine
+WORKDIR /app
+COPY . .
+RUN npm ci
+EXPOSE 8789
+CMD ["npm", "run", "start", "-w", "@dasd/finance-server"]
