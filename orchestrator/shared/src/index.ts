@@ -1,15 +1,16 @@
 /**
- * @dasd/orch-shared — types shared between the orchestrator web app and server.
- *
- * Phase 1 fills this out:
- *   - graph.ts  → zod FlowGraph / Node / Edge + per-type config
- *   - events.ts → the normalized AgentEvent union (SDK + hook sources)
- *   - wire.ts   → WebSocket client<->server frame types
+ * @dasd/orch-shared — the contract shared between the orchestrator web app and
+ * server: the flow-graph schema, the normalized agent-event stream, and the
+ * WebSocket wire frames.
  */
-export const ORCH_SHARED_VERSION = "0.0.0";
+export const ORCH_SHARED_VERSION = "1.0.0";
 
 export interface Health {
   ok: true;
   service: string;
   ts: string;
 }
+
+export * from "./graph";
+export * from "./events";
+export * from "./wire";

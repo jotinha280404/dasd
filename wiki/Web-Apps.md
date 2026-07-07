@@ -78,8 +78,20 @@ Nothing here requires paid API access to start:
 - **Higgsfield** generates images on the Gemini free tier. Video sits behind
   an adapter that stays hidden until a `FAL_KEY` (or Veo access) is present.
 
+## Also planned
+
+Two more apps will join this workspace on the same pattern: a **Smart Calendar**
+(`calendar/`, ports 8083/8093 — connect a calendar and message Claude to create
+events) and a **Finance** app (`finance/`, ports 8084/8094 — personal + business
+accounts, investments, goals). Both reuse `@dasd/ui` and the docker/nginx setup.
+
 ## Status
 
-Phase 0 (shared scaffolding, docker, this page) is in. The build plan and its
-phases are tracked in the session task list; see [[Decisions]] for the choices
-made along the way.
+Phase 0 (scaffolding) and **Phase 1 (orchestrator MVP)** are in. The orchestrator
+has the React Flow canvas, the seven node types, a schema-driven inspector, and a
+live WebSocket agent stream; a real `claude-opus-4-8` agent runs on local Claude
+Code auth (verified end-to-end — status ring, animated edge, streamed tokens,
+cost/usage), with a keyless mock agent for demos. Remaining: multi-agent flows +
+selectable run strategies (DAG / Ralph / Caveman) + a project progress tracker,
+then the Higgsfield studio, then Calendar and Finance. The phases are tracked in
+the session task list; see [[Decisions]] for choices made along the way.
