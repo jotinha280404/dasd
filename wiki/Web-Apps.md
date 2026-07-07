@@ -102,9 +102,12 @@ move, and cancel events.
 In so far: Phase 0 (scaffolding), the **orchestrator MVP** (React Flow canvas,
 seven node types, schema-driven inspector, live WebSocket agent stream — a real
 `claude-opus-4-8` agent runs on local Claude Code auth, verified end-to-end, with
-a keyless mock for demos), and the **finance app** (personal + business ledgers,
-accounts, transactions + CSV import, investments, budgets, goals, and a recharts
-dashboard — API verified end-to-end). Remaining: orchestrator multi-agent flows +
-selectable run strategies (DAG / Ralph / Caveman) + a project progress tracker,
-the Higgsfield studio, and the Smart Calendar. Phases are tracked in the session
-task list; see [[Decisions]] for choices made along the way.
+a keyless mock for demos), the **finance app** (personal + business ledgers,
+accounts, transactions + CSV import, investments, budgets, goals, recharts
+dashboard — API verified), and the **Higgsfield studio** (prompt composer, 14
+camera/VFX presets, masonry generation feed, character library; real Gemini image
+generation when `GEMINI_API_KEY` is set, a keyless placeholder stub otherwise —
+generate→feed→media verified end-to-end). Remaining: orchestrator multi-agent
+flows + selectable run strategies (DAG / Ralph / Caveman) + a project progress
+tracker, Higgsfield image→video (Phase 4), and the Smart Calendar. Phases are
+tracked in the session task list; see [[Decisions]] for choices along the way.

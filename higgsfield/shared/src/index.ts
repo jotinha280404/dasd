@@ -1,15 +1,16 @@
 /**
- * @dasd/higg-shared — types shared between the higgsfield web app and server.
- *
- * Phase 3 fills this out:
- *   - media.ts      → provider interfaces, MediaRef, JobStatus, AspectRatio
- *   - models.ts     → CameraPreset / Generation / Character schemas
- *   - modelTable.ts → provider + model IDs and per-unit rates (data, not code)
+ * @dasd/higg-shared — the contract shared between the higgsfield web app and
+ * server: the domain model (presets, generations, characters), the provider
+ * adapter interfaces, and the model/rate table.
  */
-export const HIGG_SHARED_VERSION = "0.0.0";
+export const HIGG_SHARED_VERSION = "1.0.0";
 
 export interface Health {
   ok: true;
   service: string;
   ts: string;
 }
+
+export * from "./models";
+export * from "./media";
+export * from "./modelTable";

@@ -3,6 +3,16 @@
 Dated log of meaningful choices. Newest first. Each entry: what was decided,
 why, and what would make us revisit it.
 
+## 2026-07-06 — Higgsfield studio: Gemini images now, video adapter later
+
+The Higgsfield clone ([[Web-Apps]]) generates images via the same Gemini REST
+pattern [[Pin-Factory]] uses (raw fetch, `gemini-2.5-flash-image`), behind a
+provider adapter: a keyless placeholder-SVG stub when no `GEMINI_API_KEY`, the real
+generator when set. 14 curated camera/VFX presets ship as data; video (image→video
+with camera motion) is a Phase-4 adapter left as a seam — `video` stays undefined
+and the UI hides "Animate". Generated media is saved to a gitignored dir and served
+via `/api/media`.
+
 ## 2026-07-06 — Finance app: manual-first, integer-cents, dataviz palette
 
 The finance app ([[Web-Apps]]) stores money as integer minor units (cents)
