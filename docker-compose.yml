@@ -115,3 +115,29 @@ services:
     depends_on:
       - finance-api
     restart: unless-stopped
+
+  # Smart Calendar — message Claude to create/manage events
+  calendar-api:
+    build:
+      context: .
+      dockerfile: calendar/Dockerfile.server
+    container_name: dasd-calendar-api
+    environment:
+      - PORT=8790
+      - AGENT_MODE=${AGENT_MODE:-auto}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN:-}
+    ports:
+      - "8093:8790"
+    restart: unless-stopped
+
+  calendar-web:
+    build:
+      context: .
+      dockerfile: calendar/Dockerfile.web
+    container_name: dasd-calendar-web
+    ports:
+      - "8083:80"
+    depends_on:
+      - calendar-api
+    restart: unless-stopped

@@ -1,0 +1,10 @@
+# Calendar web — Vite build served by nginx. Build context = repo ROOT.
+FROM node:24-alpine AS build
+WORKDIR /app
+COPY . .
+RUN npm ci && npm run build -w @dasd/calendar-web
+
+FROM nginx:alpine
+COPY calendar/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/calendar/web/dist /usr/share/nginx/html
+EXPOSE 80

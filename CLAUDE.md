@@ -7,7 +7,7 @@ Monorepo with two products and a knowledge layer:
 | Raw sources (immutable-ish) | `pin-factory/`, `eonet-tracker/`, `index.html` | human + Claude, via normal dev |
 | **Wiki** (curated knowledge) | `wiki/*.md` | **Claude-maintained**, human-read |
 | Schema (this file) | `CLAUDE.md` | changes rarely, on purpose |
-| **Web apps** (framework exception) | `orchestrator/`, `higgsfield/`, `packages/` | human + Claude; React/Vite/Hono — see below |
+| **Web apps** (framework exception) | `orchestrator/`, `higgsfield/`, `finance/`, `calendar/`, `packages/` | human + Claude; React/Vite/Hono — see below |
 
 The wiki follows the LLM-wiki pattern
 (karpathy/442a6bf555914893e9891c11519de94f): the tedious part of a knowledge
@@ -50,19 +50,28 @@ Obsidian (open the repo root as a vault) and on the dashboard's Wiki tab.
 
 ## Framework exception — the web apps
 
-`orchestrator/`, `higgsfield/`, and `packages/` are the **only** place the
-"Python stdlib + vanilla JS, no build step" rule does **not** apply. They are
-one npm workspace (root `package.json`) of TypeScript apps:
+`orchestrator/`, `higgsfield/`, `finance/`, `calendar/`, and `packages/` are
+the **only** place the "Python stdlib + vanilla JS, no build step" rule does
+**not** apply. They are one npm workspace (root `package.json`) of TypeScript
+apps (React 19 + Vite front ends, Hono back ends), each split into
+`{shared,server,web}` packages:
 
 - **orchestrator/** — visual node-based agent-flow builder + live monitor for
-  real Claude Code agents (React 19 + Vite + React Flow; Hono + `ws` backend;
-  `@anthropic-ai/claude-agent-sdk`). Web `:8081`, API `:8091` in docker.
-- **higgsfield/** — generative-media studio (React + Vite; Hono backend; a
-  Gemini image adapter now, a video adapter later). Web `:8082`, API `:8092`.
+  real Claude Code agents (React Flow; `ws`; `@anthropic-ai/claude-agent-sdk`).
+  Web `:8081`, API `:8091` in docker.
+- **higgsfield/** — generative-media studio (a Gemini image adapter now, a
+  video adapter later). Web `:8082`, API `:8092`.
+- **finance/** — personal + business ledgers: accounts, transactions + CSV
+  import, investments, budgets, goals (recharts; integer-cents; JSON store).
+  Web `:8084`, API `:8094`.
+- **calendar/** — month/agenda calendar with a Claude chat assistant that
+  creates/moves/cancels events (Agent SDK in-process tools; keyless heuristic
+  fallback). Web `:8083`, API `:8093`.
 - **packages/ui** — the shared design system (Tailwind v4 tokens + primitives).
 
 Keep the repo coherent: the workspace must never reach into `pin-factory/`,
 `eonet-tracker/`, or `index.html` — those stay vanilla and untouched. Each app
 keeps its own `.env` (gitignored); nothing there is needed by the `:8080`
-dashboard. Dev: `npm run dev:orchestrator` / `npm run dev:higgsfield` from the
-repo root. Full story, ports, and the $0 run path in [[Web-Apps]].
+dashboard. Dev: `npm run dev:<app>` (orchestrator | higgsfield | finance |
+calendar) from the repo root. Full story, ports, current status, and the $0
+run path in [[Web-Apps]].

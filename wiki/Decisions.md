@@ -3,6 +3,26 @@
 Dated log of meaningful choices. Newest first. Each entry: what was decided,
 why, and what would make us revisit it.
 
+## 2026-07-07 — Calendar: local store + heuristic fallback, Google as a seam
+
+The smart calendar ([[Web-Apps]]) keeps events in a local JSON store by
+default (`CALENDAR_PROVIDER=local`); Google Calendar is a drop-in provider
+adapter, activated only when OAuth credentials appear. The chat assistant
+runs the Agent SDK with in-process calendar tools on the same $0 local-login
+path as the orchestrator (`AGENT_MODE=auto|mock|sdk`), degrading to a keyless
+heuristic parser so the app works with zero auth. Built in the 2026-07-06
+session (which hit its usage limit mid-verification); verified and committed
+2026-07-07 — events REST plus a real Claude chat turn creating an event.
+
+## 2026-07-06 — Run strategies: Ralph faithful, Caveman as config
+
+Phase 2's orchestrator "runner" setting will offer DAG (default), **Ralph**
+(Geoffrey Huntley's loop-until-done technique over a spec/backlog), and
+**Caveman**. Research found no single canonical Caveman semantics, so it will
+be modeled as a config: a brute-force re-invoke loop with an optional
+token-compression flag. It pairs with the planned project progress tracker,
+which is exactly the backlog Ralph loops over. Not yet implemented.
+
 ## 2026-07-06 — Higgsfield studio: Gemini images now, video adapter later
 
 The Higgsfield clone ([[Web-Apps]]) generates images via the same Gemini REST

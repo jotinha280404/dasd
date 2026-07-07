@@ -1,0 +1,7 @@
+# Calendar API — Hono, run via tsx. Build context = repo ROOT.
+FROM node:24-alpine
+WORKDIR /app
+COPY . .
+RUN npm ci
+EXPOSE 8790
+CMD ["npm", "run", "start", "-w", "@dasd/calendar-server"]

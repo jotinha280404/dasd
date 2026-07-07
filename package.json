@@ -2,7 +2,7 @@
   "name": "dasd-workspace",
   "private": true,
   "version": "0.0.0",
-  "description": "npm workspace root for the two web apps (orchestrator + higgsfield). The Python projects and the vanilla dashboard are NOT part of this workspace — see CLAUDE.md 'Framework exception'.",
+  "description": "npm workspace root for the web apps (orchestrator · higgsfield · finance · calendar). The Python projects and the vanilla dashboard are NOT part of this workspace — see CLAUDE.md 'Framework exception'.",
   "engines": {
     "node": ">=24",
     "npm": ">=11"
@@ -18,12 +18,16 @@
     "higgsfield/web",
     "finance/shared",
     "finance/server",
-    "finance/web"
+    "finance/web",
+    "calendar/shared",
+    "calendar/server",
+    "calendar/web"
   ],
   "scripts": {
     "dev:orchestrator": "concurrently -n orch-api,orch-web -c magenta,cyan \"npm run dev -w @dasd/orchestrator-server\" \"npm run dev -w @dasd/orchestrator-web\"",
     "dev:higgsfield": "concurrently -n higg-api,higg-web -c yellow,green \"npm run dev -w @dasd/higgsfield-server\" \"npm run dev -w @dasd/higgsfield-web\"",
     "dev:finance": "concurrently -n fin-api,fin-web -c blue,green \"npm run dev -w @dasd/finance-server\" \"npm run dev -w @dasd/finance-web\"",
+    "dev:calendar": "concurrently -n cal-api,cal-web -c cyan,green \"npm run dev -w @dasd/calendar-server\" \"npm run dev -w @dasd/calendar-web\"",
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "biome check .",

@@ -1,7 +1,7 @@
 # Workspaces
 
-Monorepo with two products, a dashboard over both, and a Claude-maintained
-wiki. `CLAUDE.md` is the schema — read it first.
+Monorepo with two Python products, four TypeScript web apps, a dashboard,
+and a Claude-maintained wiki. `CLAUDE.md` is the schema — read it first.
 
 | What | Where |
 |---|---|
@@ -29,9 +29,9 @@ LAN-only by default — put a reverse proxy + auth in front to go further.
 python -m http.server 8000    # from the repo root → http://localhost:8000
 ```
 
-## Web apps (orchestrator + higgsfield)
+## Web apps (orchestrator · higgsfield · finance · calendar)
 
-Two TypeScript apps live in an npm workspace at the repo root — the *framework
+Four TypeScript apps live in an npm workspace at the repo root — the *framework
 exception*; everything else stays Python-stdlib + vanilla JS. Full story:
 [`wiki/Web-Apps.md`](wiki/Web-Apps.md).
 
@@ -39,17 +39,24 @@ exception*; everything else stays Python-stdlib + vanilla JS. Full story:
   agent-flow builder + live monitor for real Claude Code agents.
 - 🎬 **Higgsfield** ([`higgsfield/`](higgsfield/)) — generative-media studio
   (Gemini image generation now, image→video later).
+- 💰 **Finance** ([`finance/`](finance/)) — personal + business accounts,
+  transactions + CSV import, investments, budgets, goals.
+- 🗓️ **Calendar** ([`calendar/`](calendar/)) — smart calendar; message Claude
+  in plain language to create, move, and cancel events.
 
 ```bash
 npm install                # once, from the repo root (Node >= 24)
 npm run dev:orchestrator   # web http://localhost:5173  · api :8787
 npm run dev:higgsfield     # web http://localhost:5174  · api :8788
+npm run dev:finance        # web http://localhost:5175  · api :8789
+npm run dev:calendar       # web http://localhost:5176  · api :8790
 npm run typecheck          # every package
-npm run build              # build both web apps
+npm run build              # build all web apps
 ```
 
-In docker they join the homelab stack on `:8081`/`:8091` (orchestrator) and
-`:8082`/`:8092` (higgsfield); keys go in the root `.env`.
+In docker they join the homelab stack (orchestrator `:8081`/`:8091`,
+higgsfield `:8082`/`:8092`, calendar `:8083`/`:8093`, finance
+`:8084`/`:8094`); keys go in the root `.env`.
 
 ## Wiki / Obsidian
 
