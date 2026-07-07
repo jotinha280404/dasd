@@ -39,6 +39,12 @@ console.log(
       ? " — STUB placeholder, set GEMINI_API_KEY for real images"
       : " — real generation"),
 );
+console.log(
+  `[higgsfield-server] video provider: ${client.video.id} (${client.video.defaultModel})` +
+    (client.video.isStub
+      ? " — STUB animated placeholder, set FAL_KEY for real video"
+      : " — real generation"),
+);
 
 serve({ fetch: app.fetch, port: PORT }, (info) => {
   console.log(`[higgsfield-server] listening on http://localhost:${info.port}`);

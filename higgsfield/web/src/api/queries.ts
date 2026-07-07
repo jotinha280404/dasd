@@ -29,8 +29,21 @@ export function usePresets() {
   return useQuery({ queryKey: queryKeys.presets, queryFn: api.presets, staleTime: Infinity });
 }
 
+/** How often the feed re-reads while any job is queued/running. The server
+ *  advances async video jobs lazily on each read, so polling = refetching. */
+const ACTIVE_POLL_MS = 2_000;
+
 export function useGenerations() {
-  return useQuery({ queryKey: queryKeys.generations, queryFn: api.generations });
+  return useQuery({
+    queryKey: queryKeys.generations,
+    queryFn: api.generations,
+    refetchInterval: (query) => {
+      const hasActive = query.state.data?.some(
+        (g) => g.status === "queued" || g.status === "running",
+      );
+      return hasActive ? ACTIVE_POLL_MS : false;
+    },
+  });
 }
 
 export function useCharacters() {

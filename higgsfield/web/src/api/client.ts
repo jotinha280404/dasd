@@ -1,7 +1,13 @@
-import type { AspectRatioValue, CameraPreset, Character, Generation } from "@dasd/higg-shared";
+import type {
+  AspectRatioValue,
+  CameraPreset,
+  Character,
+  Generation,
+  MediaKindValue,
+} from "@dasd/higg-shared";
 
 /** Shape of GET /api/capabilities (the web uses it to show the placeholder
- *  banner and to hide "Animate" until a video backend exists). */
+ *  banners; both providers always exist — `isStub` marks keyless stand-ins). */
 export interface ImageCapability {
   provider: string;
   model: string;
@@ -10,16 +16,20 @@ export interface ImageCapability {
 export interface VideoCapability {
   provider: string;
   model: string;
+  /** True for the keyless placeholder (animated SVGs instead of real mp4s). */
+  isStub: boolean;
   supportsImageToVideo: boolean;
   supportsCameraControl: boolean;
 }
 export interface Capabilities {
   image: ImageCapability;
-  video: VideoCapability | null;
+  video: VideoCapability;
 }
 
 /** Body of POST /api/generate. */
 export interface GenerateInput {
+  /** Defaults to "image" server-side. Video responds immediately with a queued job. */
+  kind?: MediaKindValue;
   prompt: string;
   aspectRatio?: AspectRatioValue;
   presetId?: string | null;
@@ -28,6 +38,10 @@ export interface GenerateInput {
   references?: string[];
   negativePrompt?: string;
   count?: number;
+  /** Output asset of a previous image generation → image-to-video. */
+  initAssetId?: string;
+  /** Video length in seconds (1–15). */
+  durationSec?: number;
 }
 
 /** Body of POST/PUT /api/characters. */

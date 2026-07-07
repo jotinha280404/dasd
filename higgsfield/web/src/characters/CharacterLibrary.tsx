@@ -1,12 +1,17 @@
 import type { Character } from "@dasd/higg-shared";
 import { Button, cn } from "@dasd/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImagePlus, Plus, Trash2, User, X } from "lucide-react";
+import { Film, ImagePlus, Plus, Trash2, User, X } from "lucide-react";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useCharacters, useCreateCharacter, useDeleteCharacter } from "../api/queries";
+import {
+  useCapabilities,
+  useCharacters,
+  useCreateCharacter,
+  useDeleteCharacter,
+} from "../api/queries";
 import { EmptyState } from "../components/EmptyState";
 import { Spinner } from "../components/Spinner";
 import { filesToDataUrls } from "../lib/files";
@@ -21,10 +26,14 @@ type CharacterForm = z.infer<typeof characterSchema>;
 function CharacterCard({
   character,
   onUse,
+  onAnimate,
+  animateReady,
   onDelete,
 }: {
   character: Character;
   onUse: () => void;
+  onAnimate: () => void;
+  animateReady: boolean;
   onDelete: () => void;
 }) {
   return (
@@ -59,9 +68,25 @@ function CharacterCard({
         ) : (
           <div className="flex-1" />
         )}
-        <Button size="sm" variant="secondary" onClick={onUse}>
-          Use in composer
-        </Button>
+        <div className="flex gap-2">
+          <Button size="sm" variant="secondary" onClick={onUse} className="flex-1">
+            Use in composer
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={onAnimate}
+            disabled={!animateReady}
+            title="Animate — video from this character"
+            className="flex-1 gap-1.5"
+          >
+            <Film size={13} />
+            Animate
+          </Button>
+        </div>
+        <p className="text-[10px] leading-snug text-muted-foreground">
+          Animate uses the character's reference image as the video's first frame.
+        </p>
       </div>
     </div>
   );
@@ -69,10 +94,12 @@ function CharacterCard({
 
 export function CharacterLibrary() {
   const characters = useCharacters();
+  const caps = useCapabilities();
   const create = useCreateCharacter();
   const del = useDeleteCharacter();
   const setCharacterId = useUIStore((s) => s.setCharacterId);
   const setTab = useUIStore((s) => s.setTab);
+  const animateCharacter = useUIStore((s) => s.animateCharacter);
   const [refs, setRefs] = useState<string[]>([]);
 
   const { register, handleSubmit, reset, formState } = useForm<CharacterForm>({
@@ -197,6 +224,8 @@ export function CharacterLibrary() {
                 key={c.id}
                 character={c}
                 onUse={() => use(c)}
+                onAnimate={() => animateCharacter(c.id)}
+                animateReady={Boolean(caps.data)}
                 onDelete={() => del.mutate(c.id)}
               />
             ))}

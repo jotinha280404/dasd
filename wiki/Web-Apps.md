@@ -31,12 +31,16 @@ not the plain API SDK.
 
 A separate app (no agents, no canvas): Soul-style photorealistic **image
 generation** (real today, via Gemini), a camera-motion/VFX **preset gallery**,
-a Pinterest-style **generation feed**, a **character library**, and — behind a
-swappable provider adapter — **image→video** with camera-motion presets.
+a Pinterest-style **generation feed**, a **character library**, and
+**image→video** — an Animate button on any image (or character) submits an
+async video job with camera-motion presets and a duration; the feed polls it
+live to completion.
 
-Stack: React 19 + Vite 7 (web) · Hono (server) · a `GeminiImageProvider` now,
-a `fal.ai`/Veo video adapter later. The same `GEMINI_API_KEY` the
-[[Pin-Factory]] uses drives image generation.
+Stack: React 19 + Vite 7 (web) · Hono (server) · a `GeminiImageProvider` +
+a `FalVideoProvider` (fal.ai queue API, Kling image→video by default via
+`FAL_VIDEO_MODEL`), each with a keyless stub twin. The same `GEMINI_API_KEY`
+the [[Pin-Factory]] uses drives image generation; `FAL_KEY` turns on real
+video.
 
 ## Finance — personal + business tracker
 
@@ -106,8 +110,9 @@ Nothing here requires paid API access to start:
   `CLAUDE_CODE_OAUTH_TOKEN` (mint with `claude setup-token`) or a prior
   `claude` login — and hook observation is free. A metered `ANTHROPIC_API_KEY`
   is only an alternative.
-- **Higgsfield** generates images on the Gemini free tier. Video sits behind
-  an adapter that stays hidden until a `FAL_KEY` (or Veo access) is present.
+- **Higgsfield** generates images on the Gemini free tier. Video runs on a
+  keyless animated-placeholder stub until a `FAL_KEY` is present — the whole
+  Animate flow is demoable at $0, and real video is a one-key drop-in.
 - **Finance** needs no keys at all — manual entry + CSV import; prices and
   bank-sync are later adapters.
 - **Calendar**'s assistant uses the same local Claude Code auth as the
@@ -147,9 +152,17 @@ As of 2026-07-07:
   ghost), plus a full browser walkthrough — runner picked, project created
   inline, run watched to 100% · 3/3 done, ghost session log opened.
 
+- Phase 4 — **Higgsfield image→video** (2026-07-07): a `VideoProvider` pair —
+  fal.ai queue adapter (Kling image→video default) behind `FAL_KEY`, keyless
+  animated-SVG stub otherwise — an async submit→lazy-poll job path on the
+  generations API, and the web Animate flow (feed and character Animate
+  buttons prefill a Video composer mode with init frame, duration, presets;
+  the feed self-polls active jobs to completion). Verified keyless end to
+  end, REST and a full browser walkthrough (image → Animate → video card
+  succeeded in the feed).
+
 **Remaining**
 
-- Phase 4 — Higgsfield image→video + character continuation.
 - Phase 5 — polish / persistence / deploy (orchestrator ghost-flow canvas
   rendering and live permission prompts are on [[Ideas]]).
 

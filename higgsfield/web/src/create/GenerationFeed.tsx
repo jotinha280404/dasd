@@ -41,6 +41,19 @@ function IconButton({
   );
 }
 
+function Badge({ className, children }: { className?: string; children: ReactNode }) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur",
+        className,
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
 function PendingTile({ aspectRatio }: { aspectRatio: AspectRatioValue }) {
   return (
     <div className="mb-4 break-inside-avoid overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]">
@@ -54,34 +67,50 @@ function PendingTile({ aspectRatio }: { aspectRatio: AspectRatioValue }) {
   );
 }
 
-function GenerationTile({ gen, videoDisabled }: { gen: Generation; videoDisabled: boolean }) {
+function GenerationTile({ gen, capsReady }: { gen: Generation; capsReady: boolean }) {
   const remix = useUIStore((s) => s.remix);
+  const animateGeneration = useUIStore((s) => s.animateGeneration);
   const del = useDeleteGeneration();
   const output = gen.outputs[0];
   const ratio = aspectToCss(gen.input.aspectRatio);
   const failed = gen.status === "failed";
-  const running = gen.status === "running" || gen.status === "queued";
+  const active = gen.status === "running" || gen.status === "queued";
+  const isVideo = gen.kind === "video";
+  const durationSec = gen.input.durationSec ?? output?.durationSec;
+  const canAnimate = gen.kind === "image" && gen.status === "succeeded" && Boolean(output);
 
   return (
     <div className="group relative mb-4 break-inside-avoid overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]">
       {output ? (
-        <img
-          src={output.url}
-          alt={gen.input.prompt || "generation"}
-          loading="lazy"
-          className="w-full object-cover"
-          style={{ aspectRatio: ratio }}
-        />
+        output.mimeType.startsWith("video/") ? (
+          <video
+            src={output.url}
+            controls
+            loop
+            muted
+            playsInline
+            className="w-full object-cover"
+            style={{ aspectRatio: ratio }}
+          />
+        ) : (
+          <img
+            src={output.url}
+            alt={gen.input.prompt || "generation"}
+            loading="lazy"
+            className="w-full object-cover"
+            style={{ aspectRatio: ratio }}
+          />
+        )
       ) : (
         <div
           className="flex items-center justify-center bg-[var(--color-surface-2)] text-xs text-muted-foreground"
           style={{ aspectRatio: ratio }}
         >
           {failed ? (
-            <span className="text-[var(--color-destructive)]">
+            <span className="px-4 text-center text-[var(--color-destructive)]">
               {gen.error ? gen.error : "Generation failed"}
             </span>
-          ) : running ? (
+          ) : active ? (
             <Spinner className="h-5 w-5" />
           ) : (
             "No output"
@@ -89,17 +118,36 @@ function GenerationTile({ gen, videoDisabled }: { gen: Generation; videoDisabled
         </div>
       )}
 
+      {/* Kind / duration / status badges — always visible, outside the hover overlay. */}
+      {isVideo || active || failed ? (
+        <div className="pointer-events-none absolute left-2 top-2 flex flex-wrap items-center gap-1.5">
+          {isVideo ? <Badge>🎬 video</Badge> : null}
+          {isVideo && durationSec ? <Badge>{durationSec}s</Badge> : null}
+          {active ? (
+            <Badge>
+              <Spinner className="h-3 w-3" />
+              {gen.status}
+            </Badge>
+          ) : failed ? (
+            <Badge className="bg-[var(--color-destructive)]">failed</Badge>
+          ) : null}
+        </div>
+      ) : null}
+
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between bg-gradient-to-t from-black/80 via-black/0 to-black/0 opacity-0 transition-opacity group-hover:opacity-100">
         <div className="pointer-events-auto flex justify-end gap-1 p-2">
           <IconButton title="Remix into composer" onClick={() => remix(gen)}>
             <RotateCcw size={15} />
           </IconButton>
-          <IconButton
-            title={videoDisabled ? "Animate — video coming soon" : "Animate"}
-            disabled={videoDisabled}
-          >
-            <Film size={15} />
-          </IconButton>
+          {canAnimate ? (
+            <IconButton
+              title={capsReady ? "Animate — image to video" : "Animate — loading capabilities…"}
+              disabled={!capsReady}
+              onClick={() => animateGeneration(gen)}
+            >
+              <Film size={15} />
+            </IconButton>
+          ) : null}
           {output ? (
             <a
               href={output.url}
@@ -128,7 +176,7 @@ export function GenerationFeed() {
   const pendingCount = useIsMutating({ mutationKey: GENERATE_MUTATION_KEY });
   const aspectRatio = useUIStore((s) => s.aspectRatio);
 
-  const videoDisabled = !caps.data?.video;
+  const capsReady = Boolean(caps.data);
   const items = generations.data ?? [];
 
   if (generations.isLoading) {
@@ -161,10 +209,11 @@ export function GenerationFeed() {
   return (
     <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
       {Array.from({ length: pendingCount }).map((_, i) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: identical stateless placeholders.
         <PendingTile key={`pending-${i}`} aspectRatio={aspectRatio} />
       ))}
       {items.map((gen) => (
-        <GenerationTile key={gen.id} gen={gen} videoDisabled={videoDisabled} />
+        <GenerationTile key={gen.id} gen={gen} capsReady={capsReady} />
       ))}
     </div>
   );

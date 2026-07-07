@@ -18,7 +18,9 @@ function groupByCategory(
 ): Partial<Record<PresetCategoryValue, CameraPreset[]>> {
   const groups: Partial<Record<PresetCategoryValue, CameraPreset[]>> = {};
   for (const p of presets) {
-    (groups[p.category] ??= []).push(p);
+    const bucket = groups[p.category] ?? [];
+    bucket.push(p);
+    groups[p.category] = bucket;
   }
   return groups;
 }

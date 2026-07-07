@@ -14,6 +14,20 @@ heuristic parser so the app works with zero auth. Built in the 2026-07-06
 session (which hit its usage limit mid-verification); verified and committed
 2026-07-07 — events REST plus a real Claude chat turn creating an event.
 
+## 2026-07-07 — Video mirrors the image pattern: keyless stub, fal.ai behind a key
+
+Phase 4 retires Phase 3's "video stays undefined and the UI hides Animate"
+rule: the video provider now works exactly like the image provider — a
+keyless **stub** (animated SMIL SVGs whose motion follows the chosen preset)
+when no `FAL_KEY`, the real **fal.ai queue adapter** (default
+`fal-ai/kling-video/v2.1/standard/image-to-video`, overridable via
+`FAL_VIDEO_MODEL`) when the key is present. Rationale: consistency with the
+image path and a fully demoable $0 Animate flow. Video jobs are async
+(submit returns a queued Generation) and advance **lazily on read** — every
+feed/detail GET polls active jobs, throttled to one poll per 2.5s per job —
+so the client's refetch loop is the poller and the server needs no timers.
+Revisit the lazy-poll choice if jobs must progress with no client attached.
+
 ## 2026-07-07 — Orchestrator Phase 2: hooks in-memory, projects broadcast, lint aligned
 
 Hook observation keeps its observed-session registry **in memory** (ghost
@@ -44,8 +58,9 @@ The Higgsfield clone ([[Web-Apps]]) generates images via the same Gemini REST
 pattern [[Pin-Factory]] uses (raw fetch, `gemini-2.5-flash-image`), behind a
 provider adapter: a keyless placeholder-SVG stub when no `GEMINI_API_KEY`, the real
 generator when set. 14 curated camera/VFX presets ship as data; video (image→video
-with camera motion) is a Phase-4 adapter left as a seam — `video` stays undefined
-and the UI hides "Animate". Generated media is saved to a gitignored dir and served
+with camera motion) was a Phase-4 adapter left as a seam — the "`video` stays
+undefined and the UI hides Animate" part was superseded 2026-07-07 (see the
+stub-video entry above). Generated media is saved to a gitignored dir and served
 via `/api/media`.
 
 ## 2026-07-06 — Finance app: manual-first, integer-cents, dataviz palette
