@@ -1,3 +1,5 @@
+import type { NodeType } from "@dasd/orch-shared";
+import { Button, cn } from "@dasd/ui";
 import {
   Background,
   BackgroundVariant,
@@ -10,8 +12,6 @@ import {
 } from "@xyflow/react";
 import { Play, Square } from "lucide-react";
 import { type DragEvent, useCallback, useEffect, useRef, useState } from "react";
-import type { NodeType } from "@dasd/orch-shared";
-import { Button, cn } from "@dasd/ui";
 import { runWorkflow, saveWorkflow, stopRun } from "../api/client";
 import { useSocket } from "../api/useSocket";
 import { useGraphStore } from "../store/graphStore";
@@ -45,6 +45,7 @@ export function Canvas() {
   const addNode = useGraphStore((s) => s.addNode);
   const setSelected = useGraphStore((s) => s.setSelected);
   const loadedRev = useGraphStore((s) => s.loadedRev);
+  const settings = useGraphStore((s) => s.settings);
 
   const runStatus = useRunStore((s) => s.status);
   const runId = useRunStore((s) => s.runId);
@@ -76,8 +77,11 @@ export function Canvas() {
     [addNode, screenToFlowPosition],
   );
 
-  // Debounced autosave once a graph has been loaded.
+  // Debounced autosave once a graph has been loaded. `settings` is in the
+  // dependency list so flow-settings edits (runner picker etc.) persist too —
+  // updateSettings replaces the settings object, retriggering this effect.
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: nodes/edges/settings are intentional save triggers; the body reads fresh state via getState()
   useEffect(() => {
     if (loadedRev === 0) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
@@ -88,7 +92,7 @@ export function Canvas() {
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
-  }, [nodes, edges, loadedRev]);
+  }, [nodes, edges, settings, loadedRev]);
 
   const onRun = useCallback(async () => {
     setBusy(true);

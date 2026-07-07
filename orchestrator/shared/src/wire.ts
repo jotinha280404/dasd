@@ -1,5 +1,6 @@
 import type { AgentEvent, RunStatus } from "./events";
 import type { NodeStatusValue } from "./graph";
+import type { Project } from "./project";
 
 /**
  * WebSocket frames between the orchestrator web app and server. Bidirectional
@@ -38,7 +39,12 @@ export type ServerFrame =
       status: RunStatus;
       nodeStatus: Record<string, NodeStatusValue>;
       activeEdges: string[];
-    };
+      /** Present on Ralph/Caveman runs. */
+      runner?: string;
+      iteration?: number;
+      projectId?: string;
+    }
+  | { t: "project.update"; project: Project };
 
 // client → server
 export type ClientFrame =

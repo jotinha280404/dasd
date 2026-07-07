@@ -1,4 +1,4 @@
-import { LedgerKind, toCents, toMajor, type Budget, type Category } from "@dasd/fin-shared";
+import { type Budget, type Category, LedgerKind, toCents, toMajor } from "@dasd/fin-shared";
 import { Button } from "@dasd/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, Plus, Trash2 } from "lucide-react";
@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import type { BudgetInput } from "../api/client";
 import {
-  useBudgets,
   useBudgetStatuses,
+  useBudgets,
   useCategories,
   useCreateBudget,
   useDeleteBudget,
@@ -159,10 +159,20 @@ export function Budgets() {
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="icon" aria-label="Edit" onClick={() => openEdit(s.budgetId)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Edit"
+                    onClick={() => openEdit(s.budgetId)}
+                  >
                     <Pencil size={14} />
                   </Button>
-                  <Button variant="ghost" size="icon" aria-label="Delete" onClick={() => del.mutate(s.budgetId)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Delete"
+                    onClick={() => del.mutate(s.budgetId)}
+                  >
                     <Trash2 size={14} />
                   </Button>
                 </div>

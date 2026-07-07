@@ -1,7 +1,6 @@
 import {
-  LIABILITY_TYPES,
-  type AccountBalance,
   type Account,
+  type AccountBalance,
   type AllocationSlice,
   type AssetClass,
   type BudgetStatus,
@@ -11,6 +10,7 @@ import {
   type HoldingValue,
   type LedgerFilter,
   type LedgerKind,
+  LIABILITY_TYPES,
   type NetWorthPoint,
   type Transaction,
 } from "@dasd/fin-shared";
@@ -51,7 +51,10 @@ function lastMonths(n: number): { key: string; end: string }[] {
   for (let i = n - 1; i >= 0; i--) {
     const anchor = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const endDate = new Date(anchor.getFullYear(), anchor.getMonth() + 1, 0);
-    out.push({ key: `${anchor.getFullYear()}-${pad2(anchor.getMonth() + 1)}`, end: isoOf(endDate) });
+    out.push({
+      key: `${anchor.getFullYear()}-${pad2(anchor.getMonth() + 1)}`,
+      end: isoOf(endDate),
+    });
   }
   return out;
 }
@@ -169,7 +172,10 @@ const ASSET_CLASS_LABEL: Record<AssetClass, string> = {
   other: "Other",
 };
 
-export function allocation(ledger: LedgerFilter, by: "accountType" | "assetClass"): AllocationSlice[] {
+export function allocation(
+  ledger: LedgerFilter,
+  by: "accountType" | "assetClass",
+): AllocationSlice[] {
   const totals = new Map<string, number>();
   if (by === "assetClass") {
     for (const hv of holdingValues(ledger)) {

@@ -29,7 +29,8 @@ export const PRESETS: CameraPreset[] = [
     description: "A smooth push toward the subject that builds intimacy and focus.",
     intensity: 0.5,
     speed: 0.45,
-    promptSuffix: "slow cinematic dolly in, camera gliding toward the subject, shallow depth of field",
+    promptSuffix:
+      "slow cinematic dolly in, camera gliding toward the subject, shallow depth of field",
     examplePrompt: "a detective studying a wall of clues",
     tags: ["smooth", "push-in", "cinematic"],
   },
@@ -55,7 +56,8 @@ export const PRESETS: CameraPreset[] = [
     description: "A full circular orbit around the subject for a hero, product-reveal feel.",
     intensity: 0.7,
     speed: 0.6,
-    promptSuffix: "smooth 360 degree orbit around the subject, camera circling, parallax on the background",
+    promptSuffix:
+      "smooth 360 degree orbit around the subject, camera circling, parallax on the background",
     examplePrompt: "a futuristic motorcycle in an empty showroom",
     tags: ["orbit", "hero", "product"],
   },
@@ -68,7 +70,8 @@ export const PRESETS: CameraPreset[] = [
     description: "Time freezes while the camera arcs around a suspended moment.",
     intensity: 0.85,
     speed: 0.3,
-    promptSuffix: "bullet-time effect, frozen moment in time, camera arcing around the subject, suspended particles",
+    promptSuffix:
+      "bullet-time effect, frozen moment in time, camera arcing around the subject, suspended particles",
     examplePrompt: "a dancer mid-leap surrounded by shattering glass",
     tags: ["slow-mo", "frozen", "matrix"],
   },
@@ -81,7 +84,8 @@ export const PRESETS: CameraPreset[] = [
     description: "A fast, weaving first-person drone flight that dives through the scene.",
     intensity: 0.9,
     speed: 0.9,
-    promptSuffix: "high-speed FPV drone shot weaving through the scene, diving and banking, wide-angle lens",
+    promptSuffix:
+      "high-speed FPV drone shot weaving through the scene, diving and banking, wide-angle lens",
     examplePrompt: "a neon alleyway packed with market stalls",
     tags: ["fast", "drone", "immersive"],
   },
@@ -94,7 +98,8 @@ export const PRESETS: CameraPreset[] = [
     description: "A rising crane move that lifts up and away for an epic establishing beat.",
     intensity: 0.6,
     speed: 0.5,
-    promptSuffix: "sweeping crane shot rising up and away from the subject, revealing the landscape below",
+    promptSuffix:
+      "sweeping crane shot rising up and away from the subject, revealing the landscape below",
     examplePrompt: "a knight standing before a besieged castle",
     tags: ["epic", "rise", "establishing"],
   },
@@ -133,7 +138,8 @@ export const PRESETS: CameraPreset[] = [
     description: "The dolly-zoom illusion: background warps while the subject stays fixed.",
     intensity: 0.8,
     speed: 0.5,
-    promptSuffix: "vertigo dolly-zoom effect, background stretching and warping while the subject stays fixed",
+    promptSuffix:
+      "vertigo dolly-zoom effect, background stretching and warping while the subject stays fixed",
     examplePrompt: "a person frozen at the top of a staircase",
     tags: ["dolly-zoom", "unsettling", "hitchcock"],
   },
@@ -146,7 +152,8 @@ export const PRESETS: CameraPreset[] = [
     description: "Rig-mounted to the subject: they stay locked while the world swirls behind.",
     intensity: 0.75,
     speed: 0.6,
-    promptSuffix: "SnorriCam body-mounted shot, subject locked centre-frame while the background sways and spins",
+    promptSuffix:
+      "SnorriCam body-mounted shot, subject locked centre-frame while the background sways and spins",
     examplePrompt: "a man running panicked through a crowd",
     tags: ["disorienting", "subjective", "body-mount"],
   },
@@ -159,7 +166,8 @@ export const PRESETS: CameraPreset[] = [
     description: "A relentless, ultra-smooth high-speed push straight down the axis.",
     intensity: 0.8,
     speed: 0.85,
-    promptSuffix: "super dolly, ultra-smooth high-speed push straight toward the subject on a fixed axis",
+    promptSuffix:
+      "super dolly, ultra-smooth high-speed push straight toward the subject on a fixed axis",
     examplePrompt: "a doorway glowing at the end of a long corridor",
     tags: ["smooth", "fast", "push-in"],
   },
@@ -172,7 +180,8 @@ export const PRESETS: CameraPreset[] = [
     description: "A fiery blast with debris, sparks, and a shockwave rippling outward.",
     intensity: 0.95,
     speed: 0.9,
-    promptSuffix: "massive fiery explosion, flying debris and sparks, shockwave and rolling smoke, camera shake",
+    promptSuffix:
+      "massive fiery explosion, flying debris and sparks, shockwave and rolling smoke, camera shake",
     examplePrompt: "a car in the middle of a desert road",
     tags: ["vfx", "fire", "action"],
   },
@@ -185,7 +194,8 @@ export const PRESETS: CameraPreset[] = [
     description: "A warm analog light-leak wash that flares across to bridge two shots.",
     intensity: 0.6,
     speed: 0.7,
-    promptSuffix: "warm analog light-leak transition, lens flare washing across the frame, dreamy bloom",
+    promptSuffix:
+      "warm analog light-leak transition, lens flare washing across the frame, dreamy bloom",
     examplePrompt: "sunlight spilling over a field of tall grass",
     tags: ["vfx", "transition", "analog"],
   },

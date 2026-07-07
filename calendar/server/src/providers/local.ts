@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import {
   CalendarEvent,
   type CalendarProvider,
@@ -6,6 +5,7 @@ import {
   type EventInput,
   type EventPatch,
 } from "@dasd/cal-shared";
+import { nanoid } from "nanoid";
 import { db } from "../store/db";
 
 /**

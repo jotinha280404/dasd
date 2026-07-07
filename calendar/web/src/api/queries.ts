@@ -7,13 +7,13 @@ import type {
   EventPatch,
 } from "@dasd/cal-shared";
 import {
+  type UseMutationResult,
   useMutation,
   useQuery,
   useQueryClient,
-  type UseMutationResult,
 } from "@tanstack/react-query";
-import { useUiStore } from "../store/ui";
 import { visibleRange } from "../lib/datetime";
+import { useUiStore } from "../store/ui";
 import { api } from "./client";
 
 /** Query-key factory. All event reads share the `["events", …]` prefix so a

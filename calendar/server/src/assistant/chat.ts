@@ -1,4 +1,4 @@
-import { query, type Options } from "@anthropic-ai/claude-agent-sdk";
+import { type Options, query } from "@anthropic-ai/claude-agent-sdk";
 import type {
   CalendarAction,
   CalendarEvent,
@@ -69,7 +69,7 @@ function buildSystemPrompt(now: Date, tz: string): string {
   return (
     `You are a calendar assistant. Today is ${today} (timezone ${tz}). ` +
     "Use the calendar tools to fulfill the user's request; resolve relative " +
-    "dates (like \"tomorrow\", \"Friday\", or \"next week\") against today. " +
+    'dates (like "tomorrow", "Friday", or "next week") against today. ' +
     "Default meetings to 1 hour unless a duration is given. Look up event ids " +
     "with list_events before updating or deleting. Confirm what you did in one " +
     "short sentence. Never invent events you did not create or read via a tool."

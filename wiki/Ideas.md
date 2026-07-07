@@ -29,6 +29,16 @@ Backlog and open questions. Move an item to [[Decisions]] when it's settled.
 - Alerting: push a notification when a new event matching a watchlist
   (category + region + magnitude) appears
 
+## Web apps
+
+- Calendar a11y cleanup — `npm run lint` still reports ~18 findings, all in
+  `calendar/` (labels without controls, click handlers on static elements,
+  a hook-deps warning, one unused private member in the Google provider
+  stub). Everything else in the repo is lint-clean ([[Web-Apps]]).
+- Orchestrator: render observed ("ghost") sessions as read-only canvas
+  flows, not just a log panel; live permission-prompt answering over the
+  existing `permission` wire frame.
+
 ## Infra
 
 - Reverse proxy + HTTPS in the homelab (Caddy/Traefik) in front of the

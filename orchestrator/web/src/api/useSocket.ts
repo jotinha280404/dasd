@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
 import type { ClientFrame, ServerFrame } from "@dasd/orch-shared";
+import { useEffect, useRef, useState } from "react";
+import { useProjectStore } from "../store/projectStore";
 import { useRunStore } from "../store/runStore";
 
 /**
@@ -28,7 +29,12 @@ function handleFrame(frame: ServerFrame): void {
         status: frame.status,
         nodeStatus: frame.nodeStatus,
         activeEdges: frame.activeEdges,
+        runner: frame.runner,
+        iteration: frame.iteration,
       });
+      break;
+    case "project.update":
+      useProjectStore.getState().applyProject(frame.project);
       break;
     case "hello":
       break;
@@ -53,7 +59,10 @@ class SocketManager {
   }
 
   connect(): void {
-    if (this.ws && (this.ws.readyState === WebSocket.OPEN || this.ws.readyState === WebSocket.CONNECTING)) {
+    if (
+      this.ws &&
+      (this.ws.readyState === WebSocket.OPEN || this.ws.readyState === WebSocket.CONNECTING)
+    ) {
       return;
     }
     this.closedByUser = false;

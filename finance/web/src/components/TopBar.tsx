@@ -1,6 +1,6 @@
-import { cn } from "@dasd/ui";
 import type { LedgerFilter } from "@dasd/fin-shared";
-import { useUiStore, type Page } from "../store/ui";
+import { cn } from "@dasd/ui";
+import { type Page, useUiStore } from "../store/ui";
 
 const PAGE_TITLES: Record<Page, string> = {
   dashboard: "Dashboard",
@@ -55,7 +55,9 @@ export function TopBar() {
   const page = useUiStore((s) => s.page);
   return (
     <header className="flex items-center justify-between gap-4 border-b border-border bg-surface px-4 py-3 sm:px-6">
-      <h1 className="text-base font-semibold tracking-tight text-foreground">{PAGE_TITLES[page]}</h1>
+      <h1 className="text-base font-semibold tracking-tight text-foreground">
+        {PAGE_TITLES[page]}
+      </h1>
       <LedgerToggle />
     </header>
   );

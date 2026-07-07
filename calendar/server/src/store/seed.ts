@@ -1,5 +1,5 @@
-import { nanoid } from "nanoid";
 import { CalendarEvent, type EventColorValue } from "@dasd/cal-shared";
+import { nanoid } from "nanoid";
 import { db } from "./db";
 
 /**

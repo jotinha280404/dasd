@@ -1,19 +1,15 @@
-import { cn } from "@dasd/ui";
 import { formatCents, formatCentsCompact } from "@dasd/fin-shared";
+import { cn } from "@dasd/ui";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { moneyColor } from "../charts/theme";
 
 /** A surface card — the standard container for content blocks and charts. */
-export function Card({
-  className,
-  children,
-}: {
-  className?: string;
-  children: ReactNode;
-}) {
+export function Card({ className, children }: { className?: string; children: ReactNode }) {
   return (
-    <div className={cn("rounded-lg border border-border bg-surface p-4", className)}>{children}</div>
+    <div className={cn("rounded-lg border border-border bg-surface p-4", className)}>
+      {children}
+    </div>
   );
 }
 
@@ -79,7 +75,10 @@ export function Delta({
   const Icon = up ? ArrowUpRight : ArrowDownRight;
   const color = up ? moneyColor(1) : moneyColor(-1);
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-medium tabular-nums" style={{ color }}>
+    <span
+      className="inline-flex items-center gap-1 text-xs font-medium tabular-nums"
+      style={{ color }}
+    >
       <Icon size={13} aria-hidden />
       {up ? "+" : "−"}
       {formatCents(Math.abs(cents), currency)}

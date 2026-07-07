@@ -1,8 +1,8 @@
-import { EventColor, type CalendarEvent, type EventInput } from "@dasd/cal-shared";
+import { type CalendarEvent, EventColor, type EventInput } from "@dasd/cal-shared";
 import { Button, cn } from "@dasd/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2, X } from "lucide-react";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useCalendarEvents, useCreateEvent, useDeleteEvent, useUpdateEvent } from "../api/queries";
@@ -12,8 +12,8 @@ import {
   allDayStart,
   combineDateTime,
   toDateInput,
-  toTimeInput,
   todayDateInput,
+  toTimeInput,
 } from "../lib/datetime";
 import { useUiStore } from "../store/ui";
 
@@ -72,7 +72,13 @@ function Field({
   );
 }
 
-function EventFormBody({ editing, draftDate }: { editing: CalendarEvent | null; draftDate: string | null }) {
+function EventFormBody({
+  editing,
+  draftDate,
+}: {
+  editing: CalendarEvent | null;
+  draftDate: string | null;
+}) {
   const closeModal = useUiStore((s) => s.closeModal);
   const create = useCreateEvent();
   const update = useUpdateEvent();
@@ -128,7 +134,11 @@ function EventFormBody({ editing, draftDate }: { editing: CalendarEvent | null; 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-3">
       <Field label="Title" error={errors.title?.message}>
-        <input className={controlClass} placeholder="e.g. Dentist appointment" {...register("title")} />
+        <input
+          className={controlClass}
+          placeholder="e.g. Dentist appointment"
+          {...register("title")}
+        />
       </Field>
 
       <div className="grid grid-cols-2 gap-3">
@@ -231,7 +241,7 @@ export function EventModal() {
   if (!modalOpen) return null;
 
   const editing = selectedEventId
-    ? (eventsQ.data ?? []).find((e) => e.id === selectedEventId) ?? null
+    ? ((eventsQ.data ?? []).find((e) => e.id === selectedEventId) ?? null)
     : null;
 
   return (

@@ -1,10 +1,12 @@
 import "dotenv/config";
 import type { Server } from "node:http";
-import { serve } from "@hono/node-server";
 import type { Health } from "@dasd/orch-shared";
+import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { AgentPool, agentMode, hasAuth } from "./agents/pool";
 import { Engine } from "./engine/run";
+import { hooksRoutes } from "./routes/hooks";
+import { projectsRoutes } from "./routes/projects";
 import { runsRoutes } from "./routes/runs";
 import { workflowsRoutes } from "./routes/workflows";
 import { seedIfEmpty } from "./store/workflows";
@@ -28,6 +30,8 @@ app.get("/api/health", (c) => {
 
 app.route("/api", workflowsRoutes(engine));
 app.route("/api", runsRoutes(engine));
+app.route("/api", projectsRoutes());
+app.route("/api", hooksRoutes());
 
 async function main(): Promise<void> {
   await seedIfEmpty();
@@ -39,6 +43,9 @@ async function main(): Promise<void> {
     console.log(`[orchestrator-server] listening on http://localhost:${info.port}`);
     console.log(
       `[orchestrator-server] agent mode: ${desc}  (AGENT_MODE=${m}, auth ${hasAuth() ? "detected" : "none"})`,
+    );
+    console.log(
+      `[orchestrator-server] runners: dag | ralph | caveman · hooks ingest: POST http://localhost:${info.port}/api/hooks`,
     );
   });
 

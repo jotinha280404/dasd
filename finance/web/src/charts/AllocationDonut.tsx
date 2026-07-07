@@ -5,9 +5,9 @@ import {
   Legend,
   Pie,
   PieChart,
+  type PieLabelRenderProps,
   ResponsiveContainer,
   Tooltip,
-  type PieLabelRenderProps,
 } from "recharts";
 import { ChartTooltip } from "./ChartTooltip";
 import { CHART, SERIES } from "./theme";

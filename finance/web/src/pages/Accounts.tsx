@@ -1,12 +1,12 @@
 import {
-  AccountType,
-  LIABILITY_TYPES,
-  LedgerKind,
-  toCents,
-  toMajor,
   type Account,
   type AccountBalance,
+  AccountType,
+  LedgerKind,
   type LedgerKind as LedgerKindT,
+  LIABILITY_TYPES,
+  toCents,
+  toMajor,
 } from "@dasd/fin-shared";
 import { Button } from "@dasd/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -70,7 +70,14 @@ function AccountDialog({
           openingBalance: toMajor(editing.openingBalance),
           institution: editing.institution ?? "",
         }
-      : { name: "", ledger: "personal", type: "checking", currency, openingBalance: 0, institution: "" },
+      : {
+          name: "",
+          ledger: "personal",
+          type: "checking",
+          currency,
+          openingBalance: 0,
+          institution: "",
+        },
   });
 
   const onSubmit = handleSubmit(async (values) => {
@@ -108,7 +115,11 @@ function AccountDialog({
         </div>
         <div className="grid grid-cols-2 gap-3">
           <Field label={`Opening balance (${currency})`} error={errors.openingBalance?.message}>
-            <TextInput type="number" step="0.01" {...register("openingBalance", { valueAsNumber: true })} />
+            <TextInput
+              type="number"
+              step="0.01"
+              {...register("openingBalance", { valueAsNumber: true })}
+            />
           </Field>
           <Field label="Currency" error={errors.currency?.message}>
             <TextInput {...register("currency")} />
@@ -202,14 +213,21 @@ export function Accounts() {
                         <div className="flex flex-col">
                           <span className="font-medium text-foreground">
                             {a.name}
-                            {a.archived && <span className="ml-2 text-xs text-muted-foreground">(archived)</span>}
+                            {a.archived && (
+                              <span className="ml-2 text-xs text-muted-foreground">(archived)</span>
+                            )}
                           </span>
                           {a.institution && (
                             <span className="text-xs text-muted-foreground">{a.institution}</span>
                           )}
                         </div>
                         <div className="flex items-center gap-1">
-                          <Button variant="ghost" size="icon" aria-label="Edit" onClick={() => openEdit(a)}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Edit"
+                            onClick={() => openEdit(a)}
+                          >
                             <Pencil size={14} />
                           </Button>
                           <Button

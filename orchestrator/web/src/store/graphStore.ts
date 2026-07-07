@@ -1,3 +1,22 @@
+import type {
+  EdgeKind,
+  FlowEdge,
+  FlowGraph,
+  FlowNode,
+  FlowSettings,
+  NodeType,
+  Port,
+} from "@dasd/orch-shared";
+import {
+  AgentConfig as AgentConfigSchema,
+  CodeConfig as CodeConfigSchema,
+  ConditionalConfig as ConditionalConfigSchema,
+  FlowSettings as FlowSettingsSchema,
+  GroupConfig as GroupConfigSchema,
+  TaskConfig as TaskConfigSchema,
+  ToolConfig as ToolConfigSchema,
+  TriggerConfig as TriggerConfigSchema,
+} from "@dasd/orch-shared";
 import {
   addEdge,
   applyEdgeChanges,
@@ -9,23 +28,6 @@ import {
 } from "@xyflow/react";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
-import {
-  AgentConfig as AgentConfigSchema,
-  CodeConfig as CodeConfigSchema,
-  ConditionalConfig as ConditionalConfigSchema,
-  GroupConfig as GroupConfigSchema,
-  TaskConfig as TaskConfigSchema,
-  ToolConfig as ToolConfigSchema,
-  TriggerConfig as TriggerConfigSchema,
-} from "@dasd/orch-shared";
-import type {
-  EdgeKind,
-  FlowEdge,
-  FlowGraph,
-  FlowNode,
-  NodeType,
-  Port,
-} from "@dasd/orch-shared";
 import type { AppEdge, AppNode, AppNodeConfig, PortsSpec } from "../types";
 
 type XY = { x: number; y: number };
@@ -190,6 +192,7 @@ export interface GraphState {
   graphName: string;
   nodes: AppNode[];
   edges: AppEdge[];
+  settings: FlowSettings;
   selectedNodeId: string | null;
   /** Bumped whenever a graph is loaded, so autosave can skip the load echo. */
   loadedRev: number;
@@ -203,6 +206,7 @@ export interface GraphState {
   updateNodeConfig: (id: string, patch: Record<string, unknown>) => void;
   setSelected: (id: string | null) => void;
   setGraph: (nodes: AppNode[], edges: AppEdge[]) => void;
+  updateSettings: (patch: Partial<FlowSettings>) => void;
   toGraph: () => FlowGraph;
   loadGraph: (graph: FlowGraph) => void;
 }
@@ -212,14 +216,13 @@ export const useGraphStore = create<GraphState>((set, get) => ({
   graphName: "Untitled flow",
   nodes: [],
   edges: [],
+  settings: FlowSettingsSchema.parse(undefined),
   selectedNodeId: null,
   loadedRev: 0,
 
-  onNodesChange: (changes) =>
-    set((s) => ({ nodes: applyNodeChanges<AppNode>(changes, s.nodes) })),
+  onNodesChange: (changes) => set((s) => ({ nodes: applyNodeChanges<AppNode>(changes, s.nodes) })),
 
-  onEdgesChange: (changes) =>
-    set((s) => ({ edges: applyEdgeChanges<AppEdge>(changes, s.edges) })),
+  onEdgesChange: (changes) => set((s) => ({ edges: applyEdgeChanges<AppEdge>(changes, s.edges) })),
 
   onConnect: (conn) =>
     set((s) => {
@@ -265,13 +268,15 @@ export const useGraphStore = create<GraphState>((set, get) => ({
 
   setGraph: (nodes, edges) => set({ nodes, edges }),
 
+  updateSettings: (patch) => set((s) => ({ settings: { ...s.settings, ...patch } })),
+
   toGraph: () => {
     const s = get();
     return {
       schemaVersion: "1.0",
       id: s.graphId || nanoid(),
       name: s.graphName,
-      settings: { process: "sequential", maxParallelism: 4, timeoutSec: 600 },
+      settings: s.settings,
       nodes: s.nodes.map(toFlowNode),
       edges: s.edges.map(toFlowEdge),
     };
@@ -283,6 +288,7 @@ export const useGraphStore = create<GraphState>((set, get) => ({
       graphName: graph.name,
       nodes: graph.nodes.map(fromFlowNode),
       edges: graph.edges.map(fromFlowEdge),
+      settings: graph.settings,
       selectedNodeId: null,
       loadedRev: s.loadedRev + 1,
     })),

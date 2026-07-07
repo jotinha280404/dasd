@@ -20,6 +20,7 @@ export type EventKind =
   | "permission.request"
   | "notification"
   | "compact.pre"
+  | "runner.iteration"
   | "agent.result"
   | "agent.error";
 
@@ -92,6 +93,14 @@ export interface NotificationData {
   message: string;
   hookEventName?: string;
 }
+/** One loop turn of a Ralph/Caveman run (agentId = `runner:<runId>`). */
+export interface RunnerIterationData {
+  runner: string;
+  iteration: number;
+  maxIterations: number;
+  /** Backlog item being worked (Ralph) or a progress note (Caveman). */
+  note?: string;
+}
 
 // ── run record (drives the monitor overlay; not part of the graph doc) ─
 export type RunStatus = "running" | "success" | "error" | "canceled";
@@ -105,4 +114,10 @@ export interface RunRecord {
   nodeStatus: Record<string, NodeStatusValue>;
   activeEdges: string[];
   outputs: Record<string, unknown>;
+  /** Strategy that drove the run ("dag" | "ralph" | "caveman"). */
+  runner?: string;
+  /** Current loop turn, 1-based (Ralph/Caveman only). */
+  iteration?: number;
+  /** Project backlog the run drives (Ralph only). */
+  projectId?: string;
 }

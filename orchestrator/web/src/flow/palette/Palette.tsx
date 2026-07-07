@@ -1,15 +1,7 @@
-import { useReactFlow } from "@xyflow/react";
-import {
-  Bot,
-  Box,
-  Code2,
-  GitBranch,
-  ListChecks,
-  type LucideIcon,
-  Wrench,
-  Zap,
-} from "lucide-react";
 import type { NodeType } from "@dasd/orch-shared";
+import { useReactFlow } from "@xyflow/react";
+import { Bot, Box, Code2, GitBranch, ListChecks, type LucideIcon, Wrench, Zap } from "lucide-react";
+import { ObservedSection } from "../../observed/ObservedSection";
 import { useGraphStore } from "../../store/graphStore";
 import { NODE_TYPES } from "../../types";
 
@@ -69,9 +61,12 @@ export function Palette() {
           </button>
         );
       })}
-      <p className="mt-auto px-1 pt-2 text-[11px] leading-snug text-muted-foreground">
+      <p className="px-1 pt-1 text-[11px] leading-snug text-muted-foreground">
         Click to add, or drag onto the canvas.
       </p>
+      <div className="mt-auto border-t border-border pt-3">
+        <ObservedSection />
+      </div>
     </aside>
   );
 }

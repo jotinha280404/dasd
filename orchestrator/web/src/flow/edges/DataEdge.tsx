@@ -1,4 +1,4 @@
-import { BaseEdge, getBezierPath, type EdgeProps } from "@xyflow/react";
+import { BaseEdge, type EdgeProps, getBezierPath } from "@xyflow/react";
 import type { CSSProperties } from "react";
 import { useRunStore } from "../../store/runStore";
 import type { AppEdge } from "../../types";

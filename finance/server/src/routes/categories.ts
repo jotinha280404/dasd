@@ -1,6 +1,6 @@
+import { Category } from "@dasd/fin-shared";
 import { Hono } from "hono";
 import { nanoid } from "nanoid";
-import { Category } from "@dasd/fin-shared";
 import { db } from "../store/db";
 import { readJson } from "./helpers";
 

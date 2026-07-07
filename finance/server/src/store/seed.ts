@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import type {
   Account,
   AccountType,
@@ -12,6 +11,7 @@ import type {
   Transaction,
   TxnType,
 } from "@dasd/fin-shared";
+import { nanoid } from "nanoid";
 import { db } from "./db";
 
 /**
@@ -152,8 +152,20 @@ export function seedIfEmpty(): boolean {
   const contractors = category("Contractors", "expense", "users", "#c98500");
   const advertising = category("Advertising", "expense", "megaphone", "#d95926");
   const categories = [
-    salary, interest, revenue, rent, groceries, utilities, dining, subscriptions,
-    transport, shopping, healthcare, software, contractors, advertising,
+    salary,
+    interest,
+    revenue,
+    rent,
+    groceries,
+    utilities,
+    dining,
+    subscriptions,
+    transport,
+    shopping,
+    healthcare,
+    software,
+    contractors,
+    advertising,
   ];
   db.categories.insertMany(categories);
 
@@ -161,125 +173,264 @@ export function seedIfEmpty(): boolean {
   const txns: Transaction[] = [];
   for (let m = NUM_MONTHS - 1; m >= 0; m--) {
     // Personal income.
-    txns.push(txn({
-      accountId: checking.id, ledger: "personal", date: seededDate(m, 1),
-      amount: jitter(6_500_00, m, 220_00), type: "income", categoryId: salary.id,
-      payee: "Acme Corp Payroll",
-    }));
-    txns.push(txn({
-      accountId: savings.id, ledger: "personal", date: seededDate(m, 2),
-      amount: jitter(34_00, m, 9_00), type: "income", categoryId: interest.id,
-      payee: "Ally Interest",
-    }));
+    txns.push(
+      txn({
+        accountId: checking.id,
+        ledger: "personal",
+        date: seededDate(m, 1),
+        amount: jitter(6_500_00, m, 220_00),
+        type: "income",
+        categoryId: salary.id,
+        payee: "Acme Corp Payroll",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: savings.id,
+        ledger: "personal",
+        date: seededDate(m, 2),
+        amount: jitter(34_00, m, 9_00),
+        type: "income",
+        categoryId: interest.id,
+        payee: "Ally Interest",
+      }),
+    );
 
     // Personal fixed + variable expenses from checking.
-    txns.push(txn({
-      accountId: checking.id, ledger: "personal", date: seededDate(m, 1),
-      amount: -2_200_00, type: "expense", categoryId: rent.id, payee: "Sunrise Apartments",
-    }));
-    txns.push(txn({
-      accountId: checking.id, ledger: "personal", date: seededDate(m, 5),
-      amount: -jitter(148_00, m, 42_00), type: "expense", categoryId: utilities.id,
-      payee: "City Utilities",
-    }));
-    txns.push(txn({
-      accountId: checking.id, ledger: "personal", date: seededDate(m, 8),
-      amount: -jitter(118_00, m, 55_00), type: "expense", categoryId: groceries.id,
-      payee: "Whole Foods",
-    }));
-    txns.push(txn({
-      accountId: checking.id, ledger: "personal", date: seededDate(m, 18),
-      amount: -jitter(132_00, m, 48_00), type: "expense", categoryId: groceries.id,
-      payee: "Trader Joe's",
-    }));
-    txns.push(txn({
-      accountId: checking.id, ledger: "personal", date: seededDate(m, 12),
-      amount: -jitter(92_00, m, 34_00), type: "expense", categoryId: transport.id,
-      payee: "Shell",
-    }));
-    txns.push(txn({
-      accountId: checking.id, ledger: "personal", date: seededDate(m, 22),
-      amount: -jitter(74_00, m, 40_00), type: "expense", categoryId: healthcare.id,
-      payee: "CVS Pharmacy",
-    }));
+    txns.push(
+      txn({
+        accountId: checking.id,
+        ledger: "personal",
+        date: seededDate(m, 1),
+        amount: -2_200_00,
+        type: "expense",
+        categoryId: rent.id,
+        payee: "Sunrise Apartments",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: checking.id,
+        ledger: "personal",
+        date: seededDate(m, 5),
+        amount: -jitter(148_00, m, 42_00),
+        type: "expense",
+        categoryId: utilities.id,
+        payee: "City Utilities",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: checking.id,
+        ledger: "personal",
+        date: seededDate(m, 8),
+        amount: -jitter(118_00, m, 55_00),
+        type: "expense",
+        categoryId: groceries.id,
+        payee: "Whole Foods",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: checking.id,
+        ledger: "personal",
+        date: seededDate(m, 18),
+        amount: -jitter(132_00, m, 48_00),
+        type: "expense",
+        categoryId: groceries.id,
+        payee: "Trader Joe's",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: checking.id,
+        ledger: "personal",
+        date: seededDate(m, 12),
+        amount: -jitter(92_00, m, 34_00),
+        type: "expense",
+        categoryId: transport.id,
+        payee: "Shell",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: checking.id,
+        ledger: "personal",
+        date: seededDate(m, 22),
+        amount: -jitter(74_00, m, 40_00),
+        type: "expense",
+        categoryId: healthcare.id,
+        payee: "CVS Pharmacy",
+      }),
+    );
 
     // Personal spending on the credit card (revolving liability).
-    txns.push(txn({
-      accountId: creditCard.id, ledger: "personal", date: seededDate(m, 6),
-      amount: -jitter(63_00, m, 22_00), type: "expense", categoryId: subscriptions.id,
-      payee: "Streaming Bundle",
-    }));
-    txns.push(txn({
-      accountId: creditCard.id, ledger: "personal", date: seededDate(m, 14),
-      amount: -jitter(178_00, m, 90_00), type: "expense", categoryId: dining.id,
-      payee: "Local Restaurants",
-    }));
-    txns.push(txn({
-      accountId: creditCard.id, ledger: "personal", date: seededDate(m, 20),
-      amount: -jitter(214_00, m, 130_00), type: "expense", categoryId: shopping.id,
-      payee: "Amazon",
-    }));
+    txns.push(
+      txn({
+        accountId: creditCard.id,
+        ledger: "personal",
+        date: seededDate(m, 6),
+        amount: -jitter(63_00, m, 22_00),
+        type: "expense",
+        categoryId: subscriptions.id,
+        payee: "Streaming Bundle",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: creditCard.id,
+        ledger: "personal",
+        date: seededDate(m, 14),
+        amount: -jitter(178_00, m, 90_00),
+        type: "expense",
+        categoryId: dining.id,
+        payee: "Local Restaurants",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: creditCard.id,
+        ledger: "personal",
+        date: seededDate(m, 20),
+        amount: -jitter(214_00, m, 130_00),
+        type: "expense",
+        categoryId: shopping.id,
+        payee: "Amazon",
+      }),
+    );
     // Card payment (transfer checking → card): pays down most of the balance.
-    txns.push(txn({
-      accountId: checking.id, ledger: "personal", date: seededDate(m, 26),
-      amount: -380_00, type: "transfer", categoryId: null, transferAccountId: creditCard.id,
-      payee: "Credit Card Payment",
-    }));
-    txns.push(txn({
-      accountId: creditCard.id, ledger: "personal", date: seededDate(m, 26),
-      amount: 380_00, type: "transfer", categoryId: null, transferAccountId: checking.id,
-      payee: "Payment Received",
-    }));
+    txns.push(
+      txn({
+        accountId: checking.id,
+        ledger: "personal",
+        date: seededDate(m, 26),
+        amount: -380_00,
+        type: "transfer",
+        categoryId: null,
+        transferAccountId: creditCard.id,
+        payee: "Credit Card Payment",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: creditCard.id,
+        ledger: "personal",
+        date: seededDate(m, 26),
+        amount: 380_00,
+        type: "transfer",
+        categoryId: null,
+        transferAccountId: checking.id,
+        payee: "Payment Received",
+      }),
+    );
 
     // Transfer to savings.
-    txns.push(txn({
-      accountId: checking.id, ledger: "personal", date: seededDate(m, 3),
-      amount: -1_000_00, type: "transfer", categoryId: null, transferAccountId: savings.id,
-      payee: "Monthly Savings",
-    }));
-    txns.push(txn({
-      accountId: savings.id, ledger: "personal", date: seededDate(m, 3),
-      amount: 1_000_00, type: "transfer", categoryId: null, transferAccountId: checking.id,
-      payee: "Monthly Savings",
-    }));
+    txns.push(
+      txn({
+        accountId: checking.id,
+        ledger: "personal",
+        date: seededDate(m, 3),
+        amount: -1_000_00,
+        type: "transfer",
+        categoryId: null,
+        transferAccountId: savings.id,
+        payee: "Monthly Savings",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: savings.id,
+        ledger: "personal",
+        date: seededDate(m, 3),
+        amount: 1_000_00,
+        type: "transfer",
+        categoryId: null,
+        transferAccountId: checking.id,
+        payee: "Monthly Savings",
+      }),
+    );
 
     // Business revenue + expenses.
-    txns.push(txn({
-      accountId: bizChecking.id, ledger: "business", date: seededDate(m, 4),
-      amount: jitter(11_800_00, m, 3_400_00), type: "income", categoryId: revenue.id,
-      payee: "Client Retainer",
-    }));
-    txns.push(txn({
-      accountId: bizChecking.id, ledger: "business", date: seededDate(m, 15),
-      amount: jitter(4_200_00, m, 2_600_00), type: "income", categoryId: revenue.id,
-      payee: "Project Invoice",
-    }));
-    txns.push(txn({
-      accountId: bizChecking.id, ledger: "business", date: seededDate(m, 10),
-      amount: -jitter(2_600_00, m, 900_00), type: "expense", categoryId: contractors.id,
-      payee: "Freelance Designer",
-    }));
-    txns.push(txn({
-      accountId: bizCredit.id, ledger: "business", date: seededDate(m, 7),
-      amount: -jitter(320_00, m, 110_00), type: "expense", categoryId: software.id,
-      payee: "SaaS Subscriptions",
-    }));
-    txns.push(txn({
-      accountId: bizCredit.id, ledger: "business", date: seededDate(m, 16),
-      amount: -jitter(540_00, m, 260_00), type: "expense", categoryId: advertising.id,
-      payee: "Google Ads",
-    }));
+    txns.push(
+      txn({
+        accountId: bizChecking.id,
+        ledger: "business",
+        date: seededDate(m, 4),
+        amount: jitter(11_800_00, m, 3_400_00),
+        type: "income",
+        categoryId: revenue.id,
+        payee: "Client Retainer",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: bizChecking.id,
+        ledger: "business",
+        date: seededDate(m, 15),
+        amount: jitter(4_200_00, m, 2_600_00),
+        type: "income",
+        categoryId: revenue.id,
+        payee: "Project Invoice",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: bizChecking.id,
+        ledger: "business",
+        date: seededDate(m, 10),
+        amount: -jitter(2_600_00, m, 900_00),
+        type: "expense",
+        categoryId: contractors.id,
+        payee: "Freelance Designer",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: bizCredit.id,
+        ledger: "business",
+        date: seededDate(m, 7),
+        amount: -jitter(320_00, m, 110_00),
+        type: "expense",
+        categoryId: software.id,
+        payee: "SaaS Subscriptions",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: bizCredit.id,
+        ledger: "business",
+        date: seededDate(m, 16),
+        amount: -jitter(540_00, m, 260_00),
+        type: "expense",
+        categoryId: advertising.id,
+        payee: "Google Ads",
+      }),
+    );
     // Business card payment (transfer biz checking → biz card).
-    txns.push(txn({
-      accountId: bizChecking.id, ledger: "business", date: seededDate(m, 25),
-      amount: -760_00, type: "transfer", categoryId: null, transferAccountId: bizCredit.id,
-      payee: "Card Payment",
-    }));
-    txns.push(txn({
-      accountId: bizCredit.id, ledger: "business", date: seededDate(m, 25),
-      amount: 760_00, type: "transfer", categoryId: null, transferAccountId: bizChecking.id,
-      payee: "Payment Received",
-    }));
+    txns.push(
+      txn({
+        accountId: bizChecking.id,
+        ledger: "business",
+        date: seededDate(m, 25),
+        amount: -760_00,
+        type: "transfer",
+        categoryId: null,
+        transferAccountId: bizCredit.id,
+        payee: "Card Payment",
+      }),
+    );
+    txns.push(
+      txn({
+        accountId: bizCredit.id,
+        ledger: "business",
+        date: seededDate(m, 25),
+        amount: 760_00,
+        type: "transfer",
+        categoryId: null,
+        transferAccountId: bizChecking.id,
+        payee: "Payment Received",
+      }),
+    );
   }
   db.transactions.insertMany(txns);
 
@@ -289,19 +440,52 @@ export function seedIfEmpty(): boolean {
     holding(brokerage.id, "personal", "AAPL", "Apple Inc.", "equity", 40, 720_000, 225_00),
     holding(brokerage.id, "personal", "BTC", "Bitcoin", "crypto", 0.35, 1_680_000, 65_000_00),
     holding(brokerage.id, "personal", "BND", "Vanguard Total Bond ETF", "bond", 60, 450_000, 72_00),
-    holding(brokerage.id, "personal", "VNQ", "Vanguard Real Estate ETF", "reit", 30, 270_000, 88_00),
+    holding(
+      brokerage.id,
+      "personal",
+      "VNQ",
+      "Vanguard Real Estate ETF",
+      "reit",
+      30,
+      270_000,
+      88_00,
+    ),
   ];
   db.holdings.insertMany(holdings);
 
   // ── Budgets ───────────────────────────────────────────────────────────
   const budgets: Budget[] = [
-    { id: nanoid(), categoryId: groceries.id, ledger: "personal", period: "monthly", limit: 600_00 },
+    {
+      id: nanoid(),
+      categoryId: groceries.id,
+      ledger: "personal",
+      period: "monthly",
+      limit: 600_00,
+    },
     { id: nanoid(), categoryId: dining.id, ledger: "personal", period: "monthly", limit: 300_00 },
-    { id: nanoid(), categoryId: subscriptions.id, ledger: "personal", period: "monthly", limit: 80_00 },
-    { id: nanoid(), categoryId: transport.id, ledger: "personal", period: "monthly", limit: 200_00 },
+    {
+      id: nanoid(),
+      categoryId: subscriptions.id,
+      ledger: "personal",
+      period: "monthly",
+      limit: 80_00,
+    },
+    {
+      id: nanoid(),
+      categoryId: transport.id,
+      ledger: "personal",
+      period: "monthly",
+      limit: 200_00,
+    },
     { id: nanoid(), categoryId: shopping.id, ledger: "personal", period: "monthly", limit: 250_00 },
     { id: nanoid(), categoryId: software.id, ledger: "business", period: "monthly", limit: 500_00 },
-    { id: nanoid(), categoryId: advertising.id, ledger: "business", period: "monthly", limit: 800_00 },
+    {
+      id: nanoid(),
+      categoryId: advertising.id,
+      ledger: "business",
+      period: "monthly",
+      limit: 800_00,
+    },
   ];
   db.budgets.insertMany(budgets);
 
@@ -311,19 +495,37 @@ export function seedIfEmpty(): boolean {
     isoDate(new Date(now.getFullYear(), now.getMonth() + n, 15));
   const goals: Goal[] = [
     {
-      id: nanoid(), name: "Emergency Fund", ledger: "personal", targetAmount: 3_000_000,
-      currentAmount: 0, deadline: null, linkedAccountId: savings.id,
-      note: "Six months of expenses.", createdAt: seededDate(NUM_MONTHS, 1),
+      id: nanoid(),
+      name: "Emergency Fund",
+      ledger: "personal",
+      targetAmount: 3_000_000,
+      currentAmount: 0,
+      deadline: null,
+      linkedAccountId: savings.id,
+      note: "Six months of expenses.",
+      createdAt: seededDate(NUM_MONTHS, 1),
     },
     {
-      id: nanoid(), name: "Vacation to Japan", ledger: "personal", targetAmount: 500_000,
-      currentAmount: 232_000, deadline: inMonths(8), linkedAccountId: null,
-      note: "Spring trip.", createdAt: seededDate(6, 1),
+      id: nanoid(),
+      name: "Vacation to Japan",
+      ledger: "personal",
+      targetAmount: 500_000,
+      currentAmount: 232_000,
+      deadline: inMonths(8),
+      linkedAccountId: null,
+      note: "Spring trip.",
+      createdAt: seededDate(6, 1),
     },
     {
-      id: nanoid(), name: "New Equipment", ledger: "business", targetAmount: 1_500_000,
-      currentAmount: 640_000, deadline: inMonths(10), linkedAccountId: null,
-      note: "Workstations + camera gear.", createdAt: seededDate(4, 1),
+      id: nanoid(),
+      name: "New Equipment",
+      ledger: "business",
+      targetAmount: 1_500_000,
+      currentAmount: 640_000,
+      deadline: inMonths(10),
+      linkedAccountId: null,
+      note: "Workstations + camera gear.",
+      createdAt: seededDate(4, 1),
     },
   ];
   db.goals.insertMany(goals);

@@ -11,6 +11,6 @@ export interface Health {
   ts: string;
 }
 
-export * from "./models";
 export * from "./media";
+export * from "./models";
 export * from "./modelTable";

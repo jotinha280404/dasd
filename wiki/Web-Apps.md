@@ -20,8 +20,8 @@ Agents reach the canvas two ways under one event model:
   `query()` per agent node; each is a real Claude Code subprocess it can
   stream, interrupt, and stop.
 - **Observed** — your own `claude` terminal session POSTs Claude Code hook
-  events to the server and shows up as a live, read-only "ghost" flow.
-  (Planned — Phase 2.)
+  events to the server (wire it with `orchestrator/hooks/forward.mjs`) and
+  shows up as a live, read-only "ghost" session in the UI.
 
 Stack: React 19 + Vite 7 + React Flow 12 (web) · Hono + `ws` (server) ·
 `@anthropic-ai/claude-agent-sdk`. See [[Decisions]] for why the Agent SDK and
@@ -134,13 +134,23 @@ As of 2026-07-07:
   (list/create/delete) exercised, and a **real Claude chat turn**
   (`usedRealClaude: true`) created an event through the in-process tools with
   correct America/Sao_Paulo timezone math.
+- Phase 2 — **orchestrator depth** (2026-07-07): selectable run strategies
+  (`settings.runner`: DAG now parallel with agent→agent data passing; Ralph
+  looping a project backlog to done; Caveman brute-force retry with a done
+  marker + optional context compression), the **project progress tracker**
+  (backlog store + `project.update` broadcasts + a live Progress drawer), and
+  **hook observation** (`POST /api/hooks` + `orchestrator/hooks/forward.mjs`
+  → live ghost sessions in the UI). Verified: 12/12 integration checks over
+  REST **and** WebSocket in mock mode (Ralph drove a 3-item backlog to done
+  in 3 iterations; Caveman exited on marker at iteration 1 and errored on
+  exhaustion; two DAG agents ran in parallel; hook events appeared as a
+  ghost), plus a full browser walkthrough — runner picked, project created
+  inline, run watched to 100% · 3/3 done, ghost session log opened.
 
 **Remaining**
 
-- Phase 2 — orchestrator depth: multi-agent flows, hook observation ("ghost
-  flows"), selectable run strategies (DAG / Ralph / Caveman) as flow config,
-  and a project progress tracker (backlog/milestones the runner updates).
 - Phase 4 — Higgsfield image→video + character continuation.
-- Phase 5 — polish / persistence / deploy.
+- Phase 5 — polish / persistence / deploy (orchestrator ghost-flow canvas
+  rendering and live permission prompts are on [[Ideas]]).
 
 See [[Decisions]] for choices along the way.

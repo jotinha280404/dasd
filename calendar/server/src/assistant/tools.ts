@@ -1,13 +1,13 @@
 import { createSdkMcpServer, tool } from "@anthropic-ai/claude-agent-sdk";
-import { z } from "zod";
 import {
-  EventColor,
   type CalendarAction,
   type CalendarEvent,
   type CalendarProvider,
+  EventColor,
   type EventInput,
   type EventPatch,
 } from "@dasd/cal-shared";
+import { z } from "zod";
 import { summarizeEvent } from "./format";
 
 /**
@@ -60,9 +60,7 @@ export function buildCalendarServer(
     },
     async (args) => {
       const start = new Date(args.start);
-      const end = args.end
-        ? new Date(args.end)
-        : new Date(start.getTime() + HOUR_MS);
+      const end = args.end ? new Date(args.end) : new Date(start.getTime() + HOUR_MS);
       const input: EventInput = {
         title: args.title,
         start: start.toISOString(),

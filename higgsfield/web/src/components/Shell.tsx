@@ -1,9 +1,9 @@
 import { cn } from "@dasd/ui";
 import { Camera, Clapperboard, Sparkles, Users, X } from "lucide-react";
-import { useState } from "react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 import { useCapabilities } from "../api/queries";
-import { useUIStore, type Tab } from "../store/ui";
+import { type Tab, useUIStore } from "../store/ui";
 
 const NAV: { tab: Tab; label: string; icon: ReactNode }[] = [
   { tab: "create", label: "Create", icon: <Sparkles size={18} /> },

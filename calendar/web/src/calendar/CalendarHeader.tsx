@@ -1,7 +1,7 @@
 import { Button } from "@dasd/ui";
 import { CalendarDays, ChevronLeft, ChevronRight, List, Plus } from "lucide-react";
 import { formatMonthLabel } from "../lib/datetime";
-import { useUiStore, type CalendarView } from "../store/ui";
+import { type CalendarView, useUiStore } from "../store/ui";
 
 const VIEWS: { value: CalendarView; label: string; icon: typeof CalendarDays }[] = [
   { value: "month", label: "Month", icon: CalendarDays },

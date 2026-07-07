@@ -1,7 +1,7 @@
 import { Button, cn } from "@dasd/ui";
 import { Clapperboard, ImagePlus, Sparkles, User, X } from "lucide-react";
-import { useState } from "react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useCharacters, useGenerate, usePresets } from "../api/queries";
 import { Chip } from "../components/Chip";

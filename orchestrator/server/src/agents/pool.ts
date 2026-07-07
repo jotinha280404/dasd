@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
-import pLimit from "p-limit";
 import type { AgentSpec } from "@dasd/orch-shared";
+import pLimit from "p-limit";
 import { bus } from "../bus";
 import { fromSdk, type NormalizeCtx } from "../normalize";
 import { runMock } from "./mock";
@@ -20,6 +20,8 @@ export interface AgentHandle {
 export interface LaunchResult {
   ok: boolean;
   error?: string;
+  /** Final answer text from the agent's terminal `agent.result` event, when present. */
+  resultText?: string;
 }
 
 interface Entry {
@@ -85,9 +87,16 @@ export class AgentPool {
             for (const e of fromSdk(ctx, raw)) {
               bus.emitEvent(e);
               if (e.kind === "agent.result") {
-                finish({ ok: true });
+                const resultText =
+                  isRecord(e.data) && typeof e.data["result"] === "string"
+                    ? e.data["result"]
+                    : undefined;
+                finish(resultText !== undefined ? { ok: true, resultText } : { ok: true });
               } else if (e.kind === "agent.error") {
-                const msg = isRecord(e.data) && typeof e.data["message"] === "string" ? e.data["message"] : "agent error";
+                const msg =
+                  isRecord(e.data) && typeof e.data["message"] === "string"
+                    ? e.data["message"]
+                    : "agent error";
                 finish({ ok: false, error: msg });
               }
             }

@@ -9,9 +9,7 @@ import type { CalendarEvent } from "@dasd/cal-shared";
 
 function fmt(iso: string, tz: string, opts: Intl.DateTimeFormatOptions): string {
   try {
-    return new Intl.DateTimeFormat("en-US", { timeZone: tz, ...opts }).format(
-      new Date(iso),
-    );
+    return new Intl.DateTimeFormat("en-US", { timeZone: tz, ...opts }).format(new Date(iso));
   } catch {
     return new Intl.DateTimeFormat("en-US", opts).format(new Date(iso));
   }

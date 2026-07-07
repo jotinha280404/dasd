@@ -1,9 +1,10 @@
-import { nanoid } from "nanoid";
 import type {
   AgentEvent,
   DeltaData,
   EventKind,
   EventSource,
+  HookPayload,
+  NotificationData,
   ResultData,
   SessionStartData,
   TextData,
@@ -11,11 +12,14 @@ import type {
   ToolPreData,
   Usage,
 } from "@dasd/orch-shared";
+import { hookAgentId } from "@dasd/orch-shared";
+import { nanoid } from "nanoid";
 
 /**
  * Turns raw `@anthropic-ai/claude-agent-sdk` `SDKMessage`s (and the identically
  * shaped messages the mock provider emits) into the normalized `AgentEvent`
- * stream. Every path is defensive — unknown shapes yield `[]`, never a throw.
+ * stream, and Claude Code hook payloads into the same stream (ghost sessions).
+ * Every path is defensive — unknown shapes yield `[]`, never a throw.
  */
 
 export interface NormalizeCtx {
@@ -73,7 +77,21 @@ function make(
   return e;
 }
 
-function fromSystem(ctx: NormalizeCtx, msg: Record<string, unknown>, sessionId: string | undefined): AgentEvent[] {
+/** Build one normalized event outside the SDK/hook paths (e.g. `runner.iteration`). */
+export function makeEvent(
+  ctx: NormalizeCtx,
+  kind: EventKind,
+  data: unknown,
+  raw?: unknown,
+): AgentEvent {
+  return make(ctx, kind, data, undefined, raw);
+}
+
+function fromSystem(
+  ctx: NormalizeCtx,
+  msg: Record<string, unknown>,
+  sessionId: string | undefined,
+): AgentEvent[] {
   if (asString(msg["subtype"]) !== "init") return [];
   const data: SessionStartData = {
     model: asString(msg["model"]),
@@ -114,7 +132,11 @@ function fromAssistant(
   return events;
 }
 
-function fromStream(ctx: NormalizeCtx, msg: Record<string, unknown>, sessionId: string | undefined): AgentEvent[] {
+function fromStream(
+  ctx: NormalizeCtx,
+  msg: Record<string, unknown>,
+  sessionId: string | undefined,
+): AgentEvent[] {
   const event = msg["event"];
   if (!isRecord(event) || asString(event["type"]) !== "content_block_delta") return [];
   const delta = event["delta"];
@@ -125,7 +147,11 @@ function fromStream(ctx: NormalizeCtx, msg: Record<string, unknown>, sessionId: 
   return [make(ctx, "assistant.delta", data, sessionId, msg)];
 }
 
-function fromUser(ctx: NormalizeCtx, msg: Record<string, unknown>, sessionId: string | undefined): AgentEvent[] {
+function fromUser(
+  ctx: NormalizeCtx,
+  msg: Record<string, unknown>,
+  sessionId: string | undefined,
+): AgentEvent[] {
   const message = msg["message"];
   if (!isRecord(message)) return [];
   const content = message["content"];
@@ -146,7 +172,11 @@ function fromUser(ctx: NormalizeCtx, msg: Record<string, unknown>, sessionId: st
   return events;
 }
 
-function fromResult(ctx: NormalizeCtx, msg: Record<string, unknown>, sessionId: string | undefined): AgentEvent[] {
+function fromResult(
+  ctx: NormalizeCtx,
+  msg: Record<string, unknown>,
+  sessionId: string | undefined,
+): AgentEvent[] {
   const usageRaw = msg["usage"];
   let usage: Usage | undefined;
   if (isRecord(usageRaw)) {
@@ -168,7 +198,11 @@ function fromResult(ctx: NormalizeCtx, msg: Record<string, unknown>, sessionId: 
   return [make(ctx, "agent.result", data, sessionId, msg)];
 }
 
-function fromErrorMsg(ctx: NormalizeCtx, msg: Record<string, unknown>, sessionId: string | undefined): AgentEvent[] {
+function fromErrorMsg(
+  ctx: NormalizeCtx,
+  msg: Record<string, unknown>,
+  sessionId: string | undefined,
+): AgentEvent[] {
   const message = asString(msg["error"]) ?? asString(msg["message"]) ?? "Agent error";
   return [make(ctx, "agent.error", { message }, sessionId, msg)];
 }
@@ -199,7 +233,63 @@ export function fromSdk(ctx: NormalizeCtx, sdkMsg: unknown): AgentEvent[] {
   }
 }
 
-/** Phase 2: normalize Claude Code hook JSON. Stubbed for now. */
-export function fromHook(_hookJson: unknown): AgentEvent[] {
-  return [];
+/**
+ * Map one validated Claude Code hook payload to normalized events for the ghost
+ * agent `cc:<session_id>`. The original request body is kept as `raw`.
+ */
+export function fromHook(payload: HookPayload, raw: unknown): AgentEvent[] {
+  try {
+    const ctx: NormalizeCtx = { agentId: hookAgentId(payload.session_id), source: "hook" };
+    const sessionId = payload.session_id;
+    switch (payload.hook_event_name) {
+      case "SessionStart": {
+        const data: SessionStartData = { cwd: payload.cwd };
+        return [make(ctx, "session.start", data, sessionId, raw)];
+      }
+      case "UserPromptSubmit": {
+        const data: TextData = { text: payload.prompt ?? "" };
+        return [make(ctx, "user.prompt", data, sessionId, raw)];
+      }
+      case "PreToolUse": {
+        const data: ToolPreData = {
+          toolName: payload.tool_name ?? "tool",
+          toolUseId: payload.tool_use_id,
+          input: payload.tool_input,
+        };
+        return [make(ctx, "tool.pre", data, sessionId, raw)];
+      }
+      case "PostToolUse": {
+        const data: ToolPostData = {
+          toolName: payload.tool_name ?? "tool",
+          toolUseId: payload.tool_use_id,
+          output: payload.tool_response,
+          isError: false,
+        };
+        return [make(ctx, "tool.post", data, sessionId, raw)];
+      }
+      case "Notification": {
+        const data: NotificationData = {
+          message: payload.message ?? "",
+          hookEventName: "Notification",
+        };
+        return [make(ctx, "notification", data, sessionId, raw)];
+      }
+      case "Stop":
+      case "SubagentStop": {
+        const data: NotificationData = {
+          message: "turn finished",
+          hookEventName: payload.hook_event_name,
+        };
+        return [make(ctx, "notification", data, sessionId, raw)];
+      }
+      case "PreCompact":
+        return [make(ctx, "compact.pre", { trigger: payload.trigger }, sessionId, raw)];
+      case "SessionEnd":
+        return [make(ctx, "session.end", { reason: payload.reason }, sessionId, raw)];
+      default:
+        return [];
+    }
+  } catch {
+    return [];
+  }
 }

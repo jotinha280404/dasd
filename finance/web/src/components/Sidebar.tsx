@@ -1,14 +1,14 @@
 import { cn } from "@dasd/ui";
 import {
   ArrowLeftRight,
-  LayoutDashboard,
   Landmark,
+  LayoutDashboard,
+  type LucideIcon,
   PiggyBank,
   Target,
   TrendingUp,
-  type LucideIcon,
 } from "lucide-react";
-import { useUiStore, type Page } from "../store/ui";
+import { type Page, useUiStore } from "../store/ui";
 
 const NAV: { page: Page; label: string; Icon: LucideIcon }[] = [
   { page: "dashboard", label: "Dashboard", Icon: LayoutDashboard },

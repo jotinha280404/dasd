@@ -1,15 +1,15 @@
 import type { Server } from "node:http";
-import { WebSocket, WebSocketServer } from "ws";
 import type { AgentEvent, AgentSpec, ClientFrame, ServerFrame } from "@dasd/orch-shared";
+import { WebSocket, WebSocketServer } from "ws";
 import type { AgentPool } from "../agents/pool";
 import { bus } from "../bus";
 
 /**
  * The WebSocket hub at `/ws`. Records every bus event into a bounded per-agent
- * ring buffer, fans events + run-status frames out to subscribers, and handles
- * client control frames (subscribe / launch / interrupt / stop / permission /
- * resumeFrom). A `subscribe(["*"])` gets snapshots of all known agents then all
- * future events live.
+ * ring buffer, fans events + run-status + project-update frames out to
+ * subscribers, and handles client control frames (subscribe / launch /
+ * interrupt / stop / permission / resumeFrom). A `subscribe(["*"])` gets
+ * snapshots of all known agents then all future events live.
  */
 
 const RING_LIMIT = 500;
@@ -55,7 +55,15 @@ export function attachHub(server: Server, pool: AgentPool): WebSocketServer {
       status: s.status,
       nodeStatus: s.nodeStatus,
       activeEdges: s.activeEdges,
+      ...(s.runner !== undefined ? { runner: s.runner } : {}),
+      ...(s.iteration !== undefined ? { iteration: s.iteration } : {}),
+      ...(s.projectId !== undefined ? { projectId: s.projectId } : {}),
     };
+    for (const sub of subs.values()) send(sub.socket, frame);
+  });
+
+  bus.onProject((project) => {
+    const frame: ServerFrame = { t: "project.update", project };
     for (const sub of subs.values()) send(sub.socket, frame);
   });
 
@@ -130,20 +138,31 @@ function parseClientFrame(buf: Buffer): ClientFrame | null {
 
   switch (data["t"]) {
     case "subscribe":
-      return isStringArray(data["agentIds"]) ? { t: "subscribe", agentIds: data["agentIds"] } : null;
+      return isStringArray(data["agentIds"])
+        ? { t: "subscribe", agentIds: data["agentIds"] }
+        : null;
     case "launch":
-      return typeof data["runId"] === "string" && isRecord(data["spec"]) && typeof data["spec"]["agentId"] === "string"
+      return typeof data["runId"] === "string" &&
+        isRecord(data["spec"]) &&
+        typeof data["spec"]["agentId"] === "string"
         ? { t: "launch", runId: data["runId"], spec: data["spec"] as unknown as AgentSpec }
         : null;
     case "interrupt":
-      return typeof data["agentId"] === "string" ? { t: "interrupt", agentId: data["agentId"] } : null;
+      return typeof data["agentId"] === "string"
+        ? { t: "interrupt", agentId: data["agentId"] }
+        : null;
     case "stop":
       return typeof data["agentId"] === "string" ? { t: "stop", agentId: data["agentId"] } : null;
     case "permission":
       return typeof data["agentId"] === "string" &&
         typeof data["toolUseId"] === "string" &&
         (data["decision"] === "allow" || data["decision"] === "deny")
-        ? { t: "permission", agentId: data["agentId"], toolUseId: data["toolUseId"], decision: data["decision"] }
+        ? {
+            t: "permission",
+            agentId: data["agentId"],
+            toolUseId: data["toolUseId"],
+            decision: data["decision"],
+          }
         : null;
     case "resumeFrom":
       return typeof data["agentId"] === "string" && typeof data["afterSeq"] === "number"

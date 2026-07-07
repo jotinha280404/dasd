@@ -2,13 +2,7 @@ import type { LedgerFilter } from "@dasd/fin-shared";
 import { create } from "zustand";
 
 /** The six routed pages. A tiny state router avoids a react-router dependency. */
-export type Page =
-  | "dashboard"
-  | "accounts"
-  | "transactions"
-  | "investments"
-  | "budgets"
-  | "goals";
+export type Page = "dashboard" | "accounts" | "transactions" | "investments" | "budgets" | "goals";
 
 interface UiState {
   page: Page;

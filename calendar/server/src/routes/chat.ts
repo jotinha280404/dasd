@@ -1,5 +1,5 @@
-import { Hono } from "hono";
 import type { ChatMessage, ChatRequest } from "@dasd/cal-shared";
+import { Hono } from "hono";
 import { handleChat } from "../assistant/chat";
 
 /** `POST /api/chat` → the natural-language calendar assistant. */

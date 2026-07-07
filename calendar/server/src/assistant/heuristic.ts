@@ -1,8 +1,4 @@
-import type {
-  CalendarAction,
-  CalendarProvider,
-  EventColorValue,
-} from "@dasd/cal-shared";
+import type { CalendarAction, CalendarProvider, EventColorValue } from "@dasd/cal-shared";
 import { summarizeEvent } from "./format";
 
 /**
@@ -13,15 +9,7 @@ import { summarizeEvent } from "./format";
  */
 
 const HOUR_MS = 60 * 60 * 1000;
-const WEEKDAYS = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
+const WEEKDAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
 interface DayMatch {
   date: Date;
@@ -120,13 +108,13 @@ function parseColor(text: string): EventColorValue | undefined {
 /** Strip verb, day, and time phrases to leave a plausible title. */
 function extractTitle(raw: string): string {
   let t = raw
-    .replace(
-      /\b(schedule|add|create|book|set up|set-up|plan|new|put|make)\b/gi,
-      " ",
-    )
+    .replace(/\b(schedule|add|create|book|set up|set-up|plan|new|put|make)\b/gi, " ")
     .replace(/\b(an?|the|my|a)\b/gi, " ")
     .replace(/\bday after tomorrow\b/gi, " ")
-    .replace(/\b(next\s+)?(today|tonight|tomorrow|sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/gi, " ")
+    .replace(
+      /\b(next\s+)?(today|tonight|tomorrow|sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/gi,
+      " ",
+    )
     .replace(/\b(on|at|for|from|to)\b/gi, " ")
     .replace(/\bnoon\b|\bmidnight\b/gi, " ")
     .replace(/\b\d{1,2}(?::\d{2})?\s*(am|pm)\b/gi, " ")
@@ -240,9 +228,7 @@ async function doDelete(
   const from = midnight(now, -30).toISOString();
   const to = midnight(now, 365).toISOString();
   const events = await provider.list({ from, to });
-  const match = events.find(
-    (e) => query.length > 0 && e.title.toLowerCase().includes(query),
-  );
+  const match = events.find((e) => query.length > 0 && e.title.toLowerCase().includes(query));
   if (!match) {
     return `I couldn't find an event matching "${query}" to cancel.`;
   }

@@ -4,7 +4,11 @@
  * estimates for display only ("est."), never billing truth.
  */
 export const IMAGE_MODELS = {
-  "gemini-2.5-flash-image": { provider: "gemini", label: "Gemini 2.5 Flash Image", estCostUsd: 0.039 },
+  "gemini-2.5-flash-image": {
+    provider: "gemini",
+    label: "Gemini 2.5 Flash Image",
+    estCostUsd: 0.039,
+  },
 } as const;
 
 export const VIDEO_MODELS = {

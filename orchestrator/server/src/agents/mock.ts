@@ -1,5 +1,5 @@
-import { nanoid } from "nanoid";
 import type { AgentSpec } from "@dasd/orch-shared";
+import { nanoid } from "nanoid";
 import type { AgentHandle, EmitRaw } from "./pool";
 
 /**
@@ -59,7 +59,14 @@ export function runMock(spec: AgentSpec, emit: EmitRaw): AgentHandle {
       parent_tool_use_id: null,
       message: {
         role: "assistant",
-        content: [{ type: "tool_use", id: toolUseId, name: "WebSearch", input: { query: firstLine(spec.prompt) } }],
+        content: [
+          {
+            type: "tool_use",
+            id: toolUseId,
+            name: "WebSearch",
+            input: { query: firstLine(spec.prompt) },
+          },
+        ],
       },
     }),
   );
@@ -73,7 +80,12 @@ export function runMock(spec: AgentSpec, emit: EmitRaw): AgentHandle {
       message: {
         role: "user",
         content: [
-          { type: "tool_result", tool_use_id: toolUseId, is_error: false, content: "Found 3 relevant, high-quality sources." },
+          {
+            type: "tool_result",
+            tool_use_id: toolUseId,
+            is_error: false,
+            content: "Found 3 relevant, high-quality sources.",
+          },
         ],
       },
     }),
@@ -107,7 +119,12 @@ export function runMock(spec: AgentSpec, emit: EmitRaw): AgentHandle {
       duration_ms: total,
       total_cost_usd: 0.0123,
       result: answer,
-      usage: { input_tokens: 1200, output_tokens: 320, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 },
+      usage: {
+        input_tokens: 1200,
+        output_tokens: 320,
+        cache_read_input_tokens: 0,
+        cache_creation_input_tokens: 0,
+      },
     }),
   );
 

@@ -1,11 +1,12 @@
 import { EventEmitter } from "node:events";
-import type { AgentEvent, NodeStatusValue, RunStatus } from "@dasd/orch-shared";
+import type { AgentEvent, NodeStatusValue, Project, RunStatus } from "@dasd/orch-shared";
 
 /**
- * A tiny typed event bus wrapping Node's EventEmitter. Two channels: normalized
+ * A tiny typed event bus wrapping Node's EventEmitter. Three channels: normalized
  * agent `event`s (carrying `{ agentId, runId?, nodeId?, source, raw }` inside the
- * AgentEvent envelope) and `runStatus` updates from the engine. The ws hub
- * subscribes to both and fans them out to clients.
+ * AgentEvent envelope), `runStatus` updates from the engine, and `project`
+ * snapshots from the project store (every backlog mutation). The ws hub
+ * subscribes to all three and fans them out to clients.
  */
 
 export interface RunStatusUpdate {
@@ -13,6 +14,10 @@ export interface RunStatusUpdate {
   status: RunStatus;
   nodeStatus: Record<string, NodeStatusValue>;
   activeEdges: string[];
+  /** Present on Ralph/Caveman runs (mirrors the run.status wire frame). */
+  runner?: string;
+  iteration?: number;
+  projectId?: string;
 }
 
 class OrchestratorBus {
@@ -42,6 +47,17 @@ class OrchestratorBus {
     this.emitter.on("runStatus", fn);
     return () => {
       this.emitter.off("runStatus", fn);
+    };
+  }
+
+  emitProject(p: Project): void {
+    this.emitter.emit("project", p);
+  }
+
+  onProject(fn: (p: Project) => void): () => void {
+    this.emitter.on("project", fn);
+    return () => {
+      this.emitter.off("project", fn);
     };
   }
 }

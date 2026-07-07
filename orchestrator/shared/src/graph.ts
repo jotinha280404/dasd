@@ -26,14 +26,7 @@ export const Ports = z.object({
 export const Position = z.object({ x: z.number(), y: z.number() });
 
 // ── Runtime (execution overlay; not authored, filled during a run) ─────
-export const NodeStatus = z.enum([
-  "idle",
-  "queued",
-  "running",
-  "success",
-  "error",
-  "skipped",
-]);
+export const NodeStatus = z.enum(["idle", "queued", "running", "success", "error", "skipped"]);
 export type NodeStatusValue = z.infer<typeof NodeStatus>;
 
 export const Runtime = z
@@ -50,12 +43,7 @@ export type Runtime = z.infer<typeof Runtime>;
 
 // ── Per-type node config ──────────────────────────────────────────────
 export const ReasoningEffort = z.enum(["low", "medium", "high", "xhigh", "max"]);
-export const PermissionMode = z.enum([
-  "default",
-  "acceptEdits",
-  "bypassPermissions",
-  "plan",
-]);
+export const PermissionMode = z.enum(["default", "acceptEdits", "bypassPermissions", "plan"]);
 
 /** AGENT — a real Claude Code agent (maps ~1:1 onto the Agent SDK query() options). */
 export const AgentConfig = z.object({
@@ -212,14 +200,61 @@ export const FlowEdge = z.object({
 });
 export type FlowEdge = z.infer<typeof FlowEdge>;
 
+// ── Runner strategies (Phase 2) ───────────────────────────────────────
+/**
+ * How a run drives its agents:
+ * - `dag` — one pass in dependency order, parallel where the graph allows.
+ * - `ralph` — loop-until-done over a project backlog (Geoffrey Huntley's
+ *   technique): each iteration takes the next `todo` item, runs the flow's
+ *   agents on it, and marks it `done`; stops when the backlog is empty.
+ * - `caveman` — brute-force re-invoke loop: run the same flow repeatedly
+ *   until an agent result contains `doneMarker` (or `maxIterations`).
+ */
+export const RunnerKind = z.enum(["dag", "ralph", "caveman"]);
+export type RunnerKind = z.infer<typeof RunnerKind>;
+
+export const RunnerConfig = z
+  .object({
+    kind: RunnerKind.default("dag"),
+    /** Ralph/Caveman: hard iteration cap so loops always terminate. */
+    maxIterations: z.number().int().positive().max(100).default(10),
+    /** Ralph: the project whose backlog drives (and records) the loop. */
+    projectId: z.string().nullable().default(null),
+    /** Caveman: substring in an agent result that means "done". */
+    doneMarker: z.string().default("DONE"),
+    /** Caveman: carry only a truncated summary between iterations. */
+    compressContext: z.boolean().default(false),
+  })
+  .default({
+    kind: "dag",
+    maxIterations: 10,
+    projectId: null,
+    doneMarker: "DONE",
+    compressContext: false,
+  });
+export type RunnerConfig = z.infer<typeof RunnerConfig>;
+
 // ── The graph document ────────────────────────────────────────────────
 export const FlowSettings = z
   .object({
     process: z.enum(["sequential", "hierarchical"]).default("sequential"),
     maxParallelism: z.number().int().positive().default(4),
     timeoutSec: z.number().int().positive().default(600),
+    runner: RunnerConfig,
   })
-  .default({ process: "sequential", maxParallelism: 4, timeoutSec: 600 });
+  .default({
+    process: "sequential",
+    maxParallelism: 4,
+    timeoutSec: 600,
+    runner: {
+      kind: "dag",
+      maxIterations: 10,
+      projectId: null,
+      doneMarker: "DONE",
+      compressContext: false,
+    },
+  });
+export type FlowSettings = z.infer<typeof FlowSettings>;
 
 export const FlowGraph = z.object({
   schemaVersion: z.literal("1.0").default("1.0"),

@@ -1,4 +1,3 @@
-import type { Edge, Node } from "@xyflow/react";
 import type {
   AgentConfig,
   CodeConfig,
@@ -12,6 +11,7 @@ import type {
   ToolConfig,
   TriggerConfig,
 } from "@dasd/orch-shared";
+import type { Edge, Node } from "@xyflow/react";
 
 /**
  * The canvas-side view of the shared graph contract. `AppNode`/`AppEdge` are the

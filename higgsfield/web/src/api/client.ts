@@ -64,13 +64,11 @@ export const api = {
   generation: (id: string) => http<Generation>(`/api/generations/${id}`),
   generate: (input: GenerateInput) =>
     http<Generation>("/api/generate", { method: "POST", body: JSON.stringify(input) }),
-  deleteGeneration: (id: string) =>
-    http<void>(`/api/generations/${id}`, { method: "DELETE" }),
+  deleteGeneration: (id: string) => http<void>(`/api/generations/${id}`, { method: "DELETE" }),
   characters: () => http<Character[]>("/api/characters"),
   createCharacter: (input: CharacterInput) =>
     http<Character>("/api/characters", { method: "POST", body: JSON.stringify(input) }),
   updateCharacter: (id: string, input: CharacterInput) =>
     http<Character>(`/api/characters/${id}`, { method: "PUT", body: JSON.stringify(input) }),
-  deleteCharacter: (id: string) =>
-    http<void>(`/api/characters/${id}`, { method: "DELETE" }),
+  deleteCharacter: (id: string) => http<void>(`/api/characters/${id}`, { method: "DELETE" }),
 };

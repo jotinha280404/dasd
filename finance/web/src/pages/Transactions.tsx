@@ -1,10 +1,10 @@
 import {
-  TxnType,
-  toCents,
-  toMajor,
   type Account,
   type Category,
   type Transaction,
+  TxnType,
+  toCents,
+  toMajor,
 } from "@dasd/fin-shared";
 import { Button } from "@dasd/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,7 @@ import {
   useTransactions,
   useUpdateTransaction,
 } from "../api/queries";
-import { Field, SelectInput, TextInput, controlClass } from "../components/form";
+import { controlClass, Field, SelectInput, TextInput } from "../components/form";
 import { Modal } from "../components/Modal";
 import { EmptyState, ErrorState, Loading } from "../components/states";
 import { Amount, Card, Chip } from "../components/ui";
@@ -212,7 +212,10 @@ function ImportDialog({
           ref={fileRef}
           type="file"
           accept=".csv,text/csv"
-          className={controlClass + " py-1.5 file:mr-3 file:rounded file:border-0 file:bg-surface-2 file:px-2 file:py-1 file:text-foreground"}
+          className={
+            controlClass +
+            " py-1.5 file:mr-3 file:rounded file:border-0 file:bg-surface-2 file:px-2 file:py-1 file:text-foreground"
+          }
           onChange={(e) => {
             const f = e.target.files?.[0];
             if (f) void onFile(f);
@@ -259,7 +262,9 @@ export function Transactions() {
       .filter((t) => (from ? t.date >= from : true))
       .filter((t) => (to ? t.date <= to : true))
       .filter((t) =>
-        q ? (t.payee ?? "").toLowerCase().includes(q) || (t.note ?? "").toLowerCase().includes(q) : true,
+        q
+          ? (t.payee ?? "").toLowerCase().includes(q) || (t.note ?? "").toLowerCase().includes(q)
+          : true,
       )
       .slice()
       .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
@@ -281,7 +286,12 @@ export function Transactions() {
           {filtered.length} transaction{filtered.length === 1 ? "" : "s"}
         </p>
         <div className="flex gap-2">
-          <Button size="sm" variant="secondary" onClick={() => setImportOpen(true)} disabled={accounts.length === 0}>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => setImportOpen(true)}
+            disabled={accounts.length === 0}
+          >
             <Upload size={16} /> Import CSV
           </Button>
           <Button size="sm" onClick={openNew} disabled={accounts.length === 0}>
@@ -319,7 +329,11 @@ export function Transactions() {
           <TextInput type="date" value={to} onChange={(e) => setTo(e.target.value)} />
         </Field>
         <Field label="Search" className="min-w-40 flex-1">
-          <TextInput placeholder="Payee or note" value={text} onChange={(e) => setText(e.target.value)} />
+          <TextInput
+            placeholder="Payee or note"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
         </Field>
       </Card>
 
@@ -330,7 +344,11 @@ export function Transactions() {
       ) : filtered.length === 0 ? (
         <EmptyState
           title="No transactions"
-          hint={(txnsQ.data?.length ?? 0) > 0 ? "No rows match the filters." : "Add one or import a CSV."}
+          hint={
+            (txnsQ.data?.length ?? 0) > 0
+              ? "No rows match the filters."
+              : "Add one or import a CSV."
+          }
         />
       ) : (
         <Card className="overflow-x-auto p-0">
@@ -348,21 +366,39 @@ export function Transactions() {
             <tbody>
               {filtered.map((t) => (
                 <tr key={t.id} className="border-b border-border last:border-0 hover:bg-surface-2">
-                  <td className="whitespace-nowrap px-4 py-2 tabular-nums text-muted-foreground">{t.date}</td>
+                  <td className="whitespace-nowrap px-4 py-2 tabular-nums text-muted-foreground">
+                    {t.date}
+                  </td>
                   <td className="px-4 py-2 text-foreground">{t.payee ?? "—"}</td>
                   <td className="px-4 py-2">
-                    {t.categoryId ? <Chip>{categoryName.get(t.categoryId) ?? "—"}</Chip> : <span className="text-muted-foreground">—</span>}
+                    {t.categoryId ? (
+                      <Chip>{categoryName.get(t.categoryId) ?? "—"}</Chip>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
                   </td>
-                  <td className="px-4 py-2 text-muted-foreground">{accountName.get(t.accountId) ?? "—"}</td>
+                  <td className="px-4 py-2 text-muted-foreground">
+                    {accountName.get(t.accountId) ?? "—"}
+                  </td>
                   <td className="px-4 py-2 text-right">
                     <Amount cents={t.amount} currency={currency} colored />
                   </td>
                   <td className="px-4 py-2">
                     <div className="flex justify-end gap-1">
-                      <Button variant="ghost" size="icon" aria-label="Edit" onClick={() => openEdit(t)}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Edit"
+                        onClick={() => openEdit(t)}
+                      >
                         <Pencil size={14} />
                       </Button>
-                      <Button variant="ghost" size="icon" aria-label="Delete" onClick={() => del.mutate(t.id)}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label="Delete"
+                        onClick={() => del.mutate(t.id)}
+                      >
                         <Trash2 size={14} />
                       </Button>
                     </div>

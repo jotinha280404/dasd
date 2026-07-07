@@ -1,15 +1,15 @@
 import type { LedgerFilter } from "@dasd/fin-shared";
 import {
+  type UseMutationResult,
   useMutation,
   useQuery,
   useQueryClient,
-  type UseMutationResult,
 } from "@tanstack/react-query";
 import { useUiStore } from "../store/ui";
 import {
-  api,
   type AccountInput,
   type AllocationBy,
+  api,
   type BudgetInput,
   type CategoryInput,
   type GoalInput,
@@ -140,7 +140,10 @@ interface UpdateArgs<Input> {
 
 export function useCreateAccount(): UseMutationResult<unknown, Error, AccountInput> {
   const invalidate = useInvalidateAll();
-  return useMutation({ mutationFn: (body: AccountInput) => api.accounts.create(body), onSuccess: invalidate });
+  return useMutation({
+    mutationFn: (body: AccountInput) => api.accounts.create(body),
+    onSuccess: invalidate,
+  });
 }
 export function useUpdateAccount(): UseMutationResult<unknown, Error, UpdateArgs<AccountInput>> {
   const invalidate = useInvalidateAll();
@@ -151,12 +154,18 @@ export function useUpdateAccount(): UseMutationResult<unknown, Error, UpdateArgs
 }
 export function useDeleteAccount(): UseMutationResult<unknown, Error, string> {
   const invalidate = useInvalidateAll();
-  return useMutation({ mutationFn: (id: string) => api.accounts.remove(id), onSuccess: invalidate });
+  return useMutation({
+    mutationFn: (id: string) => api.accounts.remove(id),
+    onSuccess: invalidate,
+  });
 }
 
 export function useCreateCategory(): UseMutationResult<unknown, Error, CategoryInput> {
   const invalidate = useInvalidateAll();
-  return useMutation({ mutationFn: (body: CategoryInput) => api.categories.create(body), onSuccess: invalidate });
+  return useMutation({
+    mutationFn: (body: CategoryInput) => api.categories.create(body),
+    onSuccess: invalidate,
+  });
 }
 
 export function useCreateTransaction(): UseMutationResult<unknown, Error, TransactionInput> {
@@ -166,7 +175,11 @@ export function useCreateTransaction(): UseMutationResult<unknown, Error, Transa
     onSuccess: invalidate,
   });
 }
-export function useUpdateTransaction(): UseMutationResult<unknown, Error, UpdateArgs<TransactionInput>> {
+export function useUpdateTransaction(): UseMutationResult<
+  unknown,
+  Error,
+  UpdateArgs<TransactionInput>
+> {
   const invalidate = useInvalidateAll();
   return useMutation({
     mutationFn: ({ id, body }: UpdateArgs<TransactionInput>) => api.transactions.update(id, body),
@@ -175,7 +188,10 @@ export function useUpdateTransaction(): UseMutationResult<unknown, Error, Update
 }
 export function useDeleteTransaction(): UseMutationResult<unknown, Error, string> {
   const invalidate = useInvalidateAll();
-  return useMutation({ mutationFn: (id: string) => api.transactions.remove(id), onSuccess: invalidate });
+  return useMutation({
+    mutationFn: (id: string) => api.transactions.remove(id),
+    onSuccess: invalidate,
+  });
 }
 export function useImportTransactions(): UseMutationResult<
   { created: number },
@@ -192,7 +208,10 @@ export function useImportTransactions(): UseMutationResult<
 
 export function useCreateHolding(): UseMutationResult<unknown, Error, HoldingInput> {
   const invalidate = useInvalidateAll();
-  return useMutation({ mutationFn: (body: HoldingInput) => api.holdings.create(body), onSuccess: invalidate });
+  return useMutation({
+    mutationFn: (body: HoldingInput) => api.holdings.create(body),
+    onSuccess: invalidate,
+  });
 }
 export function useUpdateHolding(): UseMutationResult<unknown, Error, UpdateArgs<HoldingInput>> {
   const invalidate = useInvalidateAll();
@@ -203,7 +222,10 @@ export function useUpdateHolding(): UseMutationResult<unknown, Error, UpdateArgs
 }
 export function useDeleteHolding(): UseMutationResult<unknown, Error, string> {
   const invalidate = useInvalidateAll();
-  return useMutation({ mutationFn: (id: string) => api.holdings.remove(id), onSuccess: invalidate });
+  return useMutation({
+    mutationFn: (id: string) => api.holdings.remove(id),
+    onSuccess: invalidate,
+  });
 }
 export function useRefreshPrices(): UseMutationResult<unknown, Error, void> {
   const invalidate = useInvalidateAll();
@@ -212,7 +234,10 @@ export function useRefreshPrices(): UseMutationResult<unknown, Error, void> {
 
 export function useCreateBudget(): UseMutationResult<unknown, Error, BudgetInput> {
   const invalidate = useInvalidateAll();
-  return useMutation({ mutationFn: (body: BudgetInput) => api.budgets.create(body), onSuccess: invalidate });
+  return useMutation({
+    mutationFn: (body: BudgetInput) => api.budgets.create(body),
+    onSuccess: invalidate,
+  });
 }
 export function useUpdateBudget(): UseMutationResult<unknown, Error, UpdateArgs<BudgetInput>> {
   const invalidate = useInvalidateAll();
@@ -228,7 +253,10 @@ export function useDeleteBudget(): UseMutationResult<unknown, Error, string> {
 
 export function useCreateGoal(): UseMutationResult<unknown, Error, GoalInput> {
   const invalidate = useInvalidateAll();
-  return useMutation({ mutationFn: (body: GoalInput) => api.goals.create(body), onSuccess: invalidate });
+  return useMutation({
+    mutationFn: (body: GoalInput) => api.goals.create(body),
+    onSuccess: invalidate,
+  });
 }
 export function useUpdateGoal(): UseMutationResult<unknown, Error, UpdateArgs<GoalInput>> {
   const invalidate = useInvalidateAll();

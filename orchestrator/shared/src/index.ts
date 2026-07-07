@@ -11,6 +11,8 @@ export interface Health {
   ts: string;
 }
 
-export * from "./graph";
 export * from "./events";
+export * from "./graph";
+export * from "./hooks";
+export * from "./project";
 export * from "./wire";

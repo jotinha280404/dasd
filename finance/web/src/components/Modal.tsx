@@ -1,6 +1,6 @@
 import { Button } from "@dasd/ui";
 import { X } from "lucide-react";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 
 /** A lightweight centered modal dialog (no portal dependency). */
 export function Modal({

@@ -14,14 +14,29 @@ heuristic parser so the app works with zero auth. Built in the 2026-07-06
 session (which hit its usage limit mid-verification); verified and committed
 2026-07-07 — events REST plus a real Claude chat turn creating an event.
 
+## 2026-07-07 — Orchestrator Phase 2: hooks in-memory, projects broadcast, lint aligned
+
+Hook observation keeps its observed-session registry **in memory** (ghost
+sessions are ephemeral by nature; the ws ring buffer already bounds event
+history) and the forwarder (`orchestrator/hooks/forward.mjs`) always exits 0
+fast so a down orchestrator can never slow a real Claude Code session.
+Projects persist as JSON like workflows, and every mutation broadcasts a full
+`project.update` frame — clients reconcile, no patch protocol. Deleting a
+project intentionally does not broadcast (no deletion frame in the wire
+contract; a stale client copy is harmless). Biome was aligned with reality:
+`useLiteralKeys` off (the codebase standardized on bracket notation),
+Tailwind CSS directives enabled for the parser, vendored `.claude/skills`
+excluded; remaining calendar a11y findings are tracked in [[Ideas]].
+
 ## 2026-07-06 — Run strategies: Ralph faithful, Caveman as config
 
-Phase 2's orchestrator "runner" setting will offer DAG (default), **Ralph**
-(Geoffrey Huntley's loop-until-done technique over a spec/backlog), and
-**Caveman**. Research found no single canonical Caveman semantics, so it will
-be modeled as a config: a brute-force re-invoke loop with an optional
-token-compression flag. It pairs with the planned project progress tracker,
-which is exactly the backlog Ralph loops over. Not yet implemented.
+Phase 2's orchestrator "runner" setting offers DAG (default, now parallel
+with agent→agent data passing), **Ralph** (Geoffrey Huntley's loop-until-done
+technique over a spec/backlog), and **Caveman**. Research found no single
+canonical Caveman semantics, so it is modeled as a config: a brute-force
+re-invoke loop with a `doneMarker` and an optional token-compression flag.
+Ralph loops over exactly the project progress tracker's backlog. Implemented
+and verified 2026-07-07.
 
 ## 2026-07-06 — Higgsfield studio: Gemini images now, video adapter later
 

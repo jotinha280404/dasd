@@ -11,8 +11,8 @@ import type {
   CategoryKind,
   Cents,
   DashboardSummary,
-  GoalProgress,
   Goal,
+  GoalProgress,
   Holding,
   HoldingValue,
   LedgerFilter,
@@ -135,15 +135,13 @@ export const api = {
   },
   holdings: {
     ...crud<Holding, HoldingInput>("holdings"),
-    refreshPrices: () =>
-      request<Holding[]>(`/holdings/refresh-prices`, { method: "POST" }),
+    refreshPrices: () => request<Holding[]>(`/holdings/refresh-prices`, { method: "POST" }),
   },
   budgets: crud<Budget, BudgetInput>("budgets"),
   goals: crud<Goal, GoalInput>("goals"),
 
   // ── Reports (all honor ?ledger=) ──
-  dashboard: (ledger: LedgerFilter) =>
-    request<DashboardSummary>(`/dashboard${ledgerQ(ledger)}`),
+  dashboard: (ledger: LedgerFilter) => request<DashboardSummary>(`/dashboard${ledgerQ(ledger)}`),
   networth: (ledger: LedgerFilter, months = 12) =>
     request<NetWorthPoint[]>(`/reports/networth${ledgerQ(ledger, { months: String(months) })}`),
   cashflow: (ledger: LedgerFilter, months = 12) =>

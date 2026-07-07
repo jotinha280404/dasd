@@ -2,7 +2,7 @@ import type { CalendarAction, ChatMessage, ChatRole } from "@dasd/cal-shared";
 import { cn } from "@dasd/ui";
 import { CheckCircle2, Info, Loader2, Send, Sparkles, Trash2 } from "lucide-react";
 import { nanoid } from "nanoid";
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useChat } from "../api/queries";
 
 interface ThreadItem {

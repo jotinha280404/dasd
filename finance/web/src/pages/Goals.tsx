@@ -1,4 +1,4 @@
-import { toCents, toMajor, type Account, type Goal } from "@dasd/fin-shared";
+import { type Account, type Goal, toCents, toMajor } from "@dasd/fin-shared";
 import { Button } from "@dasd/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, Plus, PlusCircle, Trash2 } from "lucide-react";
@@ -87,7 +87,11 @@ function GoalDialog({
         </Field>
         <div className="grid grid-cols-2 gap-3">
           <Field label={`Target (${currency})`} error={errors.targetAmount?.message}>
-            <TextInput type="number" step="0.01" {...register("targetAmount", { valueAsNumber: true })} />
+            <TextInput
+              type="number"
+              step="0.01"
+              {...register("targetAmount", { valueAsNumber: true })}
+            />
           </Field>
           <Field label={`Saved (${currency})`} error={errors.currentAmount?.message}>
             <TextInput
@@ -239,17 +243,33 @@ export function Goals() {
                         <PlusCircle size={14} />
                       </Button>
                     )}
-                    <Button variant="ghost" size="icon" aria-label="Edit" onClick={() => openEdit(g.goalId)}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label="Edit"
+                      onClick={() => openEdit(g.goalId)}
+                    >
                       <Pencil size={14} />
                     </Button>
-                    <Button variant="ghost" size="icon" aria-label="Delete" onClick={() => del.mutate(g.goalId)}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label="Delete"
+                      onClick={() => del.mutate(g.goalId)}
+                    >
                       <Trash2 size={14} />
                     </Button>
                   </div>
                 </div>
                 <div className="flex items-baseline justify-between">
-                  <Amount cents={g.current} currency={currency} className="text-lg font-semibold text-foreground" />
-                  <span className="text-sm tabular-nums text-muted-foreground">{pctLabel(g.pct)}</span>
+                  <Amount
+                    cents={g.current}
+                    currency={currency}
+                    className="text-lg font-semibold text-foreground"
+                  />
+                  <span className="text-sm tabular-nums text-muted-foreground">
+                    {pctLabel(g.pct)}
+                  </span>
                 </div>
                 <ProgressBar value={g.pct} color={goalStatusColor(g.pct)} />
                 <div className="flex justify-between text-xs text-muted-foreground">

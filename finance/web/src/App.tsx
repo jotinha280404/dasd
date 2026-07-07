@@ -8,7 +8,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Goals } from "./pages/Goals";
 import { Investments } from "./pages/Investments";
 import { Transactions } from "./pages/Transactions";
-import { useUiStore, type Page } from "./store/ui";
+import { type Page, useUiStore } from "./store/ui";
 
 const queryClient = new QueryClient({
   defaultOptions: {

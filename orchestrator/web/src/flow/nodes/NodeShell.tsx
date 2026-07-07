@@ -1,8 +1,8 @@
-import { Handle, Position } from "@xyflow/react";
-import type { CSSProperties, ReactNode } from "react";
-import type { LucideIcon } from "lucide-react";
 import type { NodeStatusValue, Port } from "@dasd/orch-shared";
 import { cn } from "@dasd/ui";
+import { Handle, Position } from "@xyflow/react";
+import type { LucideIcon } from "lucide-react";
+import type { CSSProperties, ReactNode } from "react";
 import { useRunStore } from "../../store/runStore";
 import type { PortsSpec } from "../../types";
 

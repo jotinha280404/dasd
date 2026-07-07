@@ -1,5 +1,5 @@
-import { create } from "zustand";
 import type { AgentEvent, NodeStatusValue, RunStatus } from "@dasd/orch-shared";
+import { create } from "zustand";
 
 /** Payload of a `run.status` server frame (kept structural to avoid a wire import). */
 export interface RunStatusFrame {
@@ -7,6 +7,9 @@ export interface RunStatusFrame {
   status: RunStatus;
   nodeStatus: Record<string, NodeStatusValue>;
   activeEdges: string[];
+  /** Present on Ralph/Caveman runs. */
+  runner?: string;
+  iteration?: number;
 }
 
 export interface RunState {
@@ -16,6 +19,10 @@ export interface RunState {
   events: AgentEvent[];
   logsByAgent: Record<string, AgentEvent[]>;
   activeEdges: Set<string>;
+  /** Strategy driving the current run ("dag" | "ralph" | "caveman"); null when idle. */
+  runner: string | null;
+  /** Current loop turn, 1-based (Ralph/Caveman only). */
+  iteration: number | null;
 
   setRunId: (runId: string | null) => void;
   applyEvent: (e: AgentEvent) => void;
@@ -32,6 +39,8 @@ export const useRunStore = create<RunState>((set) => ({
   events: [],
   logsByAgent: {},
   activeEdges: new Set<string>(),
+  runner: null,
+  iteration: null,
 
   setRunId: (runId) => set({ runId }),
 
@@ -54,6 +63,9 @@ export const useRunStore = create<RunState>((set) => ({
       status: frame.status,
       nodeStatus: frame.nodeStatus,
       activeEdges: new Set(frame.activeEdges),
+      // Absent on plain DAG frames — clear rather than keep a stale loop badge.
+      runner: frame.runner ?? null,
+      iteration: frame.iteration ?? null,
     })),
 
   reset: () =>
@@ -64,5 +76,7 @@ export const useRunStore = create<RunState>((set) => ({
       events: [],
       logsByAgent: {},
       activeEdges: new Set<string>(),
+      runner: null,
+      iteration: null,
     }),
 }));

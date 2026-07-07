@@ -1,5 +1,6 @@
 import type { CalendarEvent } from "@dasd/cal-shared";
 import { Loader2 } from "lucide-react";
+import { useCalendarEvents } from "../api/queries";
 import { colorHex, withAlpha } from "../lib/colors";
 import {
   chunkWeeks,
@@ -12,7 +13,6 @@ import {
   monthGridDays,
   WEEKDAY_LABELS,
 } from "../lib/datetime";
-import { useCalendarEvents } from "../api/queries";
 import { useUiStore } from "../store/ui";
 
 const MAX_CHIPS = 3;

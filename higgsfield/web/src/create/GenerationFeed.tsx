@@ -1,9 +1,14 @@
+import type { AspectRatioValue, Generation } from "@dasd/higg-shared";
 import { cn } from "@dasd/ui";
 import { useIsMutating } from "@tanstack/react-query";
-import type { AspectRatioValue, Generation } from "@dasd/higg-shared";
 import { Download, Film, RotateCcw, Trash2 } from "lucide-react";
 import type { ReactNode } from "react";
-import { GENERATE_MUTATION_KEY, useCapabilities, useDeleteGeneration, useGenerations } from "../api/queries";
+import {
+  GENERATE_MUTATION_KEY,
+  useCapabilities,
+  useDeleteGeneration,
+  useGenerations,
+} from "../api/queries";
 import { EmptyState } from "../components/EmptyState";
 import { Spinner } from "../components/Spinner";
 import { aspectToCss } from "../lib/aspect";

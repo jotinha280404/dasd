@@ -1,11 +1,6 @@
-import { z } from "zod";
-import type {
-  ImageGenInput,
-  ImageGenResult,
-  ImageProvider,
-  MediaAsset,
-} from "@dasd/higg-shared";
+import type { ImageGenInput, ImageGenResult, ImageProvider, MediaAsset } from "@dasd/higg-shared";
 import { DEFAULT_IMAGE_MODEL, IMAGE_MODELS } from "@dasd/higg-shared";
+import { z } from "zod";
 import { aspectSize, dataUrlToBytes, writeMedia } from "../../store/media";
 import { clampCount, delay } from "./common";
 
@@ -91,7 +86,10 @@ export class GeminiImageProvider implements ImageProvider {
       const decoded = dataUrlToBytes(ref);
       if (!decoded) continue;
       parts.push({
-        inlineData: { mimeType: decoded.mimeType, data: Buffer.from(decoded.bytes).toString("base64") },
+        inlineData: {
+          mimeType: decoded.mimeType,
+          data: Buffer.from(decoded.bytes).toString("base64"),
+        },
       });
     }
     return parts;

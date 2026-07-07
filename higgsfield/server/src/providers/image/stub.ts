@@ -90,7 +90,11 @@ function wrapText(text: string, maxChars: number, maxLines: number): string[] {
   return lines;
 }
 
-function renderPlaceholderSvg(prompt: string, aspectRatio: AspectRatioValue, variant: number): string {
+function renderPlaceholderSvg(
+  prompt: string,
+  aspectRatio: AspectRatioValue,
+  variant: number,
+): string {
   const { width, height } = aspectSize(aspectRatio);
   const seed = hashInt(`${prompt}#${variant}`);
   const hue = seed % 360;

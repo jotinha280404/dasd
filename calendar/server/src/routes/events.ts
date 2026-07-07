@@ -1,5 +1,5 @@
-import { Hono } from "hono";
 import { EventInput, EventPatch } from "@dasd/cal-shared";
+import { Hono } from "hono";
 import { getProvider } from "../providers";
 
 /** REST routes for event CRUD. Mount under `/api/events`. */

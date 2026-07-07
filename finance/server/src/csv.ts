@@ -1,4 +1,4 @@
-import { toCents, type Cents } from "@dasd/fin-shared";
+import { type Cents, toCents } from "@dasd/fin-shared";
 
 /**
  * Minimal CSV import. Expects a header row containing `date,amount,description,
@@ -84,7 +84,7 @@ function parseAmount(raw: string): Cents {
     negative = true;
     s = s.slice(1, -1);
   }
-  s = s.replace(/[^0-9.\-]/g, "");
+  s = s.replace(/[^0-9.-]/g, "");
   if (s.startsWith("-")) {
     negative = true;
     s = s.slice(1);

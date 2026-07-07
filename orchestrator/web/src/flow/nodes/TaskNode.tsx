@@ -13,9 +13,7 @@ export function TaskNode({ id, data, selected }: NodeProps<TaskNodeType>) {
       label={data.label}
       accent="var(--color-accent)"
       selected={selected}
-      summary={
-        <span className="block truncate">{description || "No description yet"}</span>
-      }
+      summary={<span className="block truncate">{description || "No description yet"}</span>}
     />
   );
 }

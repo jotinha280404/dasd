@@ -1,10 +1,4 @@
-import {
-  AssetClass,
-  toCents,
-  toMajor,
-  type Account,
-  type Holding,
-} from "@dasd/fin-shared";
+import { type Account, AssetClass, type Holding, toCents, toMajor } from "@dasd/fin-shared";
 import { Button } from "@dasd/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, Plus, RefreshCw, Trash2 } from "lucide-react";
@@ -138,13 +132,25 @@ function HoldingDialog({
         </Field>
         <div className="grid grid-cols-3 gap-3">
           <Field label="Quantity" error={errors.quantity?.message}>
-            <TextInput type="number" step="any" {...register("quantity", { valueAsNumber: true })} />
+            <TextInput
+              type="number"
+              step="any"
+              {...register("quantity", { valueAsNumber: true })}
+            />
           </Field>
           <Field label={`Cost (${currency})`} error={errors.costBasis?.message}>
-            <TextInput type="number" step="0.01" {...register("costBasis", { valueAsNumber: true })} />
+            <TextInput
+              type="number"
+              step="0.01"
+              {...register("costBasis", { valueAsNumber: true })}
+            />
           </Field>
           <Field label={`Price (${currency})`} error={errors.currentPrice?.message}>
-            <TextInput type="number" step="0.01" {...register("currentPrice", { valueAsNumber: true })} />
+            <TextInput
+              type="number"
+              step="0.01"
+              {...register("currentPrice", { valueAsNumber: true })}
+            />
           </Field>
         </div>
         <div className="mt-1 flex justify-end gap-2">
@@ -203,15 +209,25 @@ export function Investments() {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-baseline gap-3">
           <span className="text-sm text-muted-foreground">Portfolio value</span>
-          <Amount cents={totalValue} currency={currency} className="text-lg font-semibold text-foreground" />
+          <Amount
+            cents={totalValue}
+            currency={currency}
+            className="text-lg font-semibold text-foreground"
+          />
           <span className="text-sm tabular-nums" style={{ color: totalGain >= 0 ? POS : NEG }}>
             {totalGain >= 0 ? "+" : "−"}
             <Amount cents={Math.abs(totalGain)} currency={currency} />
           </span>
         </div>
         <div className="flex gap-2">
-          <Button size="sm" variant="secondary" onClick={() => refresh.mutate()} disabled={refresh.isPending}>
-            <RefreshCw size={16} className={refresh.isPending ? "animate-spin" : undefined} /> Refresh prices
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() => refresh.mutate()}
+            disabled={refresh.isPending}
+          >
+            <RefreshCw size={16} className={refresh.isPending ? "animate-spin" : undefined} />{" "}
+            Refresh prices
           </Button>
           <Button size="sm" onClick={openNew} disabled={investmentAccounts.length === 0}>
             <Plus size={16} /> Add holding
@@ -242,15 +258,22 @@ export function Investments() {
               </thead>
               <tbody>
                 {rows.map(({ holding: h, value, gain, gainPct }) => (
-                  <tr key={h.id} className="border-b border-border last:border-0 hover:bg-surface-2">
+                  <tr
+                    key={h.id}
+                    className="border-b border-border last:border-0 hover:bg-surface-2"
+                  >
                     <td className="py-2 pr-4">
                       <span className="font-medium text-foreground">{h.symbol}</span>
-                      {h.name && <span className="ml-2 text-xs text-muted-foreground">{h.name}</span>}
+                      {h.name && (
+                        <span className="ml-2 text-xs text-muted-foreground">{h.name}</span>
+                      )}
                     </td>
                     <td className="py-2 pr-4">
                       <Chip>{h.assetClass}</Chip>
                     </td>
-                    <td className="py-2 pr-4 text-right tabular-nums text-muted-foreground">{h.quantity}</td>
+                    <td className="py-2 pr-4 text-right tabular-nums text-muted-foreground">
+                      {h.quantity}
+                    </td>
                     <td className="py-2 pr-4 text-right">
                       <Amount cents={h.currentPrice} currency={currency} />
                     </td>
@@ -260,7 +283,10 @@ export function Investments() {
                     <td className="py-2 pr-4 text-right">
                       <div className="flex flex-col items-end">
                         <Amount cents={gain} currency={currency} colored />
-                        <span className="text-xs tabular-nums" style={{ color: gain >= 0 ? POS : NEG }}>
+                        <span
+                          className="text-xs tabular-nums"
+                          style={{ color: gain >= 0 ? POS : NEG }}
+                        >
                           {gain >= 0 ? "+" : "−"}
                           {pctLabel(Math.abs(gainPct))}
                         </span>
@@ -268,10 +294,20 @@ export function Investments() {
                     </td>
                     <td className="py-2">
                       <div className="flex justify-end gap-1">
-                        <Button variant="ghost" size="icon" aria-label="Edit" onClick={() => openEdit(h)}>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label="Edit"
+                          onClick={() => openEdit(h)}
+                        >
                           <Pencil size={14} />
                         </Button>
-                        <Button variant="ghost" size="icon" aria-label="Delete" onClick={() => del.mutate(h.id)}>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label="Delete"
+                          onClick={() => del.mutate(h.id)}
+                        >
                           <Trash2 size={14} />
                         </Button>
                       </div>

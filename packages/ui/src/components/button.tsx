@@ -1,4 +1,4 @@
-import { type VariantProps, cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "../lib/utils";
 
@@ -10,7 +10,8 @@ const buttonVariants = cva(
         default:
           "bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:opacity-90",
         secondary: "bg-[var(--color-surface-2)] text-foreground hover:bg-[var(--color-muted)]",
-        outline: "border border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface-2)]",
+        outline:
+          "border border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface-2)]",
         ghost: "bg-transparent hover:bg-[var(--color-surface-2)]",
         destructive: "bg-[var(--color-destructive)] text-white hover:opacity-90",
       },

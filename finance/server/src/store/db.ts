@@ -1,14 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import type {
-  Account,
-  Budget,
-  Category,
-  Goal,
-  Holding,
-  Transaction,
-} from "@dasd/fin-shared";
+import type { Account, Budget, Category, Goal, Holding, Transaction } from "@dasd/fin-shared";
 
 /**
  * A tiny JSON-file store: one file per collection under `<server>/store/data/`

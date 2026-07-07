@@ -12,6 +12,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import type { AllocationBy } from "../api/client";
 import {
   useAllocation,
   useBudgetStatuses,
@@ -20,12 +21,19 @@ import {
   useGoalProgress,
   useNetworth,
 } from "../api/queries";
-import type { AllocationBy } from "../api/client";
 import { AllocationDonut } from "../charts/AllocationDonut";
 import { ChartTooltip } from "../charts/ChartTooltip";
-import { budgetStatusColor, budgetStatusLabel, CHART, goalStatusColor, NEG, POS, SERIES } from "../charts/theme";
-import { Amount, Delta, Panel, ProgressBar, StatTile } from "../components/ui";
+import {
+  budgetStatusColor,
+  budgetStatusLabel,
+  CHART,
+  goalStatusColor,
+  NEG,
+  POS,
+  SERIES,
+} from "../charts/theme";
 import { EmptyState, ErrorState, Loading } from "../components/states";
+import { Amount, Delta, Panel, ProgressBar, StatTile } from "../components/ui";
 import { monthLabel, monthYearLabel, pctLabel } from "../lib/format";
 import { useUiStore } from "../store/ui";
 
@@ -103,7 +111,10 @@ export function Dashboard() {
           ) : networth.isError ? (
             <ErrorState error={networth.error} />
           ) : series.length === 0 ? (
-            <EmptyState title="No history yet" hint="Add transactions to build a net-worth trend." />
+            <EmptyState
+              title="No history yet"
+              hint="Add transactions to build a net-worth trend."
+            />
           ) : (
             <ResponsiveContainer width="100%" height={260} className="tabular-nums">
               <AreaChart data={series} margin={{ top: 4, right: 8, bottom: 0, left: 0 }}>
@@ -194,7 +205,11 @@ export function Dashboard() {
           <EmptyState title="No cashflow yet" />
         ) : (
           <ResponsiveContainer width="100%" height={260} className="tabular-nums">
-            <BarChart data={cashflow.data ?? []} barGap={2} margin={{ top: 4, right: 8, bottom: 0, left: 0 }}>
+            <BarChart
+              data={cashflow.data ?? []}
+              barGap={2}
+              margin={{ top: 4, right: 8, bottom: 0, left: 0 }}
+            >
               <CartesianGrid stroke={CHART.grid} vertical={false} />
               <XAxis
                 dataKey="period"
@@ -228,8 +243,20 @@ export function Dashboard() {
                   </span>
                 )}
               />
-              <Bar dataKey="income" name="Income" fill={POS} radius={[4, 4, 0, 0]} isAnimationActive={false} />
-              <Bar dataKey="expense" name="Expense" fill={NEG} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+              <Bar
+                dataKey="income"
+                name="Income"
+                fill={POS}
+                radius={[4, 4, 0, 0]}
+                isAnimationActive={false}
+              />
+              <Bar
+                dataKey="expense"
+                name="Expense"
+                fill={NEG}
+                radius={[4, 4, 0, 0]}
+                isAnimationActive={false}
+              />
             </BarChart>
           </ResponsiveContainer>
         )}
@@ -251,7 +278,9 @@ export function Dashboard() {
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-foreground">{b.categoryName}</span>
                     <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <span style={{ color: budgetStatusColor(b.pct) }}>{budgetStatusLabel(b.pct)}</span>
+                      <span style={{ color: budgetStatusColor(b.pct) }}>
+                        {budgetStatusLabel(b.pct)}
+                      </span>
                       <Amount cents={b.spent} currency={currency} /> /{" "}
                       <Amount cents={b.limit} currency={currency} />
                     </span>
@@ -290,7 +319,7 @@ export function Dashboard() {
         </Panel>
       </div>
 
-      {(!dash.isLoading && !summary && !dash.isError) && (
+      {!dash.isLoading && !summary && !dash.isError && (
         <EmptyState
           title="No data yet"
           hint="Start the finance server to seed a demo, then add accounts and transactions."

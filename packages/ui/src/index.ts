@@ -1,2 +1,2 @@
+export { Button, type ButtonProps, buttonVariants } from "./components/button";
 export { cn } from "./lib/utils";
-export { Button, buttonVariants, type ButtonProps } from "./components/button";

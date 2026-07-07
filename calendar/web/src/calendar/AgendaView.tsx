@@ -1,8 +1,8 @@
 import type { CalendarEvent } from "@dasd/cal-shared";
 import { CalendarX2, Loader2, MapPin } from "lucide-react";
+import { useCalendarEvents } from "../api/queries";
 import { colorHex } from "../lib/colors";
 import { formatDayHeading, formatEventRange, groupByStartDay } from "../lib/datetime";
-import { useCalendarEvents } from "../api/queries";
 import { useUiStore } from "../store/ui";
 
 function AgendaRow({ event, onClick }: { event: CalendarEvent; onClick: () => void }) {

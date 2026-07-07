@@ -11,5 +11,5 @@ export interface Health {
   ts: string;
 }
 
-export * from "./events";
 export * from "./chat";
+export * from "./events";

@@ -1,4 +1,4 @@
-import { query, type Options, type PermissionMode } from "@anthropic-ai/claude-agent-sdk";
+import { type Options, type PermissionMode, query } from "@anthropic-ai/claude-agent-sdk";
 import type { AgentSpec } from "@dasd/orch-shared";
 import type { AgentHandle, EmitRaw } from "./pool";
 
@@ -37,7 +37,8 @@ export function runSdk(spec: AgentSpec, emit: EmitRaw): AgentHandle {
   };
   if (spec.model) options.model = spec.model;
   if (spec.allowedTools && spec.allowedTools.length > 0) options.allowedTools = spec.allowedTools;
-  if (spec.disallowedTools && spec.disallowedTools.length > 0) options.disallowedTools = spec.disallowedTools;
+  if (spec.disallowedTools && spec.disallowedTools.length > 0)
+    options.disallowedTools = spec.disallowedTools;
   if (permissionMode) {
     options.permissionMode = permissionMode;
     if (permissionMode === "bypassPermissions") options.allowDangerouslySkipPermissions = true;
